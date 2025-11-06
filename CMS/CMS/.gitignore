@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual Environment
+venv/
+env/
+
+# FastAPI / Uvicorn logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Byte-compiled / packaged / distribution
+build/
+dist/
+*.egg-info/
+
+# pytest, coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# cache
+.cache/
+*.sqlite3
+*.db
+
+# Docker
+*.pid
+*.tar
