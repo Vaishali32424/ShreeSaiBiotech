@@ -1,0 +1,26 @@
+{
+  "language": "Language",
+  "feedback": "Feedback",
+  "home": "Home",
+  "about_us": "About Us",
+  "products": "Products",
+  "Enzymes": "Enzymes",
+  "news": "News",
+  "knowledge": "Knowledge",
+  "contact_us": "Contact Us",
+  "phone": "+91-8989496905",
+  "email": "info@shreesaibiotech.com",
+  "company_dropdown": {
+    "factory_certificates": "Factory & Certificates",
+    "meet_our_team": "Meet Our Team",
+    "what_can_we_do": "What Can We Do",
+    "innovation_service": "Innovation And Service",
+    "quality_rd": "Quality And R&D"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "Botanical Extracts",
+    "natural_sweeteners": "Natural Sweeteners",
+    "functional_ingredients": "Functional Ingredients",
+    "custom_solutions": "Custom Solutions"
+  }
+}

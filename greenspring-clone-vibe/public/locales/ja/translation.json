@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "ホーム",
+  "about_us": "為何選ぶのか",
+  "products": "製品",
+  "Enzymes": "甘味料",
+  "news": "ニュース",
+  "knowledge": "知識",
+  "contact_us": "お問い合わせ",
+  "feedback": "フィードバック",
+  "company_dropdown": {
+    "factory_certificates": "工場証明書",
+    "meet_our_team": "私たちのチームに会います",
+    "what_can_we_do": "私たちに何ができるか",
+    "innovation_service": "イノベーションとサービス",
+    "quality_rd": "品質と研究開発"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "植物抽出物",
+    "natural_sweeteners": "天然甘味料",
+    "functional_ingredients": "機能性成分",
+    "custom_solutions": "カスタムソリューション"
+  }
+}

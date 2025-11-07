@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "CASA",
+  "about_us": "PORCHE SCEGLIERCI",
+  "products": "PRODOTTI",
+  "Enzymes": "DOLCIFICANTI",
+  "news": "NOTIZIA",
+  "knowledge": "CONOSCENZA",
+  "contact_us": "CONTATTACI",
+  "feedback": "RISPOSTA",
+  "company_dropdown": {
+    "factory_certificates": "Certificati di fabbrica",
+    "meet_our_team": "Incontra il nostro team",
+    "what_can_we_do": "Cosa possiamo fare",
+    "innovation_service": "Innovazione e servizio",
+    "quality_rd": "Qualità e ricerca e sviluppo"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "Estratti botanici",
+    "natural_sweeteners": "Dolcificanti naturali",
+    "functional_ingredients": "Ingredienti funzionali",
+    "custom_solutions": "Soluzioni personalizzate"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "홈",
+  "about_us" : "우리를 선택 했습니까",
+  "products": "제품",
+  "Enzymes": "감미료",
+  "news": "뉴스",
+  "knowledge": "지식",
+  "contact_us": "문의하기",
+  "feedback": "피드백",
+  "company_dropdown": {
+    "factory_certificates": "공장 인증서",
+    "meet_our_team": "우리 팀을 만나",
+    "what_can_we_do": "우리가 무엇을 할 수",
+    "innovation_service": "혁신 및 서비스",
+    "quality_rd": "품질 및 R&D"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "식물 추출물",
+    "natural_sweeteners": "천연 감미료",
+    "functional_ingredients": "기능성 성분",
+    "custom_solutions": "맞춤형 솔루션"
+  }
+}

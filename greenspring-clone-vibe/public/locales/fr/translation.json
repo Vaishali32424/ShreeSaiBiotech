@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "ACCUEIL",
+  "about_us" : "PORQUE CHOISIR",
+  "products": "PRODUITS",
+  "Enzymes": "ÉDULCORANTS",
+  "news": "NOUVELLES",
+  "knowledge": "CONNAISSANCE",
+  "contact_us": "CONTACTEZ-NOUS",
+  "feedback": "RETOUR D'INFORMATION",
+  "company_dropdown": {
+    "factory_certificates": "Certificats d'usine",
+    "meet_our_team": "Rencontrez notre équipe",
+    "what_can_we_do": "Que pouvons-nous faire",
+    "innovation_service": "Innovation et service",
+    "quality_rd": "Qualité et R&D"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "Extraits botaniques",
+    "natural_sweeteners": "Édulcorants naturels",
+    "functional_ingredients": "Ingrédients fonctionnels",
+    "custom_solutions": "Solutions personnalisées"
+  }
+}

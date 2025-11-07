@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "บ้าน",
+  "about_us": "ทำไมถึงเลือกพวกเรา",
+  "products": "ผลิตภัณฑ์",
+  "Enzymes": "สารให้ความหวาน",
+  "news": "ข่าว",
+  "knowledge": "ความรู้",
+  "contact_us": "ติดต่อเรา",
+  "feedback": "ข้อเสนอแนะ",
+  "company_dropdown": {
+    "factory_certificates": "ใบรับรองโรงงาน",
+    "meet_our_team": "พบกับทีมงานของเรา",
+    "what_can_we_do": "เราทำอะไรได้บ้าง",
+    "innovation_service": "นวัตกรรมและบริการ",
+    "quality_rd": "คุณภาพและการวิจัยและพัฒนา"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "สารสกัดจากพฤกษชาติ",
+    "natural_sweeteners": "สารให้ความหวานจากธรรมชาติ",
+    "functional_ingredients": "ส่วนผสมที่ใช้งานได้",
+    "custom_solutions": "โซลูชันที่กำหนดเอง"
+  }
+}

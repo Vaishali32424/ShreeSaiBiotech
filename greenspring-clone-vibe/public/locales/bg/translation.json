@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "У ДОМА",
+  "about_us": "ЗАЩО ДА ИЗБЕР��ТЕ НАС",
+  "products": "ПРОДУКТИ",
+  "Enzymes": "ПОДСЛАДИТЕЛИ",
+  "news": "НОВИНИ",
+  "knowledge": "ЗНАНИЕ",
+  "contact_us": "СВЪРЖЕТЕ СЕ С НАС",
+  "feedback": "ОБРАТНА ВРЪЗКА",
+  "company_dropdown": {
+    "factory_certificates": "Фабрични сертификати",
+    "meet_our_team": "Запознайте се с нашия екип",
+    "what_can_we_do": "Какво можем да направим",
+    "innovation_service": "Иновации и обслужване",
+    "quality_rd": "Качество и R&D"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "Ботанически екстракти",
+    "natural_sweeteners": "Естествени подсладители",
+    "functional_ingredients": "Функционални съставки",
+    "custom_solutions": "Персонализирани решения"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "phone": "8618182698650",
+  "email": "info@shreesaibiotech.com",
+  "home": "الصفحة الرئيسية",
+  "about_us": "لماذا أخترتنا",
+  "products": "منتجات",
+  "Enzymes": "المحليات",
+  "news": "أخبار",
+  "knowledge": "معرفة",
+  "contact_us": "اتصل بنا",
+  "feedback": "ردود الفعل",
+  "company_dropdown": {
+    "factory_certificates": "شهادات المصنع",
+    "meet_our_team": "قابل فريقنا",
+    "what_can_we_do": "ماذا نستطيع ان نفعل",
+    "innovation_service": "الابتكار والخدمة",
+    "quality_rd": "الجودة والبحث والتطوير"
+  },
+  "products_dropdown": {
+    "botanical_extracts": "المستخلصات النباتية",
+    "natural_sweeteners": "المحليات الطبيعية",
+    "functional_ingredients": "المكونات الوظيفية",
+    "custom_solutions": "حلول مخصصة"
+  }
+}
