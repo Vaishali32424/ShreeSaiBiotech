@@ -4,8 +4,18 @@ from typing import List
 from database import get_db, engine
 from models import Product, ProductCategory, Base
 from schemas import ProductCat, ProductCreate, ProductOut
-
+from fastapi.middleware.cors import CORSMiddleware
+ 
 app = FastAPI()
+ 
+app.add_middleware(
+    CORSMiddleware,
+    # allow_origins = ["http://localhost:3000"],
+    allow_origins = ["*"],
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"]
+)
 
 Base.metadata.create_all(bind=engine)
 
@@ -35,7 +45,7 @@ def get_all_products(db: Session = Depends(get_db)):
 
 
 @app.get("/products/{product_id}", response_model=ProductOut)
-def read_product(product_id: int, db: Session = Depends(get_db)):
+def read_product(product_id: str, db: Session = Depends(get_db)):
     product = db.query(Product).get(product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")

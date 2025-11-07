@@ -1,29 +1,29 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, Dict
-
+ 
 class ProductCat(BaseModel):
     name: str
-
+ 
 class ProductBase(BaseModel):
     name: str
-    id: int
+    id: str
     image_url: Optional[str]
     short_details: Optional[Dict[str, Optional[str]]]
     content_sections: Optional[Dict[str, Optional[str]]]
-
+ 
 class ProductCreate(ProductBase):
     category: ProductCat   # <-- nested
-
+ 
 class ProductUpdate(ProductBase):
     pass
-
+ 
 class ProductOut(ProductBase):
-    id: int
+    id: str
     category: Optional[ProductCat]
-
+ 
 model_config = ConfigDict(from_attributes=True)
-
-
+ 
+ 
 # {
 #   "name": "iPhone 15",
 #   "image_url": "https://example.com/img.png",
