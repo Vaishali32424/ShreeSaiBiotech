@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict
-from typing import Optional, Dict
+from typing import Optional, Dict, Any
  
 class ProductCat(BaseModel):
     name: str
@@ -8,8 +8,8 @@ class ProductBase(BaseModel):
     name: str
     id: str
     image_url: Optional[str]
-    short_details: Optional[Dict[str, Optional[str]]]
-    content_sections: Optional[Dict[str, Optional[str]]]
+    short_details: Optional[Dict[str, Any]]  # <-- change
+    content_sections: Optional[Dict[str, Any]]  # <-- change
  
 class ProductCreate(ProductBase):
     category: ProductCat   # <-- nested

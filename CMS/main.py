@@ -19,7 +19,7 @@ app.add_middleware(
 
 Base.metadata.create_all(bind=engine)
 
-@app.post("/products_cat/")
+@app.post("/create/products/cat/")
 def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     new_cat = ProductCategory(
         name=payload.name
@@ -29,29 +29,51 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
-@app.post("/products/", response_model=ProductOut)
+@app.post("/create/product/", response_model=ProductOut)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
-    db_product = Product(**product.dict())
+    # 1. check / create category
+    category_name = product.category.name
+    db_category = db.query(ProductCategory).filter_by(name=category_name).first()
+    if not db_category:
+        db_category = ProductCategory(name=category_name)
+        db.add(db_category)
+        db.commit()
+        db.refresh(db_category)
+
+    # 2. remove category from payload
+    product_data = product.dict()
+    product_data.pop("category")   # remove nested category
+
+    # 3. add FK mapping
+    product_data["category_id"] = db_category.id
+
+    # 4. create product
+    db_product = Product(**product_data)
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
+
     return db_product
 
-@app.get("/products_all/", response_model=List[ProductOut])
+@app.get("/get/all/category/")
+def get_all_category(db: Session = Depends(get_db)):
+    all_category = db.query(ProductCategory).all()
+    return all_category
+
+@app.get("/get/all/products/", response_model=List[ProductOut])
 def get_all_products(db: Session = Depends(get_db)):
     all_products = db.query(Product).all()
     print(all_products)  
     return all_products  
 
-
-@app.get("/products/{product_id}", response_model=ProductOut)
+@app.get("/product/by/id/{product_id}", response_model=ProductOut)
 def read_product(product_id: str, db: Session = Depends(get_db)):
     product = db.query(Product).get(product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-@app.put("/products/{product_id}", response_model=ProductOut)
+@app.put("/edit/products/by/id/{product_id}", response_model=ProductOut)
 def update_product(product_id: int, updated: ProductCreate, db: Session = Depends(get_db)):
     product = db.query(Product).get(product_id)
     if not product:
@@ -64,7 +86,7 @@ def update_product(product_id: int, updated: ProductCreate, db: Session = Depend
     db.refresh(product)
     return product
 
-@app.delete("/products/{product_id}")
+@app.delete("delete/product/by/id/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(Product).get(product_id)
     if not product:

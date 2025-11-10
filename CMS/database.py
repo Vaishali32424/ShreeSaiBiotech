@@ -3,7 +3,9 @@ from sqlalchemy.orm import sessionmaker
 
 # f"mysql+pymysql://{username}:{password}@{host}:{port}/{database}" #By changing the URL we can connect any DataBase platform like PostgrSql etc.
 
-DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/GreenProducts"
+# DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/GreenProducts"
+
+DATABASE_URL = "mysql+pymysql://root:YourPassword@localhost:3306/GreenProducts"
 
 engine = create_engine(DATABASE_URL)
 
@@ -15,10 +17,3 @@ def get_db():
         yield db 
     finally:
         db.close()
-
-
-#hjfjkjkfngjk
-
-
-
-
