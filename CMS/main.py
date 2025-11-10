@@ -19,7 +19,7 @@ app.add_middleware(
 
 Base.metadata.create_all(bind=engine)
 
-@app.post("/create/products/cat/")
+@app.post("/create/products/cat")
 def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     new_cat = ProductCategory(
         name=payload.name
@@ -29,7 +29,7 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
-@app.post("/create/product/", response_model=ProductOut)
+@app.post("/create/product", response_model=ProductOut)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
     # 1. check / create category
     category_name = product.category.name
@@ -55,12 +55,17 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
 
     return db_product
 
-@app.get("/get/all/category/")
+@app.get("/products/by/category/{category_id}")
+def get_products_by_cat_id(category_id: int, db: Session = Depends(get_db)):
+    products = db.query(Product).filter(Product.category_id == category_id).all()
+    return products
+
+@app.get("/get/all/category")
 def get_all_category(db: Session = Depends(get_db)):
     all_category = db.query(ProductCategory).all()
     return all_category
 
-@app.get("/get/all/products/", response_model=List[ProductOut])
+@app.get("/get/all/products", response_model=List[ProductOut])
 def get_all_products(db: Session = Depends(get_db)):
     all_products = db.query(Product).all()
     print(all_products)  
