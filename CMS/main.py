@@ -17,7 +17,29 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
-Base.metadata.create_all(bind=engine)
+# Create tables on startup (only if database is available)
+@app.on_event("startup")
+async def startup_event():
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Database tables created/verified successfully")
+    except Exception as e:
+        print(f"WARNING: Could not create database tables: {e}")
+        print("Make sure DATABASE_URL or MySQL connection variables are set correctly in Railway.")
+
+@app.get("/")
+def root():
+    return {"message": "ShreeSaiBiotech API is running", "status": "ok"}
+
+@app.get("/health")
+def health_check():
+    try:
+        # Try to connect to database
+        from database import engine
+        with engine.connect() as conn:
+            return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        return {"status": "unhealthy", "database": "disconnected", "error": str(e)}
 
 @app.post("/create/products/cat")
 def create_category(payload: ProductCat, db: Session = Depends(get_db)):

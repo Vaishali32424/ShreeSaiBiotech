@@ -35,13 +35,37 @@ if not DATABASE_URL:
 
 # Validate that we have a DATABASE_URL
 if not DATABASE_URL:
-    raise ValueError(
-        "DATABASE_URL or MySQL connection variables not found. "
-        "Please set DATABASE_URL or MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE "
-        "environment variables in Railway."
+    error_msg = (
+        "\n" + "="*60 + "\n"
+        "ERROR: DATABASE_URL or MySQL connection variables not found!\n"
+        "\n"
+        "Please do ONE of the following in Railway:\n"
+        "\n"
+        "1. Link your MySQL database service:\n"
+        "   - Go to your service → Variables → Add from Service\n"
+        "   - Select your MySQL database from 'trustworthy-hope' project\n"
+        "\n"
+        "2. OR manually set DATABASE_URL:\n"
+        "   - Format: mysql+pymysql://user:password@host:port/database\n"
+        "\n"
+        "3. OR set individual MySQL variables:\n"
+        "   - MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE\n"
+        "="*60 + "\n"
     )
+    print(error_msg)
+    raise ValueError(error_msg)
 
-engine = create_engine(DATABASE_URL)
+# Create engine with connection pooling and error handling
+try:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,  # Verify connections before using
+        pool_recycle=300,    # Recycle connections after 5 minutes
+        echo=False
+    )
+except Exception as e:
+    print(f"ERROR: Failed to create database engine: {e}")
+    raise
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=True, bind=engine)
 
