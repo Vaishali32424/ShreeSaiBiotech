@@ -2,7 +2,7 @@ import json
 from models import Product, ProductCategory
 from database import get_db
 
-def data_insert():
+def insert_data():
  
     with open("All_product_details1.json", "r", encoding="utf-8") as f:
         data = json.load(f, strict=False)
@@ -44,5 +44,5 @@ def data_insert():
     finally:
         db.close()
 
-        
+
     
