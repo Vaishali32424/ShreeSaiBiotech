@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: shreesaibiotech-api
+    env: python
+    buildCommand: cd CMS && pip install -r requirements.txt
+    startCommand: cd CMS && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+    # Note: Currently using local database
+    # To use Render's database service, uncomment the databases section below
+    # and set DATABASE_URL environment variable in Render dashboard
+
+# databases:
+#   - name: shreesaibiotech-db
+#     databaseName: shreesaibiotech
+#     user: shreesaibiotech
+#     plan: free  # Change to 'starter' or higher for production
+
