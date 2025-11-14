@@ -5,7 +5,7 @@ from database import get_db, engine
 from models import Product, ProductCategory, Base
 from schemas import ProductCat, ProductCreate, ProductOut
 from fastapi.middleware.cors import CORSMiddleware
-from . data_insert import *
+from data_insert import *
  
 app = FastAPI()
  
@@ -27,14 +27,6 @@ async def startup_event():
     except Exception as e:
         print(f"WARNING: Could not create database tables: {e}")
         print("Make sure DATABASE_URL or MySQL connection variables are set correctly in Railway.")
-
-@app.get("/data/insert")
-def data_insert():
-    try:
-        insert_data()
-    except Exception as e:
-        print(f"WARNING: issue in inserting data {e}")
-
 
 
 @app.get("/")
@@ -96,6 +88,13 @@ def get_products_by_cat_id(category_id: int, db: Session = Depends(get_db)):
 def get_all_category(db: Session = Depends(get_db)):
     all_category = db.query(ProductCategory).all()
     return all_category
+
+@app.get("/data/insert")
+def data_insert():
+    try:
+        insert_data()
+    except Exception as e:
+        print(f"WARNING: issue in inserting data {e}")
 
 @app.get("/get/all/products", response_model=List[ProductOut])
 def get_all_products(db: Session = Depends(get_db)):
