@@ -197,6 +197,7 @@ const Toolbar = ({ editor }) => {
   return (
     <div className="flex flex-wrap gap-2 p-2 border border-gray-300 rounded-t-md bg-gray-50 relative">
       <button
+      type="button"
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
         className={`${btnClass} ${
@@ -206,6 +207,8 @@ const Toolbar = ({ editor }) => {
         Bold
       </button>
       <button
+            type="button"
+
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         className={`${btnClass} ${
@@ -216,6 +219,8 @@ const Toolbar = ({ editor }) => {
       </button>
  
       <button
+            type="button"
+
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={`${btnClass} ${
           editor.isActive("bulletList") ? activeBtnClass : ""
@@ -223,8 +228,10 @@ const Toolbar = ({ editor }) => {
       >
         List
       </button>
-\
+
       <button
+            type="button"
+
         onClick={() =>
           editor
             .chain()
@@ -236,7 +243,8 @@ const Toolbar = ({ editor }) => {
       >
         Insert Table
       </button>
-      <button onClick={addImage} className={btnClass}>
+      <button       type="button"
+ onClick={addImage} className={btnClass}>
         Add Image (URL)
       </button>
       <div className="relative">
@@ -258,6 +266,8 @@ const Toolbar = ({ editor }) => {
             >
             
               <button
+                    type="button"
+
                 onClick={() => {
                   insertNode("setIconCardGrid");
                   setShowCardMenu(false);

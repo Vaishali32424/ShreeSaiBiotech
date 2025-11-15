@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import RichTextEditor from "./RichTextEditor";
 import ProductCardEditor from "./ProductCardEditor";
 import FAQEditor from "./FAQEditor";
 import ReviewEditor from "./ReviewEditor";
 import ImageUploader from "./ImageUploader";
 import CertificateUploader from "./CertificateUploader"; // ADDED
+import {
+  createCategory,
+  createNewProduct,
+  getAllCategories,
+  getProductsData,
+  updateProduct,
+} from "@/Services/Productscrud";
+import { toast } from "../ui/use-toast";
+import ShortDetailsTableEditor from "./ShortDetailsTableEditor";
 
 const ProductForm = () => {
-  const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState(["Supplements", "Pharma", "Food"]);
-  const [newCategory, setNewCategory] = useState("");
+  const { productId } = useParams();
+  const navigate = useNavigate();
+  const isEditMode = Boolean(productId);
 
+  const [newCategory, setNewCategory] = useState("");
+  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
   const [name, setName] = useState("Coenzyme Q10 Powder");
   const [imageFile, setImageFile] = useState(null);
   const [imageBase64, setImageBase64] = useState("");
@@ -19,38 +32,147 @@ const ProductForm = () => {
   const [productCards, setProductCards] = useState([]);
   const [footerText, setFooterText] = useState("");
 
-  const [shortDetails, setShortDetails] = useState([
-    { id: 1, key: "Purity", value: "98.0-101.0% (USP43/EP/BP)" },
-  ]);
-  const handleCopy = () => {
-    navigator.clipboard.writeText(payload);
-    alert("Copied to clipboard!");
+  // const [shortDetails, setShortDetails] = useState([]);
+const [shortDetails, setShortDetails] = useState<
+  { id: string; key: string; value: string }[]
+>([]);
+  const [contentSections, setContentSections] = useState([]);
+  const [customerReviews, setCustomerReviews] = useState([]);
+  const [faqItems, setFaqItems] = useState([]);
+  const [certificates, setCertificates] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+const generateUniqueId = () => `row-${Date.now()}-${Math.random()}`;
+
+// useEffect(() => {
+//     if (productId) {
+//         if (productId) {
+            
+//             if (productData.short_details && productData.short_details.table_description) {
+//                 const htmlString = productData.short_details.table_description;
+//                 const newDetails = parseHtmlTableToDetails(htmlString); // 💡 New function call
+//                 setShortDetails(newDetails);
+//             } else {
+//                 setShortDetails([]);
+//             }
+//         }
+//     }
+// }, [productId]);
+  useEffect(() => {
+    if (isEditMode && productId) {
+      const fetchProductData = async () => {
+        try {
+          const result = await getProductsData(productId);
+          const product = result.data;
+          setName(product.name);
+          setCategory(product.category.id);
+          setImageBase64(product.image_url);
+       if (product.short_details && product.short_details.table_description) {
+            const htmlString = product.short_details.table_description;
+            const newDetails = parseHtmlTableToDetails(htmlString);
+            setShortDetails(newDetails);
+          } else {
+            // Fallback: अगर API में पुरानी/सादी key-value जोड़ी हो (यह पुराने error को भी ठीक करता है)
+             setShortDetails(
+              Object.entries(product.short_details || {}).map(([key, value]) => ({
+                id: generateUniqueId(), // Use helper to generate unique ID
+                key,
+                value: String(value),
+              }))
+            );
+          }
+          const sections = product.content_sections;
+          setContentSections(sections.content_sections || []);
+          setProductCards(sections.product_cards_data?.cards || []);
+          setGridLayout(sections.product_cards_data?.grid_layout || "3x3");
+          setCertificates(sections.certificates || []);
+          setCustomerReviews(sections.customer_reviews || []);
+          setFaqItems(sections.faq_items || []);
+          setFooterText(sections.footer_text || "");
+        } catch (error) {
+          console.error("Error fetching product data:", error);
+          alert("Failed to load product data for editing.");
+        }
+      };
+      fetchProductData();
+    }
+  }, [productId, isEditMode]);
+const convertDetailsToHtmlTable = (details: DetailItem[]): string => {
+    if (!details || details.length === 0) return "";
+
+    const rows = details.map(item => {
+        // Ensure keys/values are safe for HTML output
+        const key = item.key.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const value = item.value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        
+        return `<tr><td class="fw6">${key}</td><td>${value}</td></tr>`;
+    }).join('');
+
+    return `<table class="tbl tble25"><tbody>${rows}</tbody></table>`;
+};
+
+
+/**
+ * 💡 Helper to parse the saved HTML table string back into a Key/Value array.
+ * This is used for pre-filling the editor in Edit Mode.
+ */
+const parseHtmlTableToDetails = (htmlString: string): DetailItem[] => {
+    if (!htmlString) return [];
+    
+    try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        const rows = doc.querySelectorAll('.tbl tbody tr');
+        
+        const details: DetailItem[] = [];
+        rows.forEach((row) => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length === 2) {
+                details.push({
+                    id: generateUniqueId(),
+                    key: cells[0].textContent?.trim() || '',
+                    value: cells[1].textContent?.trim() || '',
+                });
+            }
+        });
+        return details;
+    } catch (e) {
+        console.error("Error parsing HTML table for Short Details:", e);
+        return [];
+    }
+};
+  const fetchCategories = async () => {
+    try {
+      const result = await getAllCategories<{id: string, name: string}[]>();
+      setCategories(result.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
-  const [contentSections, setContentSections] = useState([
-    {
-      id: 1,
-      title: "Products Description",
-      content: "",
-    },
-  ]);
+  const handleAddNewCategory = async () => {
+    if (!newCategory.trim()) {
+      alert("Please enter a category name.");
+      return;
+    }
+    try {
+      const result = await createCategory<{id: string, name: string}>({ name: newCategory });
+      setNewCategory("");
+      await fetchCategories();
+      setCategory(result.data.id); // Select the new category
+      alert(`Category "${result.data.name}" created successfully!`);
+    } catch (error) {
+      console.error("Error creating category:", error);
+      alert("Failed to create category.");
+    }
+  };
   const [sectionTitles, setSectionTitles] = useState({
     productDescription: "Product Description",
     customerReviews: "Customer Reviews",
     faq: "FAQ",
   });
-
-  const [customerReviews, setCustomerReviews] = useState([]);
-  const [faqItems, setFaqItems] = useState([]);
-  const [payload, setPayload] = useState(null);
-  
-  // NEW STATE: Certificates
-  const [certificates, setCertificates] = useState([]); 
-
-  // 💡 Note: removeCustomerReview and removeFaqItem are used in JSX but not defined here.
-  // Assuming they exist or using placeholders for now if needed in a functional component:
-  // const removeCustomerReview = id => setCustomerReviews(prev => prev.filter(r => r.id !== id));
-  // const removeFaqItem = id => setFaqItems(prev => prev.filter(f => f.id !== id));
 
 
   // 💡 --- Short Details ---
@@ -89,7 +211,24 @@ const ProductForm = () => {
   const removeContentSection = id => {
     setContentSections(prev => prev.filter(s => s.id !== id));
   };
+const updateCustomerReview = (id, field, value) => {
+    setCustomerReviews(prev =>
+      prev.map(review => (review.id === id ? { ...review, [field]: value } : review))
+    );
+  };
+  const removeCustomerReview = id => {
+    setCustomerReviews(prev => prev.filter(r => r.id !== id));
+  };
 
+  // 💡 --- FAQ Handlers (NEW) ---
+  const updateFaqItem = (id, field, value) => {
+    setFaqItems(prev =>
+      prev.map(item => (item.id === id ? { ...item, [field]: value } : item))
+    );
+  };
+  const removeFaqItem = id => {
+    setFaqItems(prev => prev.filter(f => f.id !== id));
+  };
   // 💡 --- Product Cards ---
   const addProductCard = () => {
     setProductCards(prev => [
@@ -132,44 +271,68 @@ const ProductForm = () => {
     reader.readAsDataURL(file);
     setImageFile(file);
   };
-
-  // 💡 --- Final Submit (Payload Update) ---
-  const handleSubmit = e => {
+const createSlug = (text) => {
+  return text.toLowerCase().trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-');
+};
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const finalPayload = {
-      category: category || newCategory,
-      name,
-      main_image: imageBase64,
-      short_details: shortDetails.reduce((acc, d) => {
-        if (d.key) acc[d.key] = d.value;
-        return acc;
-      }, {}),
-      content_sections: contentSections.reduce((acc, s) => {
-        if (s.title) acc[s.title] = s.content;
-        return acc;
-      }, {}),
-      product_cards_data: {
-        grid_layout: gridLayout,
-        cards: productCards.map(card => ({
-          title: card.title,
-          properties: card.properties,
-          image_base64: card.image,
-          image_filename: card.fileName,
+
+    const selectedCat = categories.find((c) => c.id === category);
+const tableHtml = convertDetailsToHtmlTable(shortDetails); // 💡 New function call
+    const apiPayload = {
+      name: name,
+      image_url: imageBase64,
+     short_details: {
+            table_description: tableHtml, // 💡 HTML string ko save karen
+        },
+      content_sections: {
+        product_cards_data: {
+          grid_layout: gridLayout,
+          cards: productCards.map((card) => ({
+            title: card.title,
+            properties: card.properties,
+            image_base64: card.image,
+            image_filename: card.fileName,
+          })),
+        },
+        certificates: certificates.map((cert) => ({
+          name: cert.name,
+          image_base64: cert.image,
+          image_filename: cert.fileName,
         })),
+        customer_reviews: customerReviews,
+        faq_items: faqItems,
+        footer_text: footerText,
       },
-      // NEW PAYLOAD SECTION: Certificates
-      certificates: certificates.map(cert => ({
-        name: cert.name,
-        image_base64: cert.image,
-        image_filename: cert.fileName,
-      })),
-      customer_reviews: customerReviews,
-      faq_items: faqItems,
-      footer_text: footerText,
+category: {
+        // name: category, 
+        name: selectedCat ? selectedCat.name : category,// `category` state holds the selected category ID
+      },
     };
 
-    console.log("Final Payload:", finalPayload);
-    setPayload(JSON.stringify(finalPayload, null, 2));
+    if (!isEditMode) {
+      apiPayload.id = createSlug(name);
+    }
+
+    try {
+      if (isEditMode) {
+        await updateProduct(productId, apiPayload);
+        toast({ title: "Success✅", description: "Product updated successfully!" });
+      } else {
+        await createNewProduct(apiPayload);
+        toast({ title: "Success✅", description: `Product "${name}" created successfully!` });
+      }
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(
+        "❌ Error submitting product data:",
+        error.message || error
+      );
+      alert(`Submission failed. Please check console for details.`);
+    }
   };
 
   const inputClass =
@@ -178,9 +341,12 @@ const ProductForm = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-gray-50">
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <h1 className="text-3xl font-bold mb-6">
+        {isEditMode ? "Edit Product" : "Add New Product"}
+      </h1>
+      <form  onSubmit={handleSubmit} className="space-y-8">
         {/* --- Category Field --- */}
-        <div className="p-4 bg-white rounded-lg shadow">
+       <div className="p-4 bg-white rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Choose or Add Category</h2>
           <div className="flex items-center gap-4">
             <select
@@ -189,17 +355,26 @@ const ProductForm = () => {
               className={inputClass + " w-1/2"}
             >
               <option value="">-- Select Existing Category --</option>
-              {categories.map((cat, i) => (
-                <option key={i} value={cat}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
-            <input
-              type="text"
-              placeholder="Or Add New Category"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-              className={inputClass + " w-1/2"}
-            />
+            <div className="w-1/2 flex gap-2">
+              <input
+                type="text"
+                placeholder="Or Add New Category"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                className={inputClass + " w-full"}
+              />
+              <button
+                type="button"
+                onClick={handleAddNewCategory}
+                className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-md hover:bg-green-600"
+              >
+                Add
+              </button>
+            </div>
           </div>
         </div>
 
@@ -213,23 +388,21 @@ const ProductForm = () => {
             className={inputClass}
           />
 
-          <label className={labelClass + " mt-4"}>Main Product Image</label>
-          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} />
+          {/* <label className={labelClass + " mt-4"}>Main Product Image</label>
+          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> */}
         </div>
 
         {/* --- Short Details --- */}
-        <div className="p-4 bg-white shadow-md rounded-lg"> 
-          <h2 className="text-xl font-semibold text-gray-800 mb-4"> Short Details </h2> 
-          <div className="space-y-3"> 
-            {shortDetails.map(detail => ( 
-              <div key={detail.id} className="flex items-center gap-2"> 
-                <input type="text" placeholder="Key (e.g., Purity)" value={detail.key} onChange={e => handleDetailChange(detail.id, "key", e.target.value) } className={inputClass + " w-1/3"} /> 
-                <input type="text" placeholder="Value" value={detail.value} onChange={e => handleDetailChange(detail.id, "value", e.target.value) } className={inputClass + " w-2/3"} /> 
-                <button type="button" onClick={() => removeShortDetail(detail.id)} className="text-red-500 hover:text-red-700 font-bold" > X </button> 
-              </div> 
-            ))} 
-          </div> 
-          <button type="button" onClick={addShortDetail} className="mt-4 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600" > + Add Detail </button> 
+       <div className="p-4 bg-white shadow rounded-lg">
+          <h2 className="text-xl font-semibold mb-4 text-indigo-700">
+            Product Specifications Table (Short Details)
+          </h2>
+          <p className="text-sm text-gray-500 mb-4">
+          </p>
+          <ShortDetailsTableEditor
+            details={shortDetails}
+            setDetails={setShortDetails}
+          />
         </div>
 
         {/* --- Certificates Section (NEW) --- */}
@@ -340,7 +513,7 @@ const ProductForm = () => {
           <h2 className="text-xl font-semibold mb-4">{sectionTitles.customerReviews}</h2>
           {/* Note: updateProductCard is likely incorrect here, should be a review-specific handler */}
           {customerReviews.map((review, i) => (
-            <ReviewEditor key={review.id} review={review} onUpdate={updateProductCard} index={i} onRemove={() => {}} /> 
+            <ReviewEditor key={review.id} review={review} onUpdate={updateCustomerReview} index={i} onRemove={() => removeCustomerReview(review.id)} /> 
           ))}
           <button
             type="button"
@@ -361,7 +534,7 @@ const ProductForm = () => {
           <h2 className="text-xl font-semibold mb-4">{sectionTitles.faq}</h2>
           {/* Note: updateProductCard is likely incorrect here, should be an FAQ-specific handler */}
           {faqItems.map((item, i) => (
-            <FAQEditor key={item.id} faq={item} onUpdate={updateProductCard} index={i} onRemove={() => {}}  />
+            <FAQEditor key={item.id} faq={item} onUpdate={updateFaqItem} index={i} onRemove={() => removeFaqItem(item.id)}/> // ⬅️ FIX 2: Using the correct remove handler />
           ))}
           <button
             type="button"
@@ -394,13 +567,12 @@ const ProductForm = () => {
           type="submit"
           className="w-full py-3 bg-indigo-600 text-white text-lg font-bold rounded-md hover:bg-indigo-700"
         >
-          Create Product Payload
+          {isEditMode ? "Update Product" : "Add this product"}
         </button>
       </form>
 
-      {payload && (
+      {/* {payload && (
        <div className="mt-8 p-4 bg-gray-900 text-white rounded-md relative">
-      {/* Copy button */}
       <button
         onClick={handleCopy}
         className="absolute top-2 right-2 bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 rounded"
@@ -408,10 +580,9 @@ const ProductForm = () => {
         Copy
       </button>
 
-      {/* Payload content */}
       <pre className="text-sm whitespace-pre-wrap break-all">{payload}</pre>
     </div>
-      )}
+      )} */}
     </div>
   );
 };
