@@ -5,7 +5,7 @@ from database import get_db, engine
 from models import Product, ProductCategory, Base
 from schemas import ProductCat, ProductCreate, ProductOut
 from fastapi.middleware.cors import CORSMiddleware
-from data_insert import *
+from utils import *
  
 app = FastAPI()
  
@@ -96,6 +96,14 @@ def data_insert():
     except Exception as e:
         print(f"WARNING: issue in inserting data {e}")
 
+@app.delete("/delete/all/data")
+def remove_table_data():
+    try:
+        clear_all_tables(engine)
+        return {"status": "success", "message": "All table data deleted."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/get/all/products", response_model=List[ProductOut])
 def get_all_products(db: Session = Depends(get_db)):
     all_products = db.query(Product).all()
@@ -110,7 +118,7 @@ def read_product(product_id: str, db: Session = Depends(get_db)):
     return product
 
 @app.put("/edit/products/by/id/{product_id}", response_model=ProductOut)
-def update_product(product_id: int, updated: ProductCreate, db: Session = Depends(get_db)):
+def update_product(product_id: str, updated: ProductCreate, db: Session = Depends(get_db)):
     product = db.query(Product).get(product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")

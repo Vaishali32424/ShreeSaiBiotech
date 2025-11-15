@@ -1,6 +1,7 @@
 import json
 from models import Product, ProductCategory
 from database import get_db
+from sqlalchemy import MetaData
 
 def insert_data():
  
@@ -45,4 +46,13 @@ def insert_data():
         db.close()
 
 
+
+def clear_all_tables(engine):
+    meta = MetaData()
+    meta.reflect(bind=engine)
     
+    with engine.connect() as conn:
+        trans = conn.begin()
+        for table in reversed(meta.sorted_tables):
+            conn.execute(table.delete())
+        trans.commit()
