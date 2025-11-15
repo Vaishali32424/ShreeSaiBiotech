@@ -53,16 +53,22 @@ def clear_all_tables(engine):
 
     with engine.connect() as conn:
         trans = conn.begin()
-        
-        # Delete all rows
+
+        # Delete all data
         for table in reversed(meta.sorted_tables):
             conn.execute(table.delete())
 
-        # Reset sequences for all tables
+        # Reset identity/sequence for each table having an autoincrement PK
         for table in meta.sorted_tables:
             if 'id' in table.c:
-                seq_name = f"{table.name}_id_seq"
-                conn.execute(text(f"ALTER SEQUENCE {seq_name} RESTART WITH 1;"))
+                # Dynamically fetch the identity/sequence name
+                seq_query = text("""
+                    SELECT pg_get_serial_sequence(:table_name, 'id');
+                """)
+                seq_result = conn.execute(seq_query, {"table_name": table.name}).scalar()
+
+                if seq_result:
+                    conn.execute(text(f"ALTER SEQUENCE {seq_result} RESTART WITH 1;"))
 
         trans.commit()
 
