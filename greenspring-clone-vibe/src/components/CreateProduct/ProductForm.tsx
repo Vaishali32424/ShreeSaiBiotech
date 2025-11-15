@@ -60,45 +60,81 @@ const generateUniqueId = () => `row-${Date.now()}-${Math.random()}`;
 //         }
 //     }
 // }, [productId]);
-  useEffect(() => {
-    if (isEditMode && productId) {
-      const fetchProductData = async () => {
-        try {
-          const result = await getProductsData(productId);
-          const product = result.data;
-          setName(product.name);
-          setCategory(product.category.id);
-          setImageBase64(product.image_url);
-       if (product.short_details && product.short_details.table_description) {
-            const htmlString = product.short_details.table_description;
-            const newDetails = parseHtmlTableToDetails(htmlString);
-            setShortDetails(newDetails);
-          } else {
-            // Fallback: अगर API में पुरानी/सादी key-value जोड़ी हो (यह पुराने error को भी ठीक करता है)
-             setShortDetails(
-              Object.entries(product.short_details || {}).map(([key, value]) => ({
-                id: generateUniqueId(), // Use helper to generate unique ID
-                key,
-                value: String(value),
-              }))
-            );
-          }
-          const sections = product.content_sections;
-          setContentSections(sections.content_sections || []);
-          setProductCards(sections.product_cards_data?.cards || []);
-          setGridLayout(sections.product_cards_data?.grid_layout || "3x3");
-          setCertificates(sections.certificates || []);
-          setCustomerReviews(sections.customer_reviews || []);
-          setFaqItems(sections.faq_items || []);
-          setFooterText(sections.footer_text || "");
-        } catch (error) {
-          console.error("Error fetching product data:", error);
-          alert("Failed to load product data for editing.");
-        }
-      };
-      fetchProductData();
-    }
-  }, [productId, isEditMode]);
+useEffect(() => {
+    if (isEditMode && productId) {
+      const fetchProductData = async () => {
+        try {
+          const result = await getProductsData(productId);
+          const product = result.data;
+          
+          setName(product.name);
+          setCategory(product.category.id);
+          setImageBase64(product.image_url);
+        
+          // --- Short Details Loading (Unchanged) ---
+          if (product.short_details && product.short_details.table_description) {
+            const htmlString = product.short_details.table_description;
+            const newDetails = parseHtmlTableToDetails(htmlString);
+            setShortDetails(newDetails);
+          } else {
+            setShortDetails(
+              Object.entries(product.short_details || {}).map(([key, value]) => ({
+                id: generateUniqueId(), 
+                key,
+                value: String(value),
+              }))
+            );
+          }
+          
+          const sections = product.content_sections;
+          
+          // 🚀 FIX: Handle both new (description/paragraph_description) and old (contentSections array) structures
+          if (sections.contentSections && Array.isArray(sections.contentSections) && sections.contentSections.length > 0) {
+            // Case 1: Old structure (array of rich text sections)
+            setContentSections(sections.contentSections);
+          } else if (sections.description || sections.paragraph_description) {
+            // Case 2: New structure (simple strings)
+            let combinedContent = '';
+            
+            if (sections.paragraph_description) {
+                // paragraph_description को पहले दिखाएं
+                combinedContent += `<p><strong>${sections.paragraph_description}</strong></p>`;
+            }
+            if (sections.description) {
+                // description को उसके नीचे जोड़ें
+                // Simple string content को Rich Text Editor में दिखाने के लिए basic paragraph tags add करें
+                combinedContent += `<p>${sections.description.replace(/\n/g, '<br>')}</p>`;
+            }
+            
+            if (combinedContent) {
+                // इसे एक सिंगल Content Section ऑब्जेक्ट में बदलें
+                setContentSections([{ 
+                    id: generateUniqueId(), 
+                    title: 'Product Description', 
+                    content: combinedContent 
+                }]);
+            } else {
+                setContentSections([]);
+            }
+          } else {
+            setContentSections([]);
+          }
+
+          // --- Other Sections (Unchanged) ---
+          setProductCards(sections.product_cards_data?.cards || []);
+          setGridLayout(sections.product_cards_data?.grid_layout || "3x3");
+          setCertificates(sections.certificates || []);
+          setCustomerReviews(sections.customer_reviews || []);
+          setFaqItems(sections.faq_items || []);
+          setFooterText(sections.footer_text || "");
+        } catch (error) {
+          console.error("Error fetching product data:", error);
+          alert("Failed to load product data for editing.");
+        }
+      };
+      fetchProductData();
+    }
+  }, [productId, isEditMode]);
 const convertDetailsToHtmlTable = (details: DetailItem[]): string => {
     if (!details || details.length === 0) return "";
 
@@ -279,7 +315,14 @@ const createSlug = (text) => {
 };
   const handleSubmit = async (e) => {
     e.preventDefault();
+const sectionData = {};
 
+    if (contentSections.length === 1 && contentSections[0].title === 'Product Description') {
+
+        sectionData.contentSections = contentSections;
+    } else {
+        sectionData.contentSections = contentSections;
+    }
     const selectedCat = categories.find((c) => c.id === category);
 const tableHtml = convertDetailsToHtmlTable(shortDetails); // 💡 New function call
     const apiPayload = {
@@ -289,6 +332,7 @@ const tableHtml = convertDetailsToHtmlTable(shortDetails); // 💡 New function 
             table_description: tableHtml, // 💡 HTML string ko save karen
         },
       content_sections: {
+        contentSections,
         product_cards_data: {
           grid_layout: gridLayout,
           cards: productCards.map((card) => ({
@@ -308,15 +352,16 @@ const tableHtml = convertDetailsToHtmlTable(shortDetails); // 💡 New function 
         footer_text: footerText,
       },
 category: {
-        // name: category, 
-        name: selectedCat ? selectedCat.name : category,// `category` state holds the selected category ID
+        name: category, 
+        // name: selectedCat ? selectedCat.name : category,// `category` state holds the selected category ID
       },
     };
 
-    if (!isEditMode) {
-      apiPayload.id = createSlug(name);
+if (isEditMode) {
+        apiPayload.id = productId; 
+    } else {
+        apiPayload.id = createSlug(name);
     }
-
     try {
       if (isEditMode) {
         await updateProduct(productId, apiPayload);

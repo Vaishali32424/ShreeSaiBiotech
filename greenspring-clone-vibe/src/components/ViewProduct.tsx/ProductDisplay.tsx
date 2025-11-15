@@ -79,7 +79,7 @@ const SectionTitleBar = ({ title }) => (
     name, 
     image_url, 
     short_details, 
-    content_sections,
+    content_sections
   } = productData;
 
   const {
@@ -88,9 +88,29 @@ const SectionTitleBar = ({ title }) => (
     faq_items,
     certificates,
     footer_text,
-    dynamic_description, 
+  contentSections: rich_content_sections, // Existing structure (array of {title, content})
+    paragraph_description,                 // New structure (short intro text)
+    description: main_description,
   } = content_sections;
+let contentToRender = [];
 
+if (rich_content_sections && rich_content_sections.length > 0) {
+    // Case 1: If the old rich content array exists
+    contentToRender = rich_content_sections;
+} else if (main_description || paragraph_description) {
+    // Case 2: If the new simple string structure exists, combine them into one array item
+    const combinedContent = (paragraph_description ? `<p><strong>${paragraph_description}</strong></p>` : '') + 
+                            (main_description ? `<p>${main_description.replace(/\n/g, '<br>')}</p>` : '');
+    
+    // Add the combined content as a single section object
+    if (combinedContent.length > 0) {
+        contentToRender.push({ 
+            id: 'main-desc', 
+            title: 'Product Description', 
+            content: combinedContent 
+        });
+    }
+}
   const detailsObject = productData.short_details || {};
   
   const tableHtml = detailsObject.table_description || null;
@@ -216,17 +236,16 @@ const SectionTitleBar = ({ title }) => (
       </div>
         
       {/* --- Dynamic Content Sections --- */}
-      {dynamic_description && dynamic_description.length > 0 && dynamic_description.map((section, index) => (
-        <section key={section.id || index} className="mb-6">
-          <SectionTitleBar title={section.title} />  
-          <div 
-            className={proseClass} 
-            dangerouslySetInnerHTML={{ __html: section.content }} 
-          />
-          <hr className="my-6 border-t-2 border-gray-100" />
-        </section>
-      ))}
-
+ {contentToRender && contentToRender.length > 0 && contentToRender.map((section, index) => (
+        <section key={section.id || index} className="mb-6">
+          <SectionTitleBar title={section.title} />  
+          <div 
+            className={proseClass} 
+            dangerouslySetInnerHTML={{ __html: section.content }} 
+          />
+          <hr className="my-6 border-t-2 border-gray-100" />
+        </section>
+      ))}
       {/* --- Certificates Section (1x6 Grid) --- */}
       {certificates && certificates.length > 0 && (
         <section className="mb-6 p-6 bg-yellow-50 rounded-lg">
