@@ -6,6 +6,9 @@ from models import Product, ProductCategory, Base
 from schemas import ProductCat, ProductCreate, ProductOut
 from fastapi.middleware.cors import CORSMiddleware
 from utils import *
+from sqlalchemy.orm.attributes import InstrumentedAttribute
+from sqlalchemy.orm import RelationshipProperty
+
  
 app = FastAPI()
  
@@ -123,12 +126,25 @@ def update_product(product_id: str, updated: ProductCreate, db: Session = Depend
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    for key, value in updated.dict(exclude_unset=True).items():
+    update_data = updated.dict(exclude_unset=True)
+
+    for key, value in update_data.items():
+        attr = getattr(Product, key, None)
+
+        # Skip if attribute does not exist
+        if not isinstance(attr, InstrumentedAttribute):
+            continue
+
+        # Skip relationship fields (causes your error)
+        if isinstance(attr.property, RelationshipProperty):
+            continue
+
         setattr(product, key, value)
 
     db.commit()
     db.refresh(product)
     return product
+
 
 @app.delete("/delete/product/by/id/{product_id}")
 def delete_product(product_id: str, db: Session = Depends(get_db)):
