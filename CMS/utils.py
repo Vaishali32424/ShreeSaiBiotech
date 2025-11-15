@@ -1,7 +1,7 @@
 import json
 from models import Product, ProductCategory
 from database import get_db
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, text
 
 def insert_data():
  
@@ -46,13 +46,37 @@ def insert_data():
         db.close()
 
 
-
+# for PostgreSQL
 def clear_all_tables(engine):
     meta = MetaData()
     meta.reflect(bind=engine)
-    
+
     with engine.connect() as conn:
         trans = conn.begin()
+        
+        # Delete all rows
         for table in reversed(meta.sorted_tables):
             conn.execute(table.delete())
+
+        # Reset sequences for all tables
+        for table in meta.sorted_tables:
+            if 'id' in table.c:
+                seq_name = f"{table.name}_id_seq"
+                conn.execute(text(f"ALTER SEQUENCE {seq_name} RESTART WITH 1;"))
+
         trans.commit()
+
+## For MySQL
+# def clear_all_tables(engine):
+#     meta = MetaData()
+#     meta.reflect(bind=engine)
+
+#     with engine.connect() as conn:
+#         trans = conn.begin()
+        
+#         # Delete all rows
+#         for table in reversed(meta.sorted_tables):
+#             conn.execute(table.delete())
+#             conn.execute(text(f"ALTER TABLE {table.name} AUTO_INCREMENT = 1;"))
+
+#         trans.commit()
