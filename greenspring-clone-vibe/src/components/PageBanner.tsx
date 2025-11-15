@@ -12,24 +12,7 @@ const PageBanner: React.FC<BannerProps> = ({
   breadcrumb,
   backgroundImage = "/default-banner.jpg",
 }) => {
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("http://127.0.0.1:8000/products_all/", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
 
-      if (!res.ok) throw new Error("API call failed");
-      const data = await res.json();
-      console.log("✅ Products fetched:", data);
-    } catch (err) {
-      console.error("❌ Error fetching products:", err);
-    }
-  };
-
-  fetchProducts();
-}, []);
 
 
   return (

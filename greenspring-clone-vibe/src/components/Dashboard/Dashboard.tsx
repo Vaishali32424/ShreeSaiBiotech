@@ -1,6 +1,8 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import ManageProducts from './ManageProducts';
+import NewsDashboard from './NewsManagement/NewsDashboard';
+import KnowledgeDashboard from './KnowledgePages/KnowledgeDashboard';
 
 
 const Dashboard: React.FC = () => {
@@ -11,8 +13,8 @@ const Dashboard: React.FC = () => {
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="flex-grow p-8">
         {activeTab === 'manage-product' && <ManageProducts />}
-        {activeTab === 'news' && <div>News Management</div>}
-        {activeTab === 'knowledge' && <div>Knowledge Pages Management</div>}
+        {activeTab === 'news' && <NewsDashboard/>}
+        {activeTab === 'knowledge' && <KnowledgeDashboard/>}
       </main>
     </div>
   );

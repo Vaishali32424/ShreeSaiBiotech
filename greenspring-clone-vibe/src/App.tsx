@@ -22,6 +22,10 @@ import ProductDisplay from "./components/ViewProduct.tsx/ProductDisplay";
 import PayloadPreview from "./components/ViewProduct.tsx/PayloadPreview";
 import ProductForm from "./components/CreateProduct/ProductForm";
 import Dashboard from "./components/Dashboard/Dashboard";
+import NewsDashboard from "./components/Dashboard/NewsManagement/NewsDashboard";
+import KnowledgeDashboard from "./components/Dashboard/KnowledgePages/KnowledgeDashboard";
+import AllNews from "./components/NewsPages/AllNews";
+import AllKnowledge from "./components/knowledgePages/AllKnowledge";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -43,7 +47,6 @@ const App = () => (
           <Route path="/innovation-service" element={<InovationNService />} />
           <Route path="/quality-rd" element={<QualityNRnD />} />
                     <Route path="/contact-us" element={<ContactUs />} />
-                    <Route path="/products" element={<Products />} />
                     <Route path="/sweeteners" element={<Sweetners />} />
                     <Route path="/product-search" element={<ProductSearch />} />
         {/* <Route path="/products/:id" element={<ProductsDetailsPage />} /> */}
@@ -53,6 +56,10 @@ const App = () => (
 <Route path="/add-product" element={<ProductForm />} />
 <Route path="/view/:productId" element={<ProductDisplay />} />
           <Route path="/edit-product/:productId" element={<ProductForm />} />
+<Route path="/dashboard/news/*" element={<NewsDashboard />} />
+<Route path="/dashboard/knowledge/*" element={<KnowledgeDashboard />} />
+<Route path="/news/*" element={<AllNews />} />
+<Route path="/knowledge/*" element={<AllKnowledge />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

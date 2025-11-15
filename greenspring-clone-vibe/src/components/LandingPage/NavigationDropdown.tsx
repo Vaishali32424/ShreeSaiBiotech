@@ -59,7 +59,7 @@ const getGridCols = () => {
 
       {/* Desktop Dropdown */}
      {!isMobile && isOpen && (
-  <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-border z-50 p-4 max-h-[400px] overflow-y-auto">
+  <div className="absolute top-7 left-0 mt-1 bg-white shadow-lg rounded-lg border border-border z-50 p-4 max-h-[400px] overflow-y-auto">
     <ul className={`grid gap-2  ${getGridCols()}`}>
       {items.map((item, index) => (
         <li key={index} className="hover:bg-slate-100">

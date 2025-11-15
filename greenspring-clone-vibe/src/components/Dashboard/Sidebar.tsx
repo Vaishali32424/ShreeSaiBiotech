@@ -7,9 +7,9 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const menuItems = [
-    { id: 'manage-product', label: 'Manage Product' },
+    { id: 'manage-product', label: 'Products' },
     { id: 'news', label: 'News' },
-    { id: 'knowledge', label: 'Knowledge Pages' },
+    { id: 'knowledge', label: 'Knowledge' },
   ];
 
   return (

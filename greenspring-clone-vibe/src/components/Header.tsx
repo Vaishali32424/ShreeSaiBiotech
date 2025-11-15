@@ -13,6 +13,7 @@ import ReactCountryFlag from "react-country-flag";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tooltip } from "./ui/tooltip";
+import { getAllCategories } from "@/Services/Productscrud";
 
 const languages = [
   { code: "en", name: "English", countryCode: "GB" },
@@ -36,24 +37,27 @@ const Header = () => {
     { label: string; href: string }[]
   >([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("/products.json");
-        const data = await response.json();
-        const categories = Object.keys(data);
-        const dropdownItems = categories.map((category) => ({
-          label: category,
-          href: `/products/category/${category}`,
-        }));
-        setProductsDropdownItems(dropdownItems);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      }
-    };
+useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const categoriesResult = await getAllCategories<{ data: Category[] }>();
+      const categoriesList = categoriesResult.data || [];
 
-    fetchProducts();
-  }, []);
+      const dropdownItems = categoriesList.map((category) => ({
+        label: category.name,
+        href: `/products/category/${category.name}`, 
+      }));
+
+      setProductsDropdownItems(dropdownItems);
+
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+
+  fetchCategories();
+}, []);
+
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -67,12 +71,13 @@ const Header = () => {
     { label: t("company_dropdown.quality_rd"), href: "/quality-rd" },
   ];
 
-  // const productsDropdownItems = [
-  //   { label: t("products_dropdown.botanical_extracts"), href: "/products/botanical-extracts" },
-  //   { label: t("products_dropdown.natural_sweeteners"), href: "/products/sweeteners" },
-  //   { label: t("products_dropdown.functional_ingredients"), href: "/products/functional-ingredients" },
-  //   { label: t("products_dropdown.custom_solutions"), href: "/products/custom-solutions" },
-  // ];
+  const newsDropdownItems = [
+    { label: t("Company News"), href: "/news" },
+    { label: t("Industry News"), href: "/news/industry-news" },
+        { label: t("Exibition Information"), href: "/news/exibition-information" },
+
+
+  ];
 
   const selectedLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
@@ -203,8 +208,9 @@ const Header = () => {
             <NavigationDropdown title={t("about_us")} items={companyDropdownItems} route="/why-choose-us" />
             <NavigationDropdown title={t("products")}  navigateById={true} items={productsDropdownItems} route={"/products"} />
             <a href="/sweeteners" className="text-foreground text-sm hover:text-primary transition-colors">{t("Enzymes")}</a>
-            <a href="#" className="text-foreground text-sm hover:text-primary transition-colors">{t("news")}</a>
-            <a href="#" className="text-foreground text-sm hover:text-primary transition-colors">{t("knowledge")}</a>
+                        <NavigationDropdown title={t("news")}  navigateById={true} items={newsDropdownItems} route={"/news"} />
+
+            <a href="/knowledge" className="text-foreground text-sm hover:text-primary transition-colors">{t("knowledge")}</a>
             <a href="/contact-us" className="text-foreground text-sm hover:text-primary transition-colors">{t("contact_us")}</a>
           </nav>
 

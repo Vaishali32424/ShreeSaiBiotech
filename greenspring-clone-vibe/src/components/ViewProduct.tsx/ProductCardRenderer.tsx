@@ -23,16 +23,16 @@ const ProductCardRenderer = ({ cardData }) => {
 
   return (
     <div className={gridColsClass}>
-      {cards.map((card, index) => (
+      {cards?.map((card, index) => (
         <div
           key={index}
           className="border-t-4 border-green-600 rounded-lg shadow-lg overflow-hidden bg-white p-5 flex flex-col h-full"
         >
           {/* Image (if exists) */}
-          {card.image_base64 && (
+          {card?.image_base64 && (
             <img
-              src={card.image_base64}
-              alt={card.title || `Card image ${index + 1}`}
+              src={card?.image_base64}
+              alt={card?.title || `Card image ${index + 1}`}
               className="w-full h-32 object-contain mb-4"
             />
           )}
@@ -43,15 +43,19 @@ const ProductCardRenderer = ({ cardData }) => {
           </h4>
 
           {/* Properties */}
-          {card.properties && (
-            <div className="text-sm text-gray-700 space-y-1 mt-auto">
-              <ul className="list-disc list-inside ml-2">
-                {card.properties.split("\n").map((line, i) => (
-                  <li key={i}>{line}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+
+{card.properties && (
+  <div className="text-sm text-gray-700 space-y-1 mt-auto">
+    <ul className="list-disc ml-4"> {/* Changed ml-2 to ml-4 for better visibility */}
+      {card?.properties
+        ?.split("\n")
+        ?.filter(line => line.trim() !== "") // 👈 This filters out blank/whitespace lines
+        ?.map((line, i) => (
+          <li key={i}>{line}</li>
+        ))}
+    </ul>
+  </div>
+)}
         </div>
       ))}
     </div>

@@ -94,7 +94,7 @@ const HotProducts: React.FC = () => {
                   {product.ParagraphDescription}
                 </p>
                 <button
-                  onClick={() => setSelectedProduct(product)}
+                  onClick={() => window.location.href = `/products/product/${product.id}`}
                   className="mt-2 inline-flex items-center text-green-600 hover:text-green-700 font-medium text-sm"
                 >
                   View More
