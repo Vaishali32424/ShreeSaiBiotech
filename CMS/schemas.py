@@ -1,35 +1,41 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, Dict, Any
- 
+
+
 class ProductCat(BaseModel):
     name: str
- 
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CategoryOut(BaseModel):
+    id: int
+    name: str
+    model_config = ConfigDict(from_attributes=True)
+
+
 class ProductBase(BaseModel):
     name: str
     id: str
     image_url: Optional[str]
-    short_details: Optional[Dict[str, Any]]  # <-- change
-    content_sections: Optional[Dict[str, Any]]  # <-- change
- 
+    short_details: Optional[Dict[str, Any]]
+    content_sections: Optional[Dict[str, Any]]
+    model_config = ConfigDict(from_attributes=True)
+
+
 class ProductCreate(ProductBase):
-    category: ProductCat   # <-- nested
- 
+    category: ProductCat    # nested input
+    model_config = ConfigDict(from_attributes=True)
+
+
 class ProductUpdate(ProductBase):
-    pass
- 
-class ProductOut(ProductBase):
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ProductOut(BaseModel):
     id: str
-    category: Optional[ProductCat]
- 
-model_config = ConfigDict(from_attributes=True)
- 
- 
-# {
-#   "name": "iPhone 15",
-#   "image_url": "https://example.com/img.png",
-#   "short_details": {"ram": "8GB", "storage": "256GB"},
-#   "content_sections": {"overview": "awesome product"},
-#   "category": {
-#     "name": "Mobile"
-#   }
-# }
+    name: str
+    image_url: Optional[str]
+    short_details: Optional[Dict[str, Any]]
+    content_sections: Optional[Dict[str, Any]]
+    category: Optional[CategoryOut]    # nested category data
+    model_config = ConfigDict(from_attributes=True)

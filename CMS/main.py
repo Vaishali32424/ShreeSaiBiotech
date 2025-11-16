@@ -31,7 +31,6 @@ async def startup_event():
         print(f"WARNING: Could not create database tables: {e}")
         print("Make sure DATABASE_URL or MySQL connection variables are set correctly in Railway.")
 
-
 @app.get("/")
 def root():
     return {"message": "ShreeSaiBiotech API is running", "status": "ok"}
@@ -82,7 +81,7 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
 
     return db_product
 
-@app.get("/products/by/category/{category_id}")
+@app.get("/products/by/category/{category_id}", response_model=List[ProductOut])
 def get_products_by_cat_id(category_id: int, db: Session = Depends(get_db)):
     products = db.query(Product).filter(Product.category_id == category_id).all()
     return products
@@ -143,7 +142,6 @@ def update_product(product_id: str, updated: ProductCreate, db: Session = Depend
     db.commit()
     db.refresh(product)
     return product
-
 
 @app.delete("/delete/product/by/id/{product_id}")
 def delete_product(product_id: str, db: Session = Depends(get_db)):
