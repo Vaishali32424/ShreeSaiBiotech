@@ -110,7 +110,6 @@ def remove_table_data():
 @app.get("/get/all/products", response_model=List[ProductOut])
 def get_all_products(db: Session = Depends(get_db)):
     all_products = db.query(Product).all()
-    print(all_products)  
     return all_products  
 
 @app.get("/product/by/id/{product_id}", response_model=ProductOut)
