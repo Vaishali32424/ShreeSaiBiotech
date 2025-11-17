@@ -1,6 +1,6 @@
 import json
-from models import Product, ProductCategory
-from database import get_db
+from app.models import Product, ProductCategory
+from app.database import get_db
 from sqlalchemy import MetaData, text
 
 def insert_data():
