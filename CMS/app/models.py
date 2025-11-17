@@ -33,7 +33,7 @@ class News(Base):
     news_title = Column(String(200), nullable=False)
     
     date = Column(Date)  # correct data type
-
+    initial_view = Column(Integer)
     short_description = Column(Text)
     long_description = Column(Text)  # fixed spelling
 

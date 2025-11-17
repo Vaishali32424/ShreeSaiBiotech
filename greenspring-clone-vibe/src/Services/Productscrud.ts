@@ -3,7 +3,7 @@ import MainAPIService from "./MainAPIService";
 export async function getAllProducts<T>(
 ) {
   return MainAPIService.fetchData<T>({
-    url: `get/all/products`,
+    url: `product/get/all/`,
     method: "get",
   });
 }
@@ -19,34 +19,34 @@ export async function createNewProduct<T, U extends Record<string, unknown>>(
   data: U
 ) {
   return MainAPIService.fetchData<T>({
-    url: "create/product",
+    url: "product/create/",
     method: "post",
     data,
   });
 }
 export async function deleteProduct<T>(params: any) {
   return MainAPIService.fetchData<T>({
-    url: `/delete/product/by/id/${params}`,
+    url: `product/delete/by/id/${params}`,
     method: "delete",
   });
 }
 
 export async function getAllCategories<T>() {
   return MainAPIService.fetchData<T>({
-    url: '/get/all/category',
+    url: 'product/get/all/category',
     method: 'get',
   });
 }
 
 export async function getProductsByCategory<T>(params: number) {
   return MainAPIService.fetchData<T>({
-    url: `products/by/category/${params}`,
+    url: `product/by/category/${params}`,
     method: 'get',
   });
 }
 export async function createCategory<T>(data: { name: string }) {
   return MainAPIService.fetchData<T>({
-    url: "/create/products/cat",
+    url: "product/create/cat",
     method: 'post',
     data,
   });
@@ -64,7 +64,7 @@ export async function updateProduct<T, U extends Record<string, unknown>>(
   data: U
 ) {
   return MainAPIService.fetchData<T>({
-    url: `/edit/products/by/id/${params}`,
+    url: `product/edit/by/id/${params}`,
     method: "put",
     data,
   });
