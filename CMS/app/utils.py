@@ -5,7 +5,7 @@ from sqlalchemy import MetaData, text
 
 def insert_data():
  
-    with open("All_product_details1.json", "r", encoding="utf-8") as f:
+    with open("/Users/apple/Documents/ShreeSaiBiotech/CMS/app/All_product_details1.json", "r", encoding="utf-8") as f:
         data = json.load(f, strict=False)
     
     db = next(get_db())  # <--- FIX
