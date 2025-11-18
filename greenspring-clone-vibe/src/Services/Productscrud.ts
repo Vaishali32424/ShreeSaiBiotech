@@ -76,3 +76,10 @@ export async function getProductsData<T>(params: any) {
     method: "get",
   });
 }
+
+export async function getHotProducts<T>() {
+  return MainAPIService.fetchData<T>({
+    url: 'product/get/hot/products',
+    method: 'get',
+  });
+}

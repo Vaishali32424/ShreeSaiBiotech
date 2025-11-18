@@ -3,14 +3,25 @@ import MainAPIService from './MainAPIService';
 export async function getAllKnowledge<T>(
 ) {
   return MainAPIService.fetchData<T>({
-    url: `knowledge/get/all/`,
+    url: `knowledgeget/all/`,
     method: "get",
   });
 }
-export async function getknowledgeData<T>(
+
+export async function getKnowledgeById<T>(
+  params: any
 ) {
   return MainAPIService.fetchData<T>({
-    url: `knowledge/get/all/`,
+    url: `knowledge/get/by/id/${params}`,
+    method: "get",
+  });
+}
+
+export async function getKnowledgePageData<T>(
+  params: any
+) {
+  return MainAPIService.fetchData<T>({
+    url: `knowledge/get/by/id/${params}`,
     method: "get",
   });
 }

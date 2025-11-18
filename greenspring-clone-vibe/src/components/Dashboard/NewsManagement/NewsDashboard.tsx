@@ -5,10 +5,11 @@ import NewsForm from './NewsForm';
 import NewsList from './NewsList'; 
 
 const NEWS_CATEGORIES = [
-  { id: "companyNews", name: "Company News" },
-  { id: "industryNews", name: "Industry News" },
-  { id: "companyExhibition", name: "Company Exhibition" },
+  { id: "Company News", name: "Company News" },
+  { id: "Industry News", name: "Industry News" },
+  { id: "Company Exhibition", name: "Company Exhibition" },
 ];
+
 
 const NewsSidebar = ({ selected, onSelect }) => (
   <div className="w-64 bg-white border-r p-4 h-full">

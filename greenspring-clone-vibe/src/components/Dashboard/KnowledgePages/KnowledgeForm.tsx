@@ -3,43 +3,44 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from '../../ui/use-toast';
 import RichTextEditor from '../../CreateProduct/RichTextEditor';
-import { createKnowledge, updateKnowledge } from '@/Services/KnowledgeCrud';
-// Assume these API services exist
+import { createKnowledge, getKnowledgePageData, updateKnowledge } from '@/Services/KnowledgeCrud';
 
-const generateSlug = (text) => text.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-');
+const generateSlug = (text) =>
+  text.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-');
 
 const KnowledgeForm = () => {
   const { pageId } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(pageId);
 
-  // States
   const [title, setTitle] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
   const [shortDescription, setShortDescription] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().substring(0, 10)); // YYYY-MM-DD
-  const [longContent, setLongContent] = useState(""); // RichTextEditor Content
-  const [loading, setLoading] = useState(false);
-  const [mainImage, setMainImage] = useState(null); // File object (Optional)
-  const [imageBase64, setImageBase64] = useState(""); // Image preview/API data (Optional)
+  const [longContent, setLongContent] = useState("");
+  const [views, setViews] = useState(0);
 
-  // --- Fetch Data for Edit Mode ---
+  const [imageFile, setImageFile] = useState(null);  
+  const [imageBase64, setImageBase64] = useState(""); 
+  const [loading, setLoading] = useState(false);
+
+  // ---------- Load data when editing ----------
   useEffect(() => {
     if (isEditMode && pageId) {
       const fetchData = async () => {
         setLoading(true);
         try {
-          // ⚠️ Assuming getKnowledgePageData(pageId) fetches the data
           const result = await getKnowledgePageData(pageId);
           const page = result.data;
-          
-          setTitle(page.title || "");
+
+          setTitle(page.knowledge_title || "");
+          setDate(page.date || new Date().toISOString().substring(0, 10));
           setShortDescription(page.short_description || "");
-          setDate(page.date || new Date().toISOString().substring(0, 10)); 
-          setLongContent(page.long_content || ""); // Load RichTextEditor content
-          setImageBase64(page.image_url || ""); // Load image URL for preview (if implemented)
+          setLongContent(page.long_description || "");
+          setViews(page.initial_views || 0);
+          setImageBase64(page.imageURL || "");
+
         } catch (error) {
-          console.error("Error fetching knowledge page data:", error);
-          toast({ title: "Error", description: "Failed to load knowledge page data." });
+          toast({ title: "Error", description: "Failed to load page data." });
         } finally {
           setLoading(false);
         }
@@ -47,33 +48,43 @@ const KnowledgeForm = () => {
       fetchData();
     }
   }, [pageId, isEditMode]);
-  
-  // --- Form Submission ---
+
+  // ---------- IMAGE UPLOAD ----------
+  const handleImageUpload = (file) => {
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImageBase64(reader.result); 
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // ---------- SUBMIT ----------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const payload = {
-      id: isEditMode ? pageId : generateSlug(title),
-      title,
-      short_description: shortDescription,
+      knowledge_title: title,
       date,
-      long_content: longContent, // RichTextEditor content
-      image_url: imageBase64, // If you implement image upload
+      initial_views: Number(views),
+      imageURL: imageBase64,   // base64 string
+      short_description: shortDescription,
+      long_description: longContent,
     };
 
     try {
       if (isEditMode) {
         await updateKnowledge(pageId, payload);
-        toast({ title: "Success✅", description: "Knowledge page updated successfully!" });
+        toast({ title: "Success", description: "Knowledge page updated successfully!" });
       } else {
         await createKnowledge(payload);
-        toast({ title: "Success✅", description: `Knowledge page "${title}" created successfully!` });
+        toast({ title: "Success", description: "Knowledge page created successfully!" });
       }
-      navigate("/dashboard/knowledge"); // Navigate back to knowledge list
+
+      navigate("/dashboard/knowledge");
     } catch (error) {
-      console.error("❌ Error submitting knowledge page data:", error);
-      toast({ title: "Error", description: `Submission failed. ${error.message}` });
+      toast({ title: "Error", description: error.message });
     } finally {
       setLoading(false);
     }
@@ -83,79 +94,98 @@ const KnowledgeForm = () => {
   const labelClass = "block text-sm font-medium text-gray-700";
 
   return (
-    <div className="p-6 bg-gray-50">
+    <div className="p-6 w-60% bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">
-        {isEditMode ? "Edit Knowledge Page" : "Create New Knowledge Page"}
+        {isEditMode ? "Edit Knowledge Page" : "Create Knowledge Page"}
       </h1>
 
-      {loading && isEditMode ? (
-        <p>Loading...</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
-          
-          {/* 1. Title and Date */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2">
-              <label className={labelClass}>Title</label>
-              <input
-                type="text"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                className={inputClass}
-                required
-              />
-            </div>
-            <div>
-              <label className={labelClass}>Date</label>
-              <input
-                type="date"
-                value={date}
-                onChange={e => setDate(e.target.value)}
-                className={inputClass}
-                required
-              />
-            </div>
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
 
-          {/* 2. Short Description */}
-          <div>
-            <label className={labelClass}>Short Description (Snippet/Teaser)</label>
-            <textarea
-              value={shortDescription}
-              onChange={e => setShortDescription(e.target.value)}
+        {/* Title + Date */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-2">
+            <label className={labelClass}>Title</label>
+            <input
+              type="text"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
               className={inputClass}
-              rows="3"
               required
             />
           </div>
-
-          {/* 3. Main Image Uploader (Optional) */}
-          {/*
-          <label className={labelClass}>Main Image</label>
-          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> 
-          */}
-
-          {/* 4. Long Content (RichTextEditor) */}
           <div>
-            <h3 className="text-lg font-semibold mb-2">Detailed Content (Long Description)</h3>
-            <RichTextEditor
-              // 💡 FIX for Edit Mode: Use key to force re-initialization
-              key={pageId || 'new'} 
-              initialContent={longContent}
-              onChange={(content) => setLongContent(content)}
+            <label className={labelClass}>Date</label>
+            <input
+              type="date"
+              value={date}
+              onChange={e => setDate(e.target.value)}
+              className={inputClass}
+              required
             />
           </div>
+        </div>
+  <div>
+          <label className={labelClass}>Main Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e.target.files[0])}
+            className={inputClass}
+          />
+          
+          {imageBase64 && (
+            <div className="mt-3">
+              <p className="font-medium">Preview:</p>
+              <img src={imageBase64} className="w-48 h-32 object-cover rounded border" />
+            </div>
+          )}
+        </div>
 
-          {/* 5. Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-green-600 text-white text-lg font-bold rounded-md hover:bg-green-700 disabled:bg-green-400"
-            disabled={loading}
-          >
-            {isEditMode ? (loading ? "Updating..." : "Update Knowledge Page") : (loading ? "Creating..." : "Create Knowledge Page")}
-          </button>
-        </form>
-      )}
+        {/* Short Description */}
+        <div>
+          <label className={labelClass}>Short Description</label>
+          <textarea
+            value={shortDescription}
+            onChange={e => setShortDescription(e.target.value)}
+            className={inputClass}
+            rows="3"
+            required
+          />
+        </div>
+
+        {/* Views */}
+        <div>
+          <label className={labelClass}>Initial Views</label>
+          <input
+            type="number"
+            value={views}
+            onChange={e => setViews(e.target.value)}
+            className={inputClass}
+            min="0"
+          />
+        </div>
+
+        {/* Image Upload */}
+      
+        {/* Long Content */}
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Long Description</h3>
+          <RichTextEditor
+            key={pageId || 'new'}
+            initialContent={longContent}
+            onChange={setLongContent}
+          />
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full py-3 bg-green-600 text-white text-lg font-bold rounded-md hover:bg-green-700 disabled:bg-green-400"
+          disabled={loading}
+        >
+          {isEditMode ? (loading ? "Updating..." : "Update Page") : (loading ? "Creating..." : "Create Page")}
+        </button>
+      </form>
     </div>
   );
 };

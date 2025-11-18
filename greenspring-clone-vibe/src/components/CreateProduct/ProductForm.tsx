@@ -24,7 +24,7 @@ const ProductForm = () => {
   const [newCategory, setNewCategory] = useState("");
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
-  const [name, setName] = useState("Coenzyme Q10 Powder");
+  const [name, setName] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imageBase64, setImageBase64] = useState("");
 
@@ -129,7 +129,7 @@ useEffect(() => {
           setFooterText(sections.footer_text || "");
         } catch (error) {
           console.error("Error fetching product data:", error);
-          alert("Failed to load product data for editing.");
+          toast({ title: "Failed ❌", description: "Failed to load product data for editing." });
         }
       };
       fetchProductData();
@@ -190,7 +190,7 @@ const parseHtmlTableToDetails = (htmlString: string): DetailItem[] => {
 
   const handleAddNewCategory = async () => {
     if (!newCategory.trim()) {
-      alert("Please enter a category name.");
+      toast({ title: "Failed ❌", description: "Please enter a category name" });
       return;
     }
     try {
@@ -198,10 +198,10 @@ const parseHtmlTableToDetails = (htmlString: string): DetailItem[] => {
       setNewCategory("");
       await fetchCategories();
       setCategory(result.data.id); // Select the new category
-      alert(`Category "${result.data.name}" created successfully!`);
+      toast({ title: "Success ✅", description: `Category "${result.data.name}" created successfully!` });
     } catch (error) {
       console.error("Error creating category:", error);
-      alert("Failed to create category.");
+      toast({ title: "Failed ❌", description: "Failed to create category." });
     }
   };
   const [sectionTitles, setSectionTitles] = useState({
@@ -352,8 +352,8 @@ const tableHtml = convertDetailsToHtmlTable(shortDetails); // 💡 New function 
         footer_text: footerText,
       },
 category: {
-        name: category, 
-        // name: selectedCat ? selectedCat.name : category,// `category` state holds the selected category ID
+        // name: category, 
+        name: selectedCat ? selectedCat.name : category,
       },
     };
 
@@ -376,7 +376,7 @@ if (isEditMode) {
         "❌ Error submitting product data:",
         error.message || error
       );
-      alert(`Submission failed. Please check console for details.`);
+              toast({ title: "Failed ❌",  description: "Product update failed!" });
     }
   };
 
@@ -431,6 +431,7 @@ if (isEditMode) {
             value={name}
             onChange={e => setName(e.target.value)}
             className={inputClass}
+            placeholder="Coenzyme Powder"
           />
 
           {/* <label className={labelClass + " mt-4"}>Main Product Image</label>
@@ -451,23 +452,7 @@ if (isEditMode) {
         </div>
 
         {/* --- Certificates Section (NEW) --- */}
-        <div className="p-4 bg-white shadow-md rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Certificates Uploader (1x6 Grid)
-          </h2>
-          <CertificateUploader 
-            certificates={certificates}
-            onUpdate={handleCertUpdate}
-            onRemove={removeCertificate}
-          />
-          <button
-            type="button"
-            onClick={addCertificate}
-            className="mt-4 px-4 py-2 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-600"
-          >
-            + Add Certificate
-          </button>
-        </div>
+   
 
 
         {/* --- Content Sections (Dynamic Description) --- */}
@@ -592,6 +577,23 @@ if (isEditMode) {
             className="mt-4 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
           >
             + Add FAQ Item
+          </button>
+        </div>
+             <div className="p-4 bg-white shadow-md rounded-lg">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Certificates Uploader (1x6 Grid)
+          </h2>
+          <CertificateUploader 
+            certificates={certificates}
+            onUpdate={handleCertUpdate}
+            onRemove={removeCertificate}
+          />
+          <button
+            type="button"
+            onClick={addCertificate}
+            className="mt-4 px-4 py-2 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-600"
+          >
+            + Add Certificate
           </button>
         </div>
 

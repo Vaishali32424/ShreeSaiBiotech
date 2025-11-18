@@ -53,28 +53,28 @@ const ProductDisplay = () => {
     return <div className="text-center p-20 text-gray-500 text-xl">Product not found or data is incomplete. (ID: {productId})</div>;
   }
 const SectionTitleBar = ({ title }) => (
+  <div className="flex items-center w-full my-4">
+    <div
+      className="text-white font-semibold capitalize text-base px-4 py-2"
+      style={{
+        backgroundColor: "#006e39",
+        clipPath: "polygon(5% 0, 100% 0, 95% 100%, 0% 100%)",
+      }}
+    >
+      {title}{" "}
+    </div>
 
-    <div className="flex items-center w-full my-4">
-      <div
-        className="text-white font-semibold capitalize text-base px-4 py-2"
-        style={{
-          backgroundColor: "#006e39",
-          clipPath: "polygon(5% 0, 100% 0, 95% 100%, 0% 100%)",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        {title}{" "}
-      </div>
-      <div
-        className="flex-grow"
-        style={{
-          borderTop: "2px solid #006e39",
-          height: "2px",
-          marginLeft: "-2px",
-        }}
-      ></div>
-    </div>
-  );
+    <div
+      className="flex-grow"
+      style={{
+        borderTop: "2px solid #006e39",
+        height: "2px",
+        marginLeft: "-2px",
+      }}
+    ></div>
+  </div>
+);
+
   const { 
     name, 
     image_url, 
@@ -281,7 +281,7 @@ if (rich_content_sections && rich_content_sections.length > 0) {
       {customer_reviews && customer_reviews.length > 0 && (
         <section className="mb-6 p-6 bg-green-50 rounded-lg">
           <SectionTitleBar title="Customer Reviews" />
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-4 gap-6">
             {customer_reviews.map((review) => (
               <div key={review.id} className="p-4 bg-white rounded-lg shadow-md border-t-4 border-green-600">
                 <div className="text-yellow-500 mb-2">

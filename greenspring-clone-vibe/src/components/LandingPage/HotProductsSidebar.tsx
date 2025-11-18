@@ -1,17 +1,25 @@
 
 import { NavLink } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
+import { getHotProducts } from "@/Services/Productscrud";
 
 
 
 export default function HotProductsSidebar() {
     const [hotProducts, setHotProducts] = useState([]);
-      useEffect(() => {
-        fetch("/hotProducts.json")
-          .then((res) => res.json())
-          .then((data) => setHotProducts(data))
-          .catch((err) => console.error("Error loading hotProducts.json:", err));
-      }, []);
+
+  useEffect(() => {
+    const fetchHotProducts = async () => {
+      try {
+        const data = await getHotProducts(); // <-- API call
+        setHotProducts(data || []);
+      } catch (err) {
+        console.error("Error fetching hot products:", err);
+      }
+    };
+
+    fetchHotProducts();
+  }, []);
   return (
     <aside className="w-full text-gray-800 sidebar mt-10">
 

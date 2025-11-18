@@ -1,29 +1,60 @@
 // NewsList.tsx
-import { getAllNews } from '@/Services/NewsCrud';
+import { toast } from '@/components/ui/use-toast';
+import { deleteNews, getAllNews } from '@/Services/NewsCrud';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Assume getAllNews and deleteNews are available
 
 const NEWS_CATEGORIES = [
-  { id: "companyNews", name: "Company News" },
-  { id: "industryNews", name: "Industry News" },
-  { id: "companyExhibition", name: "Company Exhibition" },
+  { id: "Company News", name: "Company News" },
+  { id: "Industry News", name: "Industry News" },
+  { id: "Company Exhibition", name: "Company Exhibition" },
 ];
 
 const NewsList = ({ selectedCategory }) => {
   const navigate = useNavigate();
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
+const [productToDelete, setProductToDelete] = useState<string | null>(null);
+const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+ const fetchNews = async () => {
+  setLoading(true);
+  try {
+    const result = await getAllNews();
 
-  const fetchNews = async () => {
-    setLoading(true);
-    try {
-      const result = await getAllNews(selectedCategory); // API call to fetch by category
-      setNewsList(result.data.filter(news => news.category.id === selectedCategory)); 
-    } catch (error) {
-      console.error("Error fetching news:", error);
-    } finally {
-      setLoading(false);
+    let filtered = result.data;
+
+    if (selectedCategory && selectedCategory !== "" && selectedCategory !== "All") {
+      filtered = filtered.filter(
+        (news) => news.news_category === selectedCategory
+      );
+    }
+
+    setNewsList(filtered);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+  const handleDeleteClick = (productId: string) => {
+    console.log(productId)
+    setProductToDelete(productId);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    if (productToDelete) {
+      try {
+        await deleteNews(productToDelete);
+        setNewsList(newsList?.filter((p) => p.id !== productToDelete));
+        setShowDeleteConfirm(false);
+        setProductToDelete(null);
+        toast({ title: "Success✅", description: "Product deleted successfully!" });
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        toast({ title: "Error❌", description: "Error deleting product. Please check console for details." });
+      }
     }
   };
 
@@ -78,18 +109,46 @@ const NewsList = ({ selectedCategory }) => {
                 Read more &gt;
               </button>
             </div>
-             <div className="flex-shrink-0 ml-4">
+             <div className="flex-shrink-0  space-x-2 ml-4">
                 <button 
                     onClick={() => handleEdit(news.id)}
                     className="px-3 py-1 bg-yellow-500 text-white rounded-md text-sm hover:bg-yellow-600"
                 >
                     Edit
                 </button>
+                   <button 
+                    onClick={() => handleDeleteClick(news.id)}
+                    className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600"
+                >
+                    Delete
+                </button>
             </div>
           </div>
         ))}
       </div>
       {newsList.length === 0 && <p className="text-center py-8 text-gray-500">No news articles found in this category.</p>}
+         {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+            <p>Are you sure you want to delete this news article?</p>
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
