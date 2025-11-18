@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct } from '@/Services/Productscrud';
-import { Eye, Pencil, Plus, Trash } from 'lucide-react';
+import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct, updateProduct } from '@/Services/Productscrud';
+import { Eye, Heart, Pencil, Plus, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '../ui/use-toast';
 
@@ -9,6 +9,8 @@ interface Product {
   name: string;
   image_url: string;
   short_details: Record<string, string>;
+    isHotProduct: boolean; // 👈 ADD THIS
+
 }
 
 interface Category {
@@ -75,6 +77,34 @@ const ManageProducts: React.FC = () => {
       }
     }
   };
+const handleToggleHotProduct = async (product: Product) => {
+  try {
+    const updatedStatus = !product.isHotProduct;
+
+    await updateProduct(product.id, {
+      isHotProduct: updatedStatus,
+    });
+
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === product.id ? { ...p, isHotProduct: updatedStatus } : p
+      )
+    );
+
+    toast({
+      title: "Success",
+      description: updatedStatus
+        ? "Marked as Hot Product ❤️"
+        : "Removed from Hot Products 🤍",
+    });
+  } catch (error) {
+    console.error("Error updating hot product:", error);
+    toast({
+      title: "Error",
+      description: "Failed to update Hot Product status",
+    });
+  }
+};
 
   const handleEditClick = (productId: string) => {
     navigate(`/edit-product/${productId}`);
@@ -131,12 +161,28 @@ const ManageProducts: React.FC = () => {
                 <h3 className="text-lg font-semibold">{product.name}</h3>
              <div className="flex space-x-3">
                 {/* 🎯 VIEW Button */}
+             <button
+  onClick={() => handleToggleHotProduct(product)}
+  className={`p-2 rounded-full ${
+    product.isHotProduct
+      ? "bg-red-600 text-white hover:bg-red-700"
+      : "bg-gray-200 text-red-600 hover:bg-gray-300"
+  }`}
+  title="Toggle Hot Product"
+>
+  {product.isHotProduct ? (
+    <Heart size={20} fill="currentColor" />
+  ) : (
+    <Heart size={20} />
+  )}
+</button>
+
                 <button
                   onClick={() => handleViewClick(product.id)}
                   className="p-2 bg-green-700 text-white rounded-full hover:bg-green-800"
                   title="View Product Page"
                 >
-                  <Eye size={24} />
+                  <Eye size={20} />
                 </button>
                 
                 {/* 🎯 EDIT Button */}
@@ -145,14 +191,14 @@ const ManageProducts: React.FC = () => {
                   className="p-2 bg-blue-700 text-white rounded-full hover:bg-blue-600"
                   title="Edit Product"
                 >
-                  <Pencil size={24} />
+                  <Pencil size={20} />
                 </button>
                 <button
                   onClick={() => handleDeleteClick(product.id)}
                   className="p-2 bg-red-800 text-white rounded-full hover:bg-red-900"
                   title="Delete Product"
                 >
-                  <Trash size={24} />
+                  <Trash size={20} />
                 </button>
               </div>
               </div>

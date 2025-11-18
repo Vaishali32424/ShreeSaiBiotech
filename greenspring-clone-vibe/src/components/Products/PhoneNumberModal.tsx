@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import { createContactApi } from "@/Services/ContactDetails";
 
 interface PhoneNumberModalProps {
   isOpen: boolean;
@@ -18,16 +19,31 @@ const PhoneNumberModal: React.FC<PhoneNumberModalProps> = ({
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>();
   const [error, setError] = useState("");
 
-  const handleSubmit = () => {
-    if (phoneNumber && isValidPhoneNumber(phoneNumber)) {
+const handleSubmit = async () => {
+  if (phoneNumber && isValidPhoneNumber(phoneNumber)) {
+    setError("");
+
+    try {
+      const payload = {
+        phoneNumber: phoneNumber,
+        productName: productName,
+      };
+
+      const res = await createContactApi(payload);
+
+      console.log("API response:", res);
+
       onSubmit(phoneNumber);
       setPhoneNumber(undefined);
-      setError("");
-    } else {
-      setError("Please enter a valid phone number.");
-    }
-  };
 
+    } catch (error) {
+      console.error("API Error:", error);
+      setError("Something went wrong. Please try again.");
+    }
+  } else {
+    setError("Please enter a valid phone number.");
+  }
+};
   if (!isOpen) return null;
 
   return (

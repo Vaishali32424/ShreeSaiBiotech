@@ -10,6 +10,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
     { id: 'manage-product', label: 'Products' },
     { id: 'news', label: 'News' },
     { id: 'knowledge', label: 'Knowledge' },
+    { id: 'number', label: 'Contact Numbers' },
   ];
 
   return (

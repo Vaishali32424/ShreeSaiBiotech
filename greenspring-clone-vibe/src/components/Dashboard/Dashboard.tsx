@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import ManageProducts from './ManageProducts';
 import NewsDashboard from './NewsManagement/NewsDashboard';
 import KnowledgeDashboard from './KnowledgePages/KnowledgeDashboard';
+import PhoneNumberList from './PhoneNumberList';
 
 
 const Dashboard: React.FC = () => {
@@ -15,6 +16,7 @@ const Dashboard: React.FC = () => {
         {activeTab === 'manage-product' && <ManageProducts />}
         {activeTab === 'news' && <NewsDashboard/>}
         {activeTab === 'knowledge' && <KnowledgeDashboard/>}
+        {activeTab === 'number' && <PhoneNumberList/>}
       </main>
     </div>
   );

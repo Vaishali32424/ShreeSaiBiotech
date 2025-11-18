@@ -1,3 +1,4 @@
+import { getHotProducts } from "@/Services/Productscrud";
 import React, { useEffect, useState } from "react";
 
 type Product = {
@@ -10,16 +11,21 @@ type Product = {
 
 const HotProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [hotProducts, setHotProducts] = useState([]); 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
   useEffect(() => {
-    fetch("/hotProducts.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error loading hotProducts.json:", err));
+    const fetchHotProducts = async () => {
+      try {
+        const data = await getHotProducts(); 
+        setHotProducts(data || []);
+      } catch (err) {
+        console.error("Error fetching hot products:", err);
+      }
+    };
+
+    fetchHotProducts();
   }, []);
 
-  /** Dynamically try multiple image extensions */
   const getProductImage = (name: string, category: string) => {
     if (!name) {
       return "https://via.placeholder.com/400x300.png?text=No+Image";
@@ -68,7 +74,7 @@ const HotProducts: React.FC = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
+          {hotProducts.map((product) => (
             <div
               key={product.id}
               className="group bg-white border border-green-700 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col"
@@ -90,14 +96,14 @@ const HotProducts: React.FC = () => {
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
                   {product.name}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1 flex-grow line-clamp-3">
+                {/* <p className="text-sm text-gray-600 mt-1 flex-grow line-clamp-3">
                   {product.ParagraphDescription}
-                </p>
+                </p> */}
                 <button
                   onClick={() => window.location.href = `/products/product/${product.id}`}
                   className="mt-2 inline-flex items-center text-green-600 hover:text-green-700 font-medium text-sm"
                 >
-                  View More
+                  Read  More
                   <svg
                     className="ml-1 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                     fill="none"
@@ -118,84 +124,7 @@ const HotProducts: React.FC = () => {
         </div>
       </div>
 
-      {/* Dialog Modal */}
-      {selectedProduct && (
-  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-  <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl relative overflow-hidden animate-fadeIn flex flex-col max-h-[90vh]">
-    <button
-      onClick={() => setSelectedProduct(null)}
-      className="absolute top-4 right-4 text-red-500 hover:text-red-700 transition bg-slate-50 p-2 rounded-full font-extrabold" 
-    >
-      ✕
-    </button>
-
-    {/* Scrollable section */}
-    <div className="overflow-y-auto p-8 flex-1">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Left: Product Image */}
-        <div className="w-full">
-          <img
-            src={getProductImage(selectedProduct.name)}
-            alt={selectedProduct.name}
-            className="w-full h-80 object-cover rounded-lg shadow-md"
-            loading="lazy"
-            onError={handleImageError}
-          />
-        </div>
-
-        {/* Right: Product Info */}
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            {selectedProduct.name}
-          </h2>
-
-          <div className="space-y-4 text-gray-700">
-            {selectedProduct.TableDescription && (
-              <div
-                className="prose"
-                dangerouslySetInnerHTML={{
-                  __html: selectedProduct.TableDescription,
-                }}
-              />
-            )}
-
-            {selectedProduct.ParagraphDescription && (
-              <p className="text-gray-700 leading-relaxed">
-                {selectedProduct.ParagraphDescription}
-              </p>
-            )}
-
-            {selectedProduct.Description && (
-              <div
-                className="prose"
-                dangerouslySetInnerHTML={{
-                  __html: selectedProduct.Description,
-                }}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {/* Sticky footer */}
-    <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end">
-      <a
-        href={`https://wa.me/+918989496905?text=I%20want%20to%20buy%20${encodeURIComponent(
-          selectedProduct.name
-        )}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
-      >
-        Buy Now
-      </a>
-    </div>
-  </div>
-</div>
-
-
-      )}
+   
     </section>
   );
 };

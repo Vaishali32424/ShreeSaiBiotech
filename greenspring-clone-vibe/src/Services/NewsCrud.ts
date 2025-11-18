@@ -14,6 +14,15 @@ export async function getNewsData<T>(
     method: "get",
   });
 }
+
+export async function getNewsByNewsId<T>(
+  params: any
+) {
+  return MainAPIService.fetchData<T>({
+    url: `news/get/by/id/${params}`,
+    method: "get",
+  });
+}
 export async function updateNews<T, U extends Record<string, unknown>>(
   params: any,
   data: U

@@ -1,33 +1,33 @@
 // KnowledgePages/KnowledgeSidebar.tsx
 
 import { NavLink } from "react-router-dom";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAllKnowledge } from "@/Services/KnowledgeCrud";
 
-const mockRecentKnowledge = [
-    {
-        id: 1,
-        title: "The Science Behind Curcumin: Bioavailability...",
-        date: "2024-11-15",
-        slug: "curcumin-bioavailability",
-        image: "/assets/knowledge/curcumin_science.jpg",
-    },
-    {
-        id: 2,
-        title: "Nutraceutical Trends 2025: Focus on Mental...",
-        date: "2024-11-01",
-        slug: "nutraceutical-trends-2025",
-        image: "/assets/knowledge/nutra_trends.jpg",
-    },
-    {
-        id: 3,
-        title: "The Role of Probiotics in Gut-Brain Axis Health",
-        date: "2024-10-20",
-        slug: "probiotics-gut-brain",
-        image: "/assets/knowledge/probiotics.jpg",
-    },
-];
 
 export default function KnowledgeSidebar() { 
+    const [knowledgeList, setKnowledgeList] = useState([]);
+
+  useEffect(() => {
+    const fetchKnowledge = async () => {
+      try {
+        const response = await getAllKnowledge();  
+        const data = response?.data || response || [];
+
+        const sorted = data
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .slice(0, 3);
+
+        setKnowledgeList(sorted);
+
+      } catch (error) {
+        console.error("Error fetching knowledge articles:", error);
+      }
+    };
+
+    fetchKnowledge();
+  }, []);
+
     return (
         <aside className="w-full text-gray-800 sidebar">
 
@@ -37,21 +37,21 @@ export default function KnowledgeSidebar() {
             </h3>
 
             <ul className="space-y-3">
-                {mockRecentKnowledge.map((article) => (
+                {knowledgeList.map((article) => (
                     <li key={article.id} className="pb-2 border-b last:border-b-0 border-gray-100">
 
                         <NavLink
-                            to={`/knowledge/detail/${article.slug}`} 
+                            to={`/knowledge/detail/${article.id}`} 
                             className="flex items-center gap-3 hover:bg-gray-50 transition p-1 rounded"
                         >
                             <img
                                 src={article.image}
-                                alt={article.title}
+                                alt={article.knowledge_title}
                                 className="w-[70px] h-[55px] object-cover rounded-sm flex-shrink-0"
                             />
                             <div className="flex-1">
                                 <p className="text-[14px] font-semibold text-gray-800 leading-tight line-clamp-2">
-                                    {article.title}
+                                    {article.knowledge_title}
                                 </p>
                                 <p className="text-xs text-gray-500 mt-1 font-medium">
                                     {new Date(article.date).toLocaleDateString("en-US", {

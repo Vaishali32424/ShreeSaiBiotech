@@ -1,18 +1,19 @@
 // NewsForm.tsx
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from '../../ui/use-toast';
-import RichTextEditor from '../../CreateProduct/RichTextEditor';
-import { createNews, getNewsData, updateNews } from '@/Services/NewsCrud';
-// Assume these API services exist
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "../../ui/use-toast";
+import RichTextEditor from "../../CreateProduct/RichTextEditor";
+import {
+  createNews,
+  getNewsByNewsId,
+  updateNews,
+} from "@/Services/NewsCrud";
 
 const NEWS_CATEGORIES = [
-  { id: "companyNews", name: "Company News" },
-  { id: "industryNews", name: "Industry News" },
-  { id: "companyExhibition", name: "Company Exhibition" },
+  { id: "Company News", name: "Company News" },
+  { id: "Industry News", name: "Industry News" },
+  { id: "Company Exhibition", name: "Company Exhibition" },
 ];
-
-const generateSlug = (text) => text.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-');
 
 const NewsForm = () => {
   const { newsId } = useParams();
@@ -24,86 +25,115 @@ const NewsForm = () => {
   const [title, setTitle] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [views, setViews] = useState(0);
-  const [date, setDate] = useState(new Date().toISOString().substring(0, 10)); 
+  const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
   const [longDescription, setLongDescription] = useState("");
+  const [mainImage, setMainImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // --- Fetch Data for Edit Mode ---
+  // ============= FETCH DATA FOR EDIT MODE =============
   useEffect(() => {
-    if (isEditMode && newsId) {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const result = await getNewsData(newsId);
-          const news = result.data;
-          
-          setTitle(news.title || "");
-          setCategory(news.category.id || NEWS_CATEGORIES[0].id); // Category ID
-          setShortDescription(news.short_description || "");
-          setViews(news.views || 0);
-          setDate(news.date || new Date().toISOString().substring(0, 10)); 
-          
-          // RichTextEditor content
-          setLongDescription(news.long_description || ""); 
-        } catch (error) {
-          console.error("Error fetching news data:", error);
-          toast({ title: "Error", description: "Failed to load news data." });
-        } finally {
-          setLoading(false);
+    if (!isEditMode || !newsId) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const result = await getNewsByNewsId(newsId);
+        const news = result.data;
+
+        setCategory(news.news_category || NEWS_CATEGORIES[0].id);
+        setTitle(news.news_title || "");
+        setShortDescription(news.short_description || "");
+        setLongDescription(news.long_description || "");
+        setViews(news.initial_view || 0);
+        setDate(
+          news.date
+            ? news.date.substring(0, 10)
+            : new Date().toISOString().substring(0, 10)
+        );
+
+        // Show existing image preview
+        if (news.main_image_url) {
+          setPreviewImage(news.main_image_url);
         }
-      };
-      fetchData();
+      } catch (error) {
+        console.error("Error fetching:", error);
+        toast({ title: "Error", description: "Failed to load news data." });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [isEditMode, newsId]);
+
+  // IMAGE CHANGE HANDLER
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setMainImage(file);
+
+    if (file) {
+      setPreviewImage(URL.createObjectURL(file));
     }
-  }, [newsId, isEditMode]);
-  
-  // --- Form Submission ---
+  };
+
+  // ============= SUBMIT =============
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const payload = {
-      id: isEditMode ? newsId : generateSlug(title),
-      category: { id: category, name: NEWS_CATEGORIES.find(c => c.id === category)?.name || category },
-      title,
-      short_description: shortDescription,
-      date,
-      views: parseInt(views), // Ensure views is a number
-      long_description: longDescription, // RichTextEditor content
-      // image_url: imageBase64, // If you implement image upload
-    };
-
     try {
-      if (isEditMode) {
-        await updateNews(newsId, payload);
-        toast({ title: "Success✅", description: "News updated successfully!" });
-      } else {
-        await createNews(payload);
-        toast({ title: "Success✅", description: `News "${title}" created successfully!` });
+      const formData = new FormData();
+      formData.append("news_category", category);
+      formData.append("news_title", title);
+      formData.append("date", date);
+      formData.append("initial_view", views);
+      formData.append("short_description", shortDescription);
+      formData.append("long_description", longDescription);
+
+      if (mainImage) {
+        formData.append("main_image", mainImage);
       }
-      navigate("/dashboard/news"); // Navigate back to news list
+
+      if (isEditMode) {
+        await updateNews(newsId, formData);
+        toast({ title: "Success", description: "News updated successfully!" });
+      } else {
+        await createNews(formData);
+        toast({ title: "Success", description: "News created successfully!" });
+      }
+
+      navigate("/dashboard/news");
     } catch (error) {
-      console.error("❌ Error submitting news data:", error);
-      toast({ title: "Error", description: `Submission failed. ${error.message}` });
+      console.error("Submit error:", error);
+      toast({
+        title: "Error",
+        description: error?.message || "Something went wrong.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const inputClass = "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500";
+  // Input CSS
+  const inputClass =
+    "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500";
   const labelClass = "block text-sm font-medium text-gray-700";
 
   return (
     <div className="p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">
-        {isEditMode ? "Edit News Article" : "Create New News Article"}
+        {isEditMode ? "Edit News Article" : "Create News Article"}
       </h1>
 
       {loading && isEditMode ? (
         <p>Loading...</p>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
-          
-          {/* 1. Category and Title */}
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 bg-white p-6 rounded-lg shadow-md"
+        >
+          {/* CATEGORY + TITLE */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Category</label>
@@ -114,83 +144,107 @@ const NewsForm = () => {
                 required
               >
                 {NEWS_CATEGORIES.map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
                 ))}
               </select>
             </div>
+
             <div>
               <label className={labelClass}>Title</label>
               <input
                 type="text"
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
                 className={inputClass}
                 required
               />
             </div>
           </div>
 
-          {/* 2. Date, Views, Short Description */}
+          {/* IMAGE UPLOAD */}
+          <div>
+            <label className={labelClass}>Main Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              className={inputClass}
+              onChange={handleImageChange}
+              required={!isEditMode}
+            />
+
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="mt-3 w-48 h-32 object-cover rounded"
+              />
+            )}
+          </div>
+
+          {/* DATE + VIEWS + SHORT DESCRIPTION */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className={labelClass}>Date</label>
               <input
                 type="date"
                 value={date}
-                onChange={e => setDate(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
                 className={inputClass}
                 required
               />
             </div>
+
             <div>
               <label className={labelClass}>Initial Views</label>
               <input
                 type="number"
-                value={views}
-                onChange={e => setViews(e.target.value)}
-                className={inputClass}
                 min="0"
+                value={views}
+                onChange={(e) => setViews(e.target.value)}
+                className={inputClass}
                 required
               />
             </div>
-             <div className="md:col-span-1">
-              <label className={labelClass}>Short Description (Snippet)</label>
+
+            <div>
+              <label className={labelClass}>Short Description</label>
               <textarea
                 value={shortDescription}
-                onChange={e => setShortDescription(e.target.value)}
+                onChange={(e) => setShortDescription(e.target.value)}
                 className={inputClass}
-                rows="3"
+                rows={3}
                 required
               />
             </div>
           </div>
 
-
-          {/* 3. Long Description (RichTextEditor) */}
+          {/* LONG DESCRIPTION */}
           <div>
-            <h3 className="text-lg font-semibold mb-2">Long Description (Content)</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Long Description (Content)
+            </h3>
             <RichTextEditor
-              // **CRITICAL FIX for Edit Mode:**
-              // Changing the key forces the RichTextEditor to fully re-initialize 
-              // with the new 'longDescription' content from the API.
-              key={newsId || 'new'} 
+              key={newsId || "new"}
               initialContent={longDescription}
               onChange={(content) => setLongDescription(content)}
             />
           </div>
 
-          {/* 4. Main Image Uploader (Optional, based on your component) */}
-          {/*
-          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} />
-          */}
-
-          {/* 5. Submit Button */}
+          {/* SUBMIT BUTTON */}
           <button
             type="submit"
-            className="w-full py-3 bg-indigo-600 text-white text-lg font-bold rounded-md hover:bg-indigo-700 disabled:bg-indigo-400"
             disabled={loading}
+            className="w-full py-3 bg-indigo-600 text-white text-lg font-bold rounded-md hover:bg-indigo-700 disabled:bg-indigo-400"
           >
-            {isEditMode ? (loading ? "Updating..." : "Update News") : (loading ? "Creating..." : "Create News")}
+            {loading
+              ? isEditMode
+                ? "Updating..."
+                : "Creating..."
+              : isEditMode
+              ? "Update News"
+              : "Create News"}
           </button>
         </form>
       )}

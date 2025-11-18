@@ -5,11 +5,15 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { toast } from "../ui/use-toast";
-import { getProductsData } from '@/Services/Productscrud'; 
+import { getProductsByCategory, getProductsData } from '@/Services/Productscrud'; 
 import ProductCardRenderer from "../ViewProduct.tsx/ProductCardRenderer";
 // 💡 MODAL IMPORT
 import PhoneNumberModal from "./PhoneNumberModal"; 
-
+import RelatedProducts from "./RelatedProducts";
+interface RelatedProduct {
+    id: string;
+    name: string;
+}
 
 // --- SectionTitleBar (Helper Component) ---
 const SectionTitleBar = ({ title }) => (
@@ -49,7 +53,7 @@ export default function ProductDetail({ productsData }) {
     // 💡 State for Phone Number Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalPurpose, setModalPurpose] = useState<'buy' | 'chat' | null>(null);
-
+const [relatedProductsList, setRelatedProductsList] = useState<ProductListItem[]>([]);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -63,6 +67,10 @@ export default function ProductDetail({ productsData }) {
                 try {
                     const result = await getProductsData(productId); 
                     setProductData(result.data);
+                    const catId = result.data?.category?.id;
+                    if (catId) {
+                        await fetchRelatedProducts(catId);
+                    }
                 } catch (err) {
                     console.error("Error fetching product data:", err);
                     setError("Failed to load product data. Check the console for details.");
@@ -75,9 +83,18 @@ export default function ProductDetail({ productsData }) {
             setLoading(false);
             setError("Product ID is missing in the URL.");
         }
-    // 👇 FIX: The dependency array must include productId so the fetch runs 
-    // whenever the product ID in the URL changes (e.g., navigating between products).
+  
     }, [productId]); 
+    const fetchRelatedProducts = async (categoryId: string) => {
+        try {
+            // Your API call as requested
+            const result = await getProductsByCategory<{ data: RelatedProduct[] }>(categoryId);
+            setRelatedProductsList(result.data);
+        } catch (err) {
+            console.error("Error fetching related products:", err);
+            // Optionally set an error state here, but navigation can still fail gracefully.
+        }
+    }
     
     // ... (Error and Loading checks remain the same) ...
 
@@ -124,6 +141,8 @@ export default function ProductDetail({ productsData }) {
     } = productData;
     // ... (rest of data destructuring and logic remains the same) ...
     const categoryName = category.name || "Unknown";
+        const categoryId = category.id || null ;
+
     const {
         product_cards_data, 
         customer_reviews,    
@@ -148,7 +167,18 @@ export default function ProductDetail({ productsData }) {
             content: main_description 
         });
     }
+const currentIndex = relatedProductsList.findIndex(p => String(p.id) === productId);
+    const prevProduct = currentIndex > 0 ? relatedProductsList[currentIndex - 1] : null;
+    const nextProduct = currentIndex < relatedProductsList.length - 1 ? relatedProductsList[currentIndex + 1] : null;
 
+    // A helper for navigation link text
+    const getLinkText = (product: ProductListItem | null, isNext: boolean) => {
+        if (!product) return isNext ? "Next" : "Prev";
+        const cleanName = product.name.replace(/<\/?[^>]+(>|$)/g, "").trim();
+        // The image shows 'Marigold Extract' in the next link text.
+        // I will return just the name as per your request's embedded code.
+        return cleanName; 
+    }
     const getProductImage = (name) => {
         // ... (Image logic) ...
         if (!name) {
@@ -374,8 +404,38 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
                 )}
 
             
-
             </div>
+ <div className="flex gap-0 justify-between border border-gray-300 rounded-md overflow-hidden w-full">
+    
+    {/* 1. PREV Button Link */}
+    <Link
+        to={prevProduct ? `/products/product/${prevProduct.id}` : '#'}
+        onClick={(e) => !prevProduct && e.preventDefault()}
+        className={`text-sm font-medium px-4 py-2 transition-colors flex items-center ${prevProduct ? 'text-gray-800 hover:bg-gray-100' : 'text-gray-400 cursor-not-allowed bg-gray-50'}`}
+    >
+        Prev
+    </Link>
+
+    {/* 2. PREV Product Name (This cell needs the border-x on the main separation side) */}
+    <div className={`flex-1 text-sm font-semibold px-4 py-2 border-r ${prevProduct ? 'text-green-700' : 'text-gray-500 italic'}`}>
+        {prevProduct ? getLinkText(prevProduct, false) : "No Information"}
+    </div>
+    
+    {/* 3. NEXT Product Name (This cell needs the border-x on the main separation side) */}
+    <div className={`flex-1 text-sm font-semibold px-4 py-2 border-l ${nextProduct ? 'text-green-700' : 'text-gray-500 italic'}`}>
+        {nextProduct ? getLinkText(nextProduct, true) : "No Information"}
+    </div>
+    
+    {/* 4. NEXT Button Link */}
+    <Link
+        to={nextProduct ? `/products/product/${nextProduct.id}` : '#'}
+        onClick={(e) => !nextProduct && e.preventDefault()}
+        className={`text-sm font-medium px-4 py-2 transition-colors flex items-center ${nextProduct ? 'text-gray-800 hover:bg-gray-100' : 'text-gray-400 cursor-not-allowed bg-gray-50'}`}
+    >
+        Next
+    </Link>
+</div>
+<RelatedProducts categoryId={categoryId} currentProductId={productId} />
 
             {/* 💡 --- Phone Number Modal (New) --- */}
             <PhoneNumberModal
