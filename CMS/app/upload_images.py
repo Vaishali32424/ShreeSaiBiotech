@@ -1,14 +1,6 @@
 import os
-import cloudinary
+from app.cloudinary_config import *
 import cloudinary.uploader
-
-# CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dmgti7bqt
-
-cloudinary.config(
-    cloud_name="dmgti7bqt",
-    api_key="389959718539192",
-    api_secret="NOFcpB--mW6cEqgff3z8nDmIk8U"
-)
 
 root_folder = "/Users/apple/Documents/ShreeSaiBiotech/All_product_images"
 

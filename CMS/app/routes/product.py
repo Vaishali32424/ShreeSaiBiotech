@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from app.schemas import *
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from app.utils import *
@@ -7,6 +7,7 @@ from app.models import *
 from app.database import get_db, engine
 from sqlalchemy.orm import RelationshipProperty
 from typing import List
+from app.cloudinary_config import *
 
 router = APIRouter()
 
@@ -20,8 +21,38 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
+# @router.post("/create", response_model=ProductOut)
+# def create_product(product: ProductCreate, image: UploadFile(),  db: Session = Depends(get_db)):
+#     # 1. check / create category
+#     category_name = product.category.name
+#     db_category = db.query(ProductCategory).filter_by(name=category_name).first()
+#     if not db_category:
+#         db_category = ProductCategory(name=category_name)
+#         db.add(db_category)
+#         db.commit()
+#         db.refresh(db_category)
+
+#     # 2. remove category from payload
+#     product_data = product.dict()
+#     product_data.pop("category")   # remove nested category
+
+#     # 3. add FK mroutering
+#     product_data["category_id"] = db_category.id
+
+#     # 4. create product
+#     db_product = Product(**product_data)
+#     db.add(db_product)
+#     db.commit()
+#     db.refresh(db_product)
+
+#     return db_product
+
 @router.post("/create", response_model=ProductOut)
-def create_product(product: ProductCreate, db: Session = Depends(get_db)):
+def create_product(
+    product: ProductCreate,
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
     # 1. check / create category
     category_name = product.category.name
     db_category = db.query(ProductCategory).filter_by(name=category_name).first()
@@ -33,12 +64,27 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
 
     # 2. remove category from payload
     product_data = product.dict()
-    product_data.pop("category")   # remove nested category
+    product_data.pop("category")
 
-    # 3. add FK mroutering
+    # 3. add FK
     product_data["category_id"] = db_category.id
 
-    # 4. create product
+    # 4. upload image to Cloudinary
+    try:
+        upload_result = cloudinary.uploader.upload(
+            image.file,
+            folder="product_images"
+        )
+        image_url = upload_result.get("secure_url")
+        public_id = upload_result.get("public_id")
+
+        product_data["image_url"] = image_url
+        product_data["image_public_id"] = public_id
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
+
+    # 5. create product
     db_product = Product(**product_data)
     db.add(db_product)
     db.commit()
@@ -55,8 +101,6 @@ def get_products_by_cat_id(category_id: int, db: Session = Depends(get_db)):
 def get_all_category(db: Session = Depends(get_db)):
     all_category = db.query(ProductCategory).all()
     return all_category
-
-
 
 @router.delete("/delete/all/data")
 def remove_table_data():
@@ -111,3 +155,16 @@ def delete_product(product_id: str, db: Session = Depends(get_db)):
     db.delete(product)
     db.commit()
     return {"message": "Product deleted successfully"}
+
+@router.put("/hot/{id}")
+def hot_product_add(id: str, db: Session = Depends(get_db)):
+    product = db.query(Product).filter(Product.id == id).first()
+
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    product.hot_product = True
+    db.commit()
+    db.refresh(product)
+
+    return {"message": "Product added to hot product list", "update_product": product}

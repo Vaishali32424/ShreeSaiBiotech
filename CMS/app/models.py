@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, Enum
+from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, Enum, Boolean
 from sqlalchemy.orm import declarative_base, relationship
  
 Base = declarative_base()
@@ -15,7 +15,7 @@ class Product(Base):
     id = Column(String(255), primary_key=True, index=True)  # keep as string but increased length
     name = Column(String(200), nullable=False)
     image_url = Column(String(2000), nullable=True)
- 
+    hot_product = Column(Boolean, default=False)
     short_details = Column(JSON, nullable=True)
     content_sections = Column(JSON, nullable=True)
  
@@ -27,15 +27,22 @@ class News(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     news_category = Column(
-        Enum("Company News", "Industry News", "Company Exhibition", name="news_category_enum"),
-        nullable=False
+    Enum(
+        "company_news",
+        "industry_news",
+        "company_exhibition",
+        name="news_category_enum"
+    ),
+    nullable=False
     )
     news_title = Column(String(200), nullable=False)
-    
-    date = Column(Date)  # correct data type
-    initial_view = Column(Integer)
+    date = Column(Date)
+    initial_view = Column(Integer, default=0)
     short_description = Column(Text)
-    long_description = Column(Text)  # fixed spelling
+    long_description = Column(Text)
+    image_url = Column(String(2000), nullable=True)
+    image_public_id = Column(String(500), nullable=True)   # <-- REQUIRED
+
 
 class Knowledge(Base):
     __tablename__ = "knowledge"
@@ -45,4 +52,6 @@ class Knowledge(Base):
     date = Column(Date)
     short_description = Column(Text)
     long_description = Column(Text)
+    image_url = Column(String(2000), nullable=True)
+    image_public_id = Column(String(500), nullable=True)   # <-- REQUIRED
 

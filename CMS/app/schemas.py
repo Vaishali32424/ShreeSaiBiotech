@@ -37,21 +37,23 @@ class ProductOut(BaseModel):
     id: str
     name: str
     image_url: Optional[str]
+    hot_product: bool = False
     short_details: Optional[Dict[str, Any]]
     content_sections: Optional[Dict[str, Any]]
     category: Optional[CategoryOut]    # nested category data
     model_config = ConfigDict(from_attributes=True)
 
 
-class NewsCategoryEnum(PyEnum):
-    company_news = "Company News"
-    industry_news = "Industry News"
-    company_exhibition = "Company Exhibition"
+class NewsCategoryEnum(str, PyEnum):
+    company_news = "company_news"
+    industry_news = "industry_news"
+    company_exhibition = "company_exhibition"
 
 class NewsCreate(BaseModel):
     news_category: NewsCategoryEnum
     news_title: str
     date: date
+    initial_view: int
     short_description: str
     long_description: str
 
@@ -60,6 +62,7 @@ class NewsResponse(BaseModel):
     news_category: str
     news_title: str
     date: date
+    image_url: str
     short_description: str
     long_description: str
     model_config = ConfigDict(from_attributes=True)
@@ -75,6 +78,7 @@ class KnowledgeResponse(BaseModel):
     id: int
     knowledge_title: str
     date: date
+    image_url: str
     short_description: str
     long_description: str
     model_config = ConfigDict(from_attributes=True)
