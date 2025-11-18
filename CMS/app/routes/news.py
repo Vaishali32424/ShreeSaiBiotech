@@ -65,7 +65,7 @@ from typing import Optional
 
 @router.put("/edit/by/{id}")
 def update_news(
-    id: str,
+    id: int,
     news_category: Optional[NewsCategoryEnum] = Form(None),
     news_title: Optional[str] = Form(None),
     date: Optional[str] = Form(None),
@@ -136,7 +136,7 @@ def news_delete(id: int, db: Session = Depends(get_db)):
     return {"message": "Product deleted successfully"}
     
 
-@router.get('/get/by/{category}', response_model=List[NewsResponse])
+@router.get('/get/by/categoty/{category}', response_model=List[NewsResponse])
 def get_news_by_category(
     category: NewsCategoryEnum,
     db: Session = Depends(get_db)

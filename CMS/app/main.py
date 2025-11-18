@@ -2,8 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db, engine
-from app.models import Product, ProductCategory, Base
-from app.schemas import ProductCat, ProductCreate, ProductOut
+from app.models import Base, Contact
+from app.schemas import *
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils import *
 from sqlalchemy.orm.attributes import InstrumentedAttribute
@@ -23,10 +23,12 @@ app.add_middleware(
 from app.routes.product import router as product_router
 from app.routes.news import router as news_router
 from app.routes.knowledge import router as knowledge_router
+from app.routes.contact import router as contact_router
 
 app.include_router(product_router, prefix='/product', tags=["product api's"])
 app.include_router(news_router, prefix='/news', tags=["news api's"])
 app.include_router(knowledge_router, prefix='/knowledge', tags=["knowledge api's"])
+app.include_router(contact_router, prefix='/contact', tags=["contact api's"])
 
 
 # Create tables on startup (only if database is available)
@@ -59,3 +61,4 @@ def data_insert():
         insert_data()
     except Exception as e:
         print(f"WARNING: issue in inserting data {e}")
+

@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, Enum, Boolean
+from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, Enum, Boolean, DateTime
 from sqlalchemy.orm import declarative_base, relationship
+from datetime import datetime
  
 Base = declarative_base()
  
@@ -54,4 +55,17 @@ class Knowledge(Base):
     long_description = Column(Text)
     image_url = Column(String(2000), nullable=True)
     image_public_id = Column(String(500), nullable=True)   # <-- REQUIRED
+
+
+class Contact(Base):
+    __tablename__ = "contact"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100))
+    mobile = Column(String(20), unique=True)
+    email = Column(String(100), unique=True)
+    company_name = Column(String(100))
+    subject = Column(String(200))
+    description = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)   # stores first-time created timestamp
 

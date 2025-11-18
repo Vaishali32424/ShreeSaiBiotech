@@ -21,31 +21,6 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
-# @router.post("/create", response_model=ProductOut)
-# def create_product(product: ProductCreate, image: UploadFile(),  db: Session = Depends(get_db)):
-#     # 1. check / create category
-#     category_name = product.category.name
-#     db_category = db.query(ProductCategory).filter_by(name=category_name).first()
-#     if not db_category:
-#         db_category = ProductCategory(name=category_name)
-#         db.add(db_category)
-#         db.commit()
-#         db.refresh(db_category)
-
-#     # 2. remove category from payload
-#     product_data = product.dict()
-#     product_data.pop("category")   # remove nested category
-
-#     # 3. add FK mroutering
-#     product_data["category_id"] = db_category.id
-
-#     # 4. create product
-#     db_product = Product(**product_data)
-#     db.add(db_product)
-#     db.commit()
-#     db.refresh(db_product)
-
-#     return db_product
 
 @router.post("/create", response_model=ProductOut)
 def create_product(
@@ -168,3 +143,11 @@ def hot_product_add(id: str, db: Session = Depends(get_db)):
     db.refresh(product)
 
     return {"message": "Product added to hot product list", "update_product": product}
+
+@router.get('/get/all/hot', response_model=List[ProductOut])
+def get_all_hot_products(db: Session = Depends(get_db)):
+    hot_products = db.query(Product).filter(Product.hot_product == True)
+    if not hot_products:
+        raise HTTPException(status_code=404, detail="Hot product not found")
+    return hot_products
+

@@ -56,43 +56,51 @@ def knowledge_delete(id: str, db: Session = Depends(get_db)):
 @router.put("/edit/by/{id}", response_model=KnowledgeResponse)
 def knowledge_update(
     id: int,
-    knowledge_title: str = Form(None),
+    knowledge_title: Optional[str] = Form(None),
     date: date = Form(None),
-    short_description: str = Form(None),
-    long_description: str = Form(None),
-    image: UploadFile = File(None),
+    short_description: Optional[str] = Form(None),
+    long_description: Optional[str] = Form(None),
+    image: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
-    knowledge = db.query(Knowledge).get(id)
+    # Find knowledge record
+    knowledge = db.query(Knowledge).filter(Knowledge.id == id).first()
     if not knowledge:
         raise HTTPException(status_code=404, detail="Knowledge not found")
-    # --- Update simple fields ---
-    if knowledge_title is not None:
-        knowledge.knowledge_title = knowledge_title
-    if date is not None:
-        knowledge.date = date
-    if short_description is not None:
-        knowledge.short_description = short_description
-    if long_description is not None:
-        knowledge.long_description = long_description
+
+    # --- Update normal fields dynamically ---
+    update_fields = {
+        "knowledge_title": knowledge_title,
+        "date": date,
+        "short_description": short_description,
+        "long_description": long_description
+    }
+
+    for field, value in update_fields.items():
+        if value is not None:
+            setattr(knowledge, field, value)
+
     # --- Handle image update ---
-    if image is not None:
-        # Delete old image from Cloudinary
+    if image:
+        # Delete old image
         if knowledge.image_public_id:
             cloudinary.uploader.destroy(knowledge.image_public_id)
+
         # Upload new image
         upload_result = cloudinary.uploader.upload(
             image.file,
             folder="knowledge_images"
         )
-        knowledge.image_url = upload_result["secure_url"]
-        knowledge.image_public_id = upload_result["public_id"]
+
+        knowledge.image_url = upload_result.get("secure_url")
+        knowledge.image_public_id = upload_result.get("public_id")
+
+    # Save changes
     db.commit()
     db.refresh(knowledge)
-    return {
-        "message": "Knowledge updated successfully",
-        "updated_data": knowledge
-    }
+
+    return knowledge
+
 
     
 @router.get('/get/all', response_model=List[KnowledgeResponse])

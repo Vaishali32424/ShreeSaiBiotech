@@ -1,11 +1,13 @@
-import json
+import json, os
 from app.models import Product, ProductCategory
 from app.database import get_db
 from sqlalchemy import MetaData, text
 
 def insert_data():
  
-    with open("/Users/apple/Documents/ShreeSaiBiotech/CMS/app/All_product_details1.json", "r", encoding="utf-8") as f:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, "All_product_details1.json")
+    with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f, strict=False)
     
     db = next(get_db())  # <--- FIX

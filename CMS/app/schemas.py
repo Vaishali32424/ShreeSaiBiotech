@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict
 from typing import Optional, Dict, Any
 from enum import Enum as PyEnum
 from datetime import date
+from datetime import datetime
 
 
 class ProductCat(BaseModel):
@@ -43,7 +44,6 @@ class ProductOut(BaseModel):
     category: Optional[CategoryOut]    # nested category data
     model_config = ConfigDict(from_attributes=True)
 
-
 class NewsCategoryEnum(str, PyEnum):
     company_news = "company_news"
     industry_news = "industry_news"
@@ -63,6 +63,7 @@ class NewsResponse(BaseModel):
     news_title: str
     date: date
     image_url: str
+    initial_view: int
     short_description: str
     long_description: str
     model_config = ConfigDict(from_attributes=True)
@@ -82,3 +83,19 @@ class KnowledgeResponse(BaseModel):
     short_description: str
     long_description: str
     model_config = ConfigDict(from_attributes=True)
+
+class ContactCreate(BaseModel):
+    name: Optional[str]
+    mobile: Optional[str]
+    email: Optional[str]
+    company_name: Optional[str]
+    subject: Optional[str]
+    description: Optional[str]
+
+class ContactResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    phone: Optional[str] = None
+    description: str
+    created_at: datetime
