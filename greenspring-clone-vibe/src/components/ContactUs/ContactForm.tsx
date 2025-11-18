@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import emailjs from "@emailjs/browser";
 import { toast } from "../ui/use-toast";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import { createContactApi } from "@/Services/ContactDetails";
 
 const ContactForm = () => {
+const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,63 +25,53 @@ const ContactForm = () => {
     setFormData({ ...formData, phone: value || "" });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!formData.name.trim()) {
+ const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // 1. Validation
+        if (!formData.name.trim()) {
       toast({ title: "Error❌", description: "Name is required." });
-      return;
-    }
-    if (!formData.email.trim()) {
-      toast({ title: "Error❌", description: "Email is required." });
-      return;
-    }
-    if (!isValidPhoneNumber(formData.phone)) {
+
+            return;
+        }
+        if (!formData.email.trim()) {
+      toast({ title: "Error❌", description: "Name is required." });
+
+            return;
+        }
+        if (!isValidPhoneNumber(formData.phone)) {
       toast({ title: "Error❌", description: "Please enter a valid phone number." });
       return;
     }
 
-    const templateParams = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      company: formData.company,
-      subject: formData.subject,
-      message: formData.message,
-    };
+        setIsSubmitting(true);
+        try {
+            await createContactApi(formData);
+          
+                toast({
+                title: "Success✅",
+                description: "Message sent successfully and saved to database!",
+            });
 
-    emailjs
-      .send(
-        "service_9f3gre7",
-        "template_wmmrnmq",
-        templateParams,
-        "gEoEzEVindFqGKHWm"
-      )
-      .then(
-        () => {
-          toast({
-            title: "Success✅",
-            description: "Message sent successfully!",
-          });
-          setFormData({
-            name: "",
-            email: "",
-            phone: "",
-            company: "",
-            subject: "",
-            message:
-              "Hi! Shree Sai Biotech, I want to know more about your products. Can you please provide more details?",
-          });
-        },
-        (err) => {
-          console.log("FAILED...", err);
-          toast({
-            title: "Error❌",
-            description: "Failed to send message. Please try again.",
-            variant: "destructive",
-          });
+                      setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                company: "",
+                subject: "",
+                message:
+                    "Hi! Shree Sai Biotech, I want to know more about your products. Can you please provide more details?",
+            });
+        } catch (err) {
+            console.error("API Submission FAILED:", err);
+            toast({
+                title: "Error❌",
+                description: err.message || "Failed to send message. Please try again.",
+            });
+        } finally {
+            setIsSubmitting(false);
         }
-      );
-  };
+    };
 
   return (
     <div className="w-full py-12 flex justify-center bg-white">
