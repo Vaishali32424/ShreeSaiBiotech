@@ -44,13 +44,13 @@ export async function getProductsByCategory<T>(params: number) {
     method: 'get',
   });
 }
-export async function createCategory<T>(data: { name: string }) {
+export async function getProductsBySearch<T>(params: number) {
   return MainAPIService.fetchData<T>({
-    url: "product/create/cat",
-    method: 'post',
-    data,
+    url: `product/by/category/${params}`,
+    method: 'get',
   });
 }
+
 
 export async function getUserImage<T>(params: any) {
   return MainAPIService.fetchData<T>({

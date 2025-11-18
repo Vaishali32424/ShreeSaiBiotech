@@ -13,7 +13,7 @@ export async function createContactApi<T, U extends Record<string, unknown>>(
 export async function getcontactdetails<T>(
 ) {
   return MainAPIService.fetchData<T>({
-    url: `contact-details/get/all`,
+    url: `get/contact-details`,
     method: "get",
   });
 }

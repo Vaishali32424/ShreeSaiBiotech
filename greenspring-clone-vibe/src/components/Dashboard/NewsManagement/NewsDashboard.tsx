@@ -1,16 +1,11 @@
 // NewsDashboard.tsx
 import React, { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import NewsForm from './NewsForm'; 
 import NewsList from './NewsList'; 
+import { NEWS_CATEGORIES } from './NewsType';
 
-const NEWS_CATEGORIES = [
-  { id: "Company News", name: "Company News" },
-  { id: "Industry News", name: "Industry News" },
-  { id: "Company Exhibition", name: "Company Exhibition" },
-];
-
-
+// --- NewsSidebar Component (No change needed here) ---
 const NewsSidebar = ({ selected, onSelect }) => (
   <div className="w-64 bg-white border-r p-4 h-full">
     <h3 className="text-xl font-semibold mb-4">News Categories</h3>
@@ -31,13 +26,22 @@ const NewsSidebar = ({ selected, onSelect }) => (
     </nav>
   </div>
 );
+// ---
 
 const NewsDashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState(NEWS_CATEGORIES[0].id);
+  const location = useLocation(); // Get the current location object
+
+
+  const hideSidebar = location.pathname.includes('news/create') || location.pathname.includes('news/edit');
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <NewsSidebar selected={selectedCategory} onSelect={setSelectedCategory} />
+      {/* Conditionally render the NewsSidebar */}
+      {!hideSidebar && (
+        <NewsSidebar selected={selectedCategory} onSelect={setSelectedCategory} />
+      )}
+      
       <div className="flex-grow overflow-y-auto">
         <Routes>
           {/* Main List View */}
@@ -46,15 +50,14 @@ const NewsDashboard = () => {
             element={<NewsList selectedCategory={selectedCategory} />} 
           />
           
-          {/* Creation Route */}
           <Route 
-            path="create" 
+            path="/create" 
             element={<NewsForm />} 
           />
           
           {/* Edit Route */}
           <Route 
-path="edit/:newsId"
+            path="edit/:newsId"
             element={<NewsForm />} 
           />
         </Routes>

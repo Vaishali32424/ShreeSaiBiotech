@@ -5,14 +5,16 @@ import { toast } from "../../ui/use-toast";
 import RichTextEditor from "../../CreateProduct/RichTextEditor";
 import {
   createNews,
+  createNewsMultipart,
   getNewsByNewsId,
   updateNews,
+  updateNewsMultipart,
 } from "@/Services/NewsCrud";
 
 const NEWS_CATEGORIES = [
-  { id: "Company News", name: "Company News" },
-  { id: "Industry News", name: "Industry News" },
-  { id: "Company Exhibition", name: "Company Exhibition" },
+  { id: "company_news", name: "Company News" },
+  { id: "industry_news", name: "Industry News" },
+  { id: "company_exhibition", name: "Company Exhibition" },
 ];
 
 const NewsForm = () => {
@@ -23,7 +25,7 @@ const NewsForm = () => {
   // States
   const [category, setCategory] = useState(NEWS_CATEGORIES[0].id);
   const [title, setTitle] = useState("");
-  const [shortDescription, setShortDescription] = useState("");
+  const [shortDescription, setShortDescription] = useState("abc");
   const [views, setViews] = useState(0);
   const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
   const [longDescription, setLongDescription] = useState("");
@@ -53,8 +55,8 @@ const NewsForm = () => {
         );
 
         // Show existing image preview
-        if (news.main_image_url) {
-          setPreviewImage(news.main_image_url);
+        if (news.image_url) {
+          setPreviewImage(news.image_url);
         }
       } catch (error) {
         console.error("Error fetching:", error);
@@ -77,44 +79,63 @@ const NewsForm = () => {
     }
   };
 
-  // ============= SUBMIT =============
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+// NewsForm.tsx
 
-    try {
-      const formData = new FormData();
-      formData.append("news_category", category);
-      formData.append("news_title", title);
-      formData.append("date", date);
-      formData.append("initial_view", views);
-      formData.append("short_description", shortDescription);
-      formData.append("long_description", longDescription);
+// ... (imports) ...
+// import { createNewsMultipart, updateNews } from "@/Services/NewsCrud";
 
-      if (mainImage) {
-        formData.append("main_image", mainImage);
-      }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-      if (isEditMode) {
-        await updateNews(newsId, formData);
-        toast({ title: "Success", description: "News updated successfully!" });
-      } else {
-        await createNews(formData);
-        toast({ title: "Success", description: "News created successfully!" });
-      }
+  // 1. Create the FormData container
+  const formData = new FormData();
+  
+  // 2. Append all non-file (text/number/date) fields directly to FormData
+  // The backend will receive these as individual parts of the multipart request.
+  formData.append("news_category", category);
+  formData.append("news_title", title);
+  formData.append("date", date);
+  // Ensure 'views' is sent as a string (FormData handles numbers by converting them)
+  formData.append("initial_view", views); 
+  formData.append("short_description", shortDescription);
+  formData.append("long_description", longDescription);
 
-      navigate("/dashboard/news");
-    } catch (error) {
-      console.error("Submit error:", error);
-      toast({
-        title: "Error",
-        description: error?.message || "Something went wrong.",
-      });
-    } finally {
-      setLoading(false);
+  if (mainImage) {
+    formData.append("image", mainImage); 
+  } else if (!isEditMode) {
+    // Basic validation check for new entries
+    toast({ title: "Error", description: "Please select a main image." });
+    setLoading(false);
+    return;
+  }
+  
+  try {
+    if (isEditMode) {
+      // Use the service function that handles FormData for updates
+      await updateNewsMultipart(newsId, formData);
+      toast({ title: "Success", description: "News updated successfully!" });
+    } else {
+      // Use the service function dedicated to handling FormData for creation
+      await createNewsMultipart(formData); 
+      toast({ title: "Success", description: "News created successfully!" });
     }
-  };
 
+    navigate("/dashboard/news");
+  } catch (error) {
+    console.error("Submit error:", error);
+    // You can improve error toast by trying to extract the error detail
+    const errorMessage = error.response?.data?.detail 
+                         ? "Validation failed: Check form fields." 
+                         : error?.message || "Something went wrong.";
+    toast({
+      title: "Error",
+      description: errorMessage,
+    });
+  } finally {
+    setLoading(false);
+  }
+};
   // Input CSS
   const inputClass =
     "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500";
@@ -208,7 +229,7 @@ const NewsForm = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className={labelClass}>Short Description</label>
               <textarea
                 value={shortDescription}
@@ -217,13 +238,13 @@ const NewsForm = () => {
                 rows={3}
                 required
               />
-            </div>
+            </div> */}
           </div>
 
           {/* LONG DESCRIPTION */}
           <div>
             <h3 className="text-lg font-semibold mb-2">
-              Long Description (Content)
+              Description (Content)
             </h3>
             <RichTextEditor
               key={newsId || "new"}

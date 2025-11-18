@@ -1,30 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../Header'
 import PageBanner from '../PageBanner'
 import Footer from '../Footer'
 import CultureAndContact from '../WhyChooseUs/WhyChooseUs/CultureAndContact'
 import AllNewsList from './AllNewsList'
 import NewsSidebar from './NewsSidebar' 
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation, useParams } from 'react-router-dom'
 import NewsDetail from './NewsDetail'
 import HotProductsSidebar from '../LandingPage/HotProductsSidebar'
+import { getAllNews, getNewsByCategory } from '@/Services/NewsCrud'
 
 const AllNews = () => {
+    // ... categories array
     const categories = [
-        {
-            name: "Company News",
-            href: "/news",
-        },
-        {
-            name: "Industry News",
-            href: "/news/industry-news",
-        },
-        {
-            name: "Exibition Information",
-            href: "/news/exibition-information",
-        },
+        { name: "Company News", href: "/news", slug: "" }, // slug: "" for default route
+        { name: "Industry News", href: "/news/industry-news", slug: "industry-news" },
+        { name: "Exibition Information", href: "/news/exibition-information", slug: "exibition-information" },
     ];
+        const [loading, setLoading] = useState(false);
+
+    const [newsList, setNewsList] = useState([]); 
     
+    const location = useLocation();
+    const { categorySlug } = useParams(); // Note: This will only work if AllNews is rendered 
+                     
+    const determineCategory = () => {
+        const pathSegments = location.pathname.split('/').filter(Boolean); // ['news', 'industry-news']
+        const currentSlug = pathSegments.length > 1 ? pathSegments[1] : ''; // 'industry-news' or ''
+        
+        return categories.find(cat => cat.slug === currentSlug) || categories[0]; // Default to first category
+    };
+        const fetchNews = async (selectedCategorySlug) => {
+        setLoading(true);
+        try {
+            let result;
+
+            if (!selectedCategorySlug || selectedCategorySlug === "") {
+                result = await getAllNews(); 
+            } else {
+                // Fetch by category slug
+                result = await getNewsByCategory(selectedCategorySlug);
+            }
+            
+            // Assuming result.data is the array of news items
+            setNewsList(result.data); 
+        } catch (error) {
+            console.error("Error fetching news:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    // 6. URL बदलने पर data फ़ेच करने के लिए useEffect का उपयोग करें
+    // location.pathname पर निर्भरता (dependency) सेट करें
+    useEffect(() => {
+        // determineCategory() के अनुसार वर्तमान कैटेगरी प्राप्त करें 
+        const currentCategory = determineCategory();
+    
+        if (!location.pathname.includes('/detail/')) {
+            fetchNews(currentCategory.slug);
+        }
+    }, [location.pathname]); 
+
     return (
         <>
             <Header />
@@ -34,34 +71,29 @@ const AllNews = () => {
                 backgroundImage="/assets/News.webp"
             />
             
-            <section className='px-20 mt-10'>
+            <section className='px-20 m'>
                 <div className="flex gap-8 py-10">
                     <aside className="w-64 bg-gray-50 rounded-xl shadow-sm p-4 h-fit">
-                        <NewsSidebar categories={categories} />
-                        
+                        {/* NewsSidebar को currentCategory पास करें ताकि वह active state दिखा सके */}
+                        <NewsSidebar newsList={newsList} /> 
                         <HotProductsSidebar /> 
                     </aside>
                     
-                    {/* Main Content Area - यहाँ Routes Render होंगे */}
                     <div className='flex-1'>
                         <Routes>
-                            {/* 1. News List (Default Route - /news) */}
+
                             <Route 
                                 path="/" 
-                                element={<AllNewsList />} 
+                                element={<AllNewsList newsList={newsList} loading={loading} />} 
                             />
-                            
-                            {/* 2. News List (Category Routes - /news/industry-news) */}
-                            {/* 💡 यह सुनिश्चित करता है कि कैटेगरी URL भी AllNewsList को लोड करे */}
                             <Route 
                                 path=":categorySlug" 
-                                element={<AllNewsList />} 
+                                element={<AllNewsList newsList={newsList} loading={loading} />} 
                             />
                             
-                            {/* 3. News Detail Page (Read More पर क्लिक करने पर) */}
-                            {/* 💡 News Detail के लिए रूट को /news/detail/:slug जैसा विशिष्ट नाम दें */}
+                            {/* 3. News Detail Page */}
                             <Route 
-                                path="detail/:slug" // उदाहरण: /news/detail/iso-9001-certification
+                                path="detail/:slug" 
                                 element={<NewsDetail />} 
                             />
                         </Routes>
@@ -74,4 +106,4 @@ const AllNews = () => {
     )
 }
 
-export default AllNews
+export default AllNews;

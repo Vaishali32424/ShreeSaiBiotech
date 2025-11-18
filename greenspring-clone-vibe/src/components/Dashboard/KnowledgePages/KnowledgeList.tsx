@@ -46,6 +46,26 @@ const KnowledgeList = () => {
   const handleAddPage = () => {
     navigate("/dashboard/knowledge/create");
   };
+  // Helper function to clean and limit the content
+const getSnippet = (htmlString: string, wordLimit: number = 50) => {
+  if (!htmlString) return '';
+
+  // 1. Remove all HTML tags (e.g., <p>, <strong>, etc.)
+  const plainText = htmlString.replace(/<[^>]*>/g, '');
+
+  // 2. Remove extra whitespace and split into words
+  const words = plainText.trim().split(/\s+/);
+
+  // 3. Truncate if necessary and append "..."
+  if (words.length > wordLimit) {
+    return words.slice(0, wordLimit).join(' ') + '...';
+  }
+
+  // 4. Return the plain text (if 50 words or less)
+  return plainText;
+};
+
+
 
   return (
     <div className="p-6">
@@ -63,13 +83,13 @@ const KnowledgeList = () => {
           <p className="py-8 text-center">Loading knowledge pages...</p>
       ) : (
           <div className="space-y-4">
-              {pageList.map((page) => (
-                  <div key={page.id} className="flex bg-white p-4 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+              {pageList?.map((page) => (
+                  <div key={page.id} className="flex bg-white p-2 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
                       {/* Image Placeholder */}
                       <div className="w-32 h-20 bg-gray-100 rounded-lg flex-shrink-0 mr-4 overflow-hidden">
                           <img 
                               src={page.image_url || 'https://via.placeholder.com/150'} 
-                              alt={page.title} 
+                              alt={page.knowledge_title} 
                               className="w-full h-full object-cover"
                           />
                       </div>
@@ -78,10 +98,10 @@ const KnowledgeList = () => {
                           <p className="text-xs text-gray-500 mb-1 font-mono">
                               {page.date}
                           </p>
-                          <h3 className="text-xl font-bold text-gray-800 mb-1">{page.title}</h3>
-                          <p className="text-sm text-gray-600 line-clamp-2">
-                              {page.short_description}
-                          </p>
+                          <h3 className="text-xl font-bold text-gray-800 mb-1">{page.knowledge_title}</h3>
+<p className="text-sm text-gray-600 line-clamp-2">
+  {getSnippet(page?.long_description, 30)}
+</p>
                       </div>
                       
                       {/* Actions */}

@@ -1,15 +1,13 @@
 // NewsList.tsx
 import { toast } from '@/components/ui/use-toast';
-import { deleteNews, getAllNews } from '@/Services/NewsCrud';
+import { deleteNews, getAllNews, getNewsByCategory } from '@/Services/NewsCrud';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Assume getAllNews and deleteNews are available
 
-const NEWS_CATEGORIES = [
-  { id: "Company News", name: "Company News" },
-  { id: "Industry News", name: "Industry News" },
-  { id: "Company Exhibition", name: "Company Exhibition" },
-];
+import { NEWS_CATEGORIES } from './NewsType';
+
+
 
 const NewsList = ({ selectedCategory }) => {
   const navigate = useNavigate();
@@ -17,20 +15,24 @@ const NewsList = ({ selectedCategory }) => {
   const [loading, setLoading] = useState(true);
 const [productToDelete, setProductToDelete] = useState<string | null>(null);
 const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
- const fetchNews = async () => {
+
+
+const fetchNews = async () => {
   setLoading(true);
+  
+  const shouldFetchAll = !selectedCategory || selectedCategory === "" || selectedCategory === "All";
+
   try {
-    const result = await getAllNews();
+    let result;
 
-    let filtered = result.data;
-
-    if (selectedCategory && selectedCategory !== "" && selectedCategory !== "All") {
-      filtered = filtered.filter(
-        (news) => news.news_category === selectedCategory
-      );
+    if (shouldFetchAll) {
+      console.log("Fetching all news...");
+      result = await getAllNews();
+    } else {
+      console.log(`Fetching news for category: ${selectedCategory}`);
+      result = await getNewsByCategory(selectedCategory);
     }
-
-    setNewsList(filtered);
+    setNewsList(result.data); 
   } catch (error) {
     console.error("Error fetching news:", error);
   } finally {
@@ -69,7 +71,16 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const handleAddNews = () => {
     navigate("/dashboard/news/create");
   };
+const getSnippet = (htmlString: string, wordLimit: number = 50) => {
+  if (!htmlString) return '';
+  const plainText = htmlString.replace(/<[^>]*>/g, '');
+  const words = plainText.trim().split(/\s+/);
+  if (words?.length > wordLimit) {
+    return words?.slice(0, wordLimit)?.join(' ') + '...';
+  }
 
+  return plainText;
+};
   if (loading) return <p className="p-4">Loading news...</p>;
   
   return (
@@ -98,10 +109,10 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
               <p className="text-xs text-gray-500 mb-1">
                 {news.date} | Views: **{news.views}**
               </p>
-              <h3 className="text-lg font-bold text-gray-800 mb-1">{news.title}</h3>
-              <p className="text-sm text-gray-600 line-clamp-2">
-                {news.short_description}
-              </p>
+              <h3 className="text-lg font-bold text-gray-800 mb-1">{news.news_title}</h3>
+            <p className="text-sm text-gray-600 line-clamp-2">
+  {getSnippet(news.long_description, 50)}
+</p>
               <button 
                 onClick={() => handleEdit(news.id)}
                 className="mt-2 text-blue-600 text-sm hover:underline"

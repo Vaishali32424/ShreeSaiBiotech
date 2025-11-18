@@ -22,29 +22,28 @@ const cardData = [
 
 const CardsSection = () => {
   return (
-    <div>
-        <p className=" text-primary text-sm font-semibold">Custom Formulated Raw Ingredients Tailored To Your Consumer Needs: </p>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4 mb-10">
-      {cardData.map((card, index) => (
-        <div
-          key={index}
-          className="relative overflow-hidden rounded-lg shadow-md group"
-        >
-          {/* Image */}
-          <img
-            src={card.img}
-            alt={card.title}
-            className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+    // <div>
+    //     <p className=" text-primary text-sm font-semibold">Custom Formulated Raw Ingredients Tailored To Your Consumer Needs: </p>
+    // <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4 mb-10">
+    //   {cardData.map((card, index) => (
+    //     <div
+    //       key={index}
+    //       className="relative overflow-hidden rounded-lg shadow-md group"
+    //     >
+    //       <img
+    //         src={card.img}
+    //         alt={card.title}
+    //         className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
+    //       />
 
-          {/* Title below image */}
-          <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-center py-1">
-            <h3 className="text-sm font-semibold">{card.title}</h3>
-          </div>
-        </div>
-      ))}
-    </div>
-        </div>
+    //       <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-center py-1">
+    //         <h3 className="text-sm font-semibold">{card.title}</h3>
+    //       </div>
+    //     </div>
+    //   ))}
+    // </div>
+    //     </div>
+    <div></div>
 
   );
 };

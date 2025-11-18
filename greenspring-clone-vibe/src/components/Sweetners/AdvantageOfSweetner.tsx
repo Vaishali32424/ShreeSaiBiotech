@@ -7,14 +7,14 @@ interface Product {
 }
 
 const products: Product[] = [
-  { image: "/images/desktop-sweets.jpg", title: "Shree Sai Biotech® plus SS Desktop Sweets" },
-  { image: "/images/sparkling-water.jpg", title: "Shree Sai Biotech® plus PBS101 Sparkling Water and other carbonate beverages" },
-  { image: "/images/bread.jpg", title: "Shree Sai Biotech® plus JB801 Bread,Fermented Products" },
-  { image: "/images/modified-milk.jpg", title: "Shree Sai Biotech® plus PDM101 Modified Milk" },
-  { image: "/images/yogurt.jpg", title: "Shree Sai Biotech® plus PDY101 Yogurt" },
-  { image: "/images/ice-cream.jpg", title: "Shree Sai Biotech® plus P1101 Ice Cream" },
-  { image: "/images/cookies.jpg", title: "Shree Sai Biotech® plus JB101 Cookies,Cake Pudding" },
-  { image: "/images/soft-sweets.jpg", title: "Shree Sai Biotech® plus JB101 soft sweets" },
+  { image: "assets/sweetners/image-1.webp", title: "Shree Sai Biotech® plus SS Desktop Sweets" },
+  { image: "assets/sweetners/image-2.webp", title: "Shree Sai Biotech® plus PBS101 Sparkling Water and other carbonate beverages" },
+  { image: "assets/sweetners/image-3.webp", title: "Shree Sai Biotech® plus JB801 Bread,Fermented Products" },
+  { image: "assets/sweetners/image-4.webp", title: "Shree Sai Biotech® plus PDM101 Modified Milk" },
+  { image: "assets/sweetners/image-5.webp", title: "Shree Sai Biotech® plus PDY101 Yogurt" },
+  { image: "assets/sweetners/image-6.webp", title: "Shree Sai Biotech® plus P1101 Ice Cream" },
+  { image: "assets/sweetners/image-7.webp", title: "Shree Sai Biotech® plus JB101 Cookies,Cake Pudding" },
+  { image: "assets/sweetners/image-8.webp", title: "Shree Sai Biotech® plus JB101 soft sweets" },
 ];
 
 const AdvantageOfSweetner: React.FC = () => {

@@ -36,6 +36,23 @@ const Header = () => {
   const [productsDropdownItems, setProductsDropdownItems] = useState<
     { label: string; href: string }[]
   >([]);
+  const [showSearch, setShowSearch] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            // 💡 5. Search Button पर क्लिक करने पर /products पर query parameter के साथ नेविगेट करें
+            navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
+            // सर्च बार को बंद करें (वैकल्पिक)
+            setShowSearch(false);
+            setSearchTerm(''); // सर्च टर्म क्लियर करें
+        } else {
+            // यदि सर्च टर्म खाली है, तो केवल Products पेज पर जाएं (वैकल्पिक)
+             navigate(`/products`);
+             setShowSearch(false);
+        }
+    };
 
 useEffect(() => {
   const fetchCategories = async () => {
@@ -198,7 +215,9 @@ useEffect(() => {
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center space-x-3">
+            <a href="/">
             <img src={logo} alt="Shree Sai Biotech" className="h-12 py-2 object-contain w-auto" />
+            </a>
           
           </div>
 
@@ -222,11 +241,43 @@ useEffect(() => {
   >
     {t("feedback")}
   </Button>
-<Tooltip content={t("search product")}>
-    <Link to="/product-search">
+  <div className="relative flex items-center">
+            <Tooltip content={"search product"}>
+                <button 
+                    onClick={() => {
+                        setShowSearch(prev => !prev);
+                        if(showSearch) navigate('/products'); 
+                    }}
+                    className="p-2"
+                >
+                    <Search className="cursor-pointer h-5 w-5 text-gray-700 hover:text-green-600" />
+                </button>
+            </Tooltip>
+
+            {showSearch && (
+                <form onSubmit={handleSearch} className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onBlur={() => {
+                            if (!searchTerm) setShowSearch(false);
+                        }}
+                        placeholder="Search products..."
+                        className="p-2 border border-gray-300 rounded-md shadow-md w-64 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-150"
+                        autoFocus
+                    />
+                    <button type="submit" className="hidden" /> 
+                </form>
+            )}
+            
+        
+        </div>
+{/* <Tooltip content={t("search product")}>
+    <Link to="/products">
 
   <Search  className="cursor-pointer"/>
-  </Link></Tooltip>
+  </Link></Tooltip> */}
 </div>
 
           </div>

@@ -2,50 +2,39 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import "@fortawesome/fontawesome-free/css/all.min.css"; 
 
-const mockNews = [
-    {
-        id: 1,
-        title: "ShreeSaiBiotech A 9001 Certification for Quality Excellence",
-        summary: "We are proud to announce that ShreeSaiBiotech has been awarded the prestigious ISO 9001:2015 certification, reflecting our commitment to quality management systems.",
-        date: "2024-10-25",
-        category: "Company News",
-        image: "/assets/farming.jpg", 
-        slug: "iso-9001-certification"
-    },
-    {
-        id: 5,
-        title: "Sustainable Sourcing: Our Commitment to Ethical Practices",
-        summary: "A deep dive into our supply chain ethics and how we ensure sustainable and responsible sourcing of all our raw materials.",
-        date: "2024-08-20",
-        category: "Company News",
-        image: "https://via.placeholder.com/300x200.png?text=Sustainability",
-        slug: "sustainable-sourcing"
-    },
-];
 
-const AllNewsList = () => {
-    const newsArticles = mockNews; 
+
+const AllNewsList = ({newsList}) => {
     
-    if (newsArticles.length === 0) {
+    if (newsList.length === 0) {
         return <div className="p-8 text-center text-xl text-gray-500">No news articles found in this category.</div>
     }
+const getSnippet = (htmlString: string, wordLimit: number = 50) => {
+  if (!htmlString) return '';
+  const plainText = htmlString.replace(/<[^>]*>/g, '');
+  const words = plainText.trim().split(/\s+/);
+  if (words?.length > wordLimit) {
+    return words?.slice(0, wordLimit)?.join(' ') + '...';
+  }
 
+  return plainText;
+};
     return (
         <div className="space-y-8">
             <h1 className="text-3xl font-bold text-gray-800 border-b border-green-600 pb-2">Latest News & Updates</h1>
 
             <div className="space-y-6"> 
-                {newsArticles.map((article) => (
+                {newsList?.map((article) => (
                     <div 
                         key={article.id} 
                         className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 group flex flex-col md:flex-row"
                     >
                         
                         <div className='md:w-1/4 w-full h-48 md:h-auto overflow-hidden flex-shrink-0'>
-                            <Link to={`/news/${article.slug}`}>
+                            <Link to={`/news/${article.id}`}>
                                 <img
-                                    src={article.image}
-                                    alt={article.title}
+                                    src={article.image_url}
+                                    alt={article.news_title}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     loading="lazy"
                                 />
@@ -64,19 +53,20 @@ const AllNewsList = () => {
                             
                             </div>
                             
-                            <Link to={`/news/${article.slug}`}>
+                            <Link to={`/news/${article.id}`}>
                                 <h2 className="text-xl font-bold text-gray-800 mt-2 mb-2 group-hover:text-green-700 transition-colors line-clamp-2">
-                                    {article.title}
+                                    {article.news_title}
                                 </h2>
                             </Link>
                             
-                            <p className="text-gray-600 mb-4 line-clamp-3">
-                                {article.summary}
-                            </p>
+                          
+                                   <p className="text-sm text-gray-600 my-2 line-clamp-2">
+  {getSnippet(article.long_description, 50)}
+</p>
                             
      <div className="mt-auto">
     <Link 
-        to={`detail/${article.slug}`} 
+        to={`detail/${article.id}`} 
         className="inline-flex items-center text-green-700 font-semibold hover:text-green-800 transition-colors"
     >
         Read More <i className="fas fa-arrow-right ml-2 text-sm"></i>
