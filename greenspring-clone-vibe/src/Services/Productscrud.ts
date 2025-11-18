@@ -46,12 +46,18 @@ export async function getProductsByCategory<T>(params: number) {
 }
 export async function getProductsBySearch<T>(params: number) {
   return MainAPIService.fetchData<T>({
-    url: `product/by/category/${params}`,
+    url: `product/get/all/search/${params}`,
     method: 'get',
   });
 }
 
-
+export async function createCategory<T>(data: { name: string }) {
+  return MainAPIService.fetchData<T>({
+    url: "product/create/cat",
+    method: 'post',
+    data,
+  });
+}
 export async function getUserImage<T>(params: any) {
   return MainAPIService.fetchData<T>({
     url: `profile-attachment/get-attachment-by-username/${params}`,
