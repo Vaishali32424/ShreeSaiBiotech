@@ -9,10 +9,10 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
-    company: "",
+    mobile: "",
+    company_name: "",
     subject: "",
-    message:
+    description:
       "Welcome to send inquiry! We are a factory supplier of natural plant active ingredients. Request free samples now!*",
   });
 
@@ -22,7 +22,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handlePhoneChange = (value?: string) => {
-    setFormData({ ...formData, phone: value || "" });
+    setFormData({ ...formData, mobile: value || "" });
   };
 
  const handleSubmit = async (e) => {
@@ -39,8 +39,8 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 
             return;
         }
-        if (!isValidPhoneNumber(formData.phone)) {
-      toast({ title: "Error❌", description: "Please enter a valid phone number." });
+        if (!isValidPhoneNumber(formData.mobile)) {
+      toast({ title: "Error❌", description: "Please enter a valid mobile number." });
       return;
     }
 
@@ -50,23 +50,23 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           
                 toast({
                 title: "Success✅",
-                description: "Message sent successfully and saved to database!",
+                description: "description sent successfully and saved to database!",
             });
 
                       setFormData({
                 name: "",
                 email: "",
-                phone: "",
-                company: "",
+                mobile: "",
+                company_name: "",
                 subject: "",
-                message:
+                description:
                     "Hi! Shree Sai Biotech, I want to know more about your products. Can you please provide more details?",
             });
         } catch (err) {
             console.error("API Submission FAILED:", err);
             toast({
                 title: "Error❌",
-                description: err.message || "Failed to send message. Please try again.",
+                description: err.description || "Failed to send description. Please try again.",
             });
         } finally {
             setIsSubmitting(false);
@@ -101,18 +101,18 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           <PhoneInput
             international
             defaultCountry="IN"
-            name="phone"
-            placeholder="Phone/WhatsApp:*"
-            value={formData.phone}
+            name="mobile"
+            placeholder="mobile/WhatsApp:*"
+            value={formData.mobile}
             onChange={handlePhoneChange}
             required
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
           />
           <input
             type="text"
-            name="company"
-            placeholder="Company:"
-            value={formData.company}
+            name="company_name"
+            placeholder="company_name:"
+            value={formData.company_name}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
           />
@@ -128,9 +128,9 @@ const [isSubmitting, setIsSubmitting] = useState(false);
         />
 
         <textarea
-          name="message"
+          name="description"
           rows={5}
-          value={formData.message}
+          value={formData.description}
           onChange={handleChange}
           className="w-full border border-gray-300 rounded-md px-4 py-3 mb-6 focus:ring-2 focus:ring-green-600 outline-none"
         ></textarea>
@@ -140,7 +140,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
             type="submit"
             className="bg-green-700 text-white px-8 py-3 rounded-md font-semibold hover:bg-green-800 transition"
           >
-            LEAVE A MESSAGE
+            LEAVE A description
           </button>
         </div>
       </form>

@@ -50,7 +50,7 @@ const ProductItemCard = ({ product }: { product: RelatedProduct }) => {
         >
             <div className="w-16 h-16 flex-shrink-0 border rounded overflow-hidden">
                 <img 
-                    src={getProductImage(product.name)} 
+                    src={product.image_url} 
                     alt={product.name} 
                     className="w-full h-full object-cover" 
                     loading="lazy"
