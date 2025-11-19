@@ -52,7 +52,7 @@ export async function createKnowledgeMultipart<T>(formData: FormData): Promise<A
 }
 export async function updateKnowledgeMultipart<T>(params: any, formData: FormData): Promise<AxiosResponse<T>> {
 
-  return api.put<T>(`knowledge/edit/by/id/${params}`, formData, {
+  return api.put<T>(`knowledge/edit/by/${params}`, formData, {
 
     headers: {
       "Content-Type": undefined, 

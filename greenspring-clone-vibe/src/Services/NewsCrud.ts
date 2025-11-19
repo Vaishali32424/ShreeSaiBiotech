@@ -13,7 +13,7 @@ export async function getNewsByCategory<T>(
   selectedCategory: string
 ) {
   return MainAPIService.fetchData<T>({
-    url: `news/get/by/category/${selectedCategory}`,
+    url: `news/get/by/categoty/${selectedCategory}`,
     method: "get",
   });
 }
@@ -39,7 +39,7 @@ export async function updateNews<T, U extends Record<string, unknown>>(
   data: U
 ) {
   return MainAPIService.fetchData<T>({
-    url: `news/edit/by/id/${params}`,
+    url: `news/edit/by/${params}`,
     method: "put",
     data,
   });
@@ -73,7 +73,7 @@ export async function createNewsMultipart<T>(formData: FormData): Promise<AxiosR
 }
 export async function updateNewsMultipart<T>(params: any, formData: FormData): Promise<AxiosResponse<T>> {
 
-  return api.put<T>(`news/edit/by/id/${params}`, formData, {
+  return api.put<T>(`news/edit/by/${params}`, formData, {
 
     headers: {
       "Content-Type": undefined, 

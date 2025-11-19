@@ -14,8 +14,8 @@ const AllNews = () => {
     // ... categories array
     const categories = [
         { name: "Company News", href: "/news", slug: "" }, // slug: "" for default route
-        { name: "Industry News", href: "/news/industry-news", slug: "industry-news" },
-        { name: "Exibition Information", href: "/news/exibition-information", slug: "exibition-information" },
+        { name: "Industry News", href: "/news/industry-news", slug: "industry_news" },
+        { name: "Exibition Information", href: "/news/exibition-information", slug: "exibition_information" },
     ];
         const [loading, setLoading] = useState(false);
 
@@ -38,11 +38,9 @@ const AllNews = () => {
             if (!selectedCategorySlug || selectedCategorySlug === "") {
                 result = await getAllNews(); 
             } else {
-                // Fetch by category slug
                 result = await getNewsByCategory(selectedCategorySlug);
             }
             
-            // Assuming result.data is the array of news items
             setNewsList(result.data); 
         } catch (error) {
             console.error("Error fetching news:", error);

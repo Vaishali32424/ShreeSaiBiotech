@@ -6,7 +6,7 @@ interface ContactDetail {
     id: number;
     name: string;
     email: string;
-    phone: string | null;
+    mobile: string | null;
     description: string;
     created_at: string;
 }
@@ -70,47 +70,47 @@ const PhoneNumberList: React.FC = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600">Email</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600">Phone</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600">Message</th>
-                                                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600">Product Name</th>
+                            <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Name</th>
+                            <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Email</th>
+                            <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Phone</th>
+                            <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Message</th>
+                                                        <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Product Name</th>
 
 
                         </tr>
                     </thead>
 
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {contacts.map((contact) => (
+                        {contacts?.map((contact) => (
                             <tr key={contact.id} className="hover:bg-green-50">
-                                <td className="px-6 py-4">{contact.name}
+                                <td className="px-3 py-1">{contact.name}
                                     <br/>                             <p className="text-sm text-gray-500"> {formatDate(contact.created_at)}
                                     </p>      
 
                                 </td>
 
-                                <td className="px-6 py-4">
+                                <td className="px-3 py-1">
                                     <a href={`mailto:${contact.email}`} className="text-blue-600 underline">
                                         {contact.email}
                                     </a>
                                 </td>
 
-                                <td className="px-6 py-4">
-                                    {contact.phone ? (
-                                        <a href={`tel:${contact.phone}`} className="text-green-700">
-                                            {contact.phone}
+                                <td className="px-3 py-1">
+                                    {contact.mobile ? (
+                                        <a href={`tel:${contact.mobile}`} className="text-green-700">
+                                            {contact.mobile}
                                         </a>
                                     ) : (
                                         "N/A"
                                     )}
                                 </td>
 
-                                <td className="px-6 py-4 max-w-xs">
+                                <td className="px-3 py-1 max-w-xs">
                                     {contact.description?.length > 60
                                         ? contact.description.slice(0, 60) + "..."
                                         : contact.description}
                                 </td>
-    <td className="px-6 py-4 max-w-xs">
+    <td className="px-3 py-1 max-w-xs">
                                     {contact.product_name || "N/A"}
                                 </td>
                               

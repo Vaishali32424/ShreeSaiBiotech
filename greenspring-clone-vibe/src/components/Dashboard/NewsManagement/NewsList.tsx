@@ -86,6 +86,8 @@ const getSnippet = (htmlString: string, wordLimit: number = 50) => {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
+                <a href='/dashboard' className="text-sm text-gray-500 font-mono">Go to dashboard</a>
+
         <h2 className="text-2xl font-semibold">
           {NEWS_CATEGORIES.find(c => c.id === selectedCategory)?.name} Articles
         </h2>

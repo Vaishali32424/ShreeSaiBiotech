@@ -35,8 +35,7 @@ useEffect(() => {
           setShortDescription(page.short_description || "");
           setLongDescription(page.long_description || "");
           setViews(page.initial_views || 0);
-          setImageBase64(page.image_url || "");
-
+       setImageBase64(page.image_url || "");
         } catch (error) {
           toast({ title: "Error", description: "Failed to load page data." });
         } finally {
@@ -59,40 +58,56 @@ useEffect(() => {
   };
 
   // ---------- SUBMIT ----------
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData();
-  
-    formData.append("knowledge_title", title);
-    formData.append("date", date);
-    formData.append("initial_views", views); 
-    formData.append("short_description", shortDescription);
-    formData.append("long_description", longDescription);
-    if (imageBase64) {
-      formData.append("image", imageBase64); 
-    } else if (!isEditMode) {
-      toast({ title: "Error", description: "Please select an image." });
-      setLoading(false);
-      return;
-    }
-  
-    try {
-      if (isEditMode) {
-        await updateKnowledgeMultipart(pageId, formData);
-        toast({ title: "Success", description: "Knowledge page updated successfully!" });
-      } else {
-        await createKnowledgeMultipart(formData);
-        toast({ title: "Success", description: "Knowledge page created successfully!" });
-      }
+ // ... (inside KnowledgeForm component)
 
-      navigate("/dashboard/knowledge");
-    } catch (error) {
-      toast({ title: "Error", description: error.message });
-    } finally {
-      setLoading(false);
+  // ---------- SUBMIT ----------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData();
+  
+    formData.append("knowledge_title", title);
+    formData.append("date", date);
+    formData.append("initial_views", views); 
+    formData.append("short_description", shortDescription);
+    formData.append("long_description", longDescription);
+ 
+    // --- START OF CORRECTION ---
+    // 1. Check if an image is *required* for creation (isEditMode is false).
+    // If it's a new page and no file has been selected, show an error.
+    if (!isEditMode && !imageFile) {
+      toast({ title: "Error", description: "Please select an image." });
+      setLoading(false);
+      return;
     }
-  };
+    
+    // 2. Only append the image to FormData if a new file has been selected (imageFile is not null).
+    // The imageFile state is a File/Blob object when a file is selected.
+    if (imageFile) {
+      // Append the actual File object for multipart upload
+      formData.append("image", imageFile); 
+    } 
+    // If we are in edit mode and imageFile is null, we do NOT append 'image' to FormData.
+    // This correctly signals to the backend that the existing image should be preserved.
+    // --- END OF CORRECTION ---
+  
+    try {
+      if (isEditMode) {
+        await updateKnowledgeMultipart(pageId, formData);
+        toast({ title: "Success", description: "Knowledge page updated successfully!" });
+      } else {
+        await createKnowledgeMultipart(formData);
+        toast({ title: "Success", description: "Knowledge page created successfully!" });
+      }
+
+      navigate("/dashboard/knowledge");
+    } catch (error) {
+      toast({ title: "Error", description: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+// ... rest of the component
 
   const inputClass = "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500";
   const labelClass = "block text-sm font-medium text-gray-700";

@@ -70,6 +70,7 @@ const getSnippet = (htmlString: string, wordLimit: number = 50) => {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
+        <a href='/dashboard' className="text-sm text-gray-500 font-mono">Go to dashboard</a>
         <h2 className="text-3xl font-bold">📚 All Knowledge Pages</h2>
         <button
           onClick={handleAddPage}

@@ -1,10 +1,40 @@
 import { Globe, ChevronDown, Locate, Mail, MessageCircle, ArrowUp } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ContactSidebar from "./LandingPage/ContactSidebar";
 import logo from "/assets/logo.jpeg";
 import QRCode from "/assets/QR-code.png";
 import { FaWhatsapp } from "react-icons/fa";
+import { toast } from "./ui/use-toast";
+import { getAllCategories } from "@/Services/Productscrud";
+const MAX_CATEGORIES_TO_SHOW = 9; 
 export default function Footer() {
+  const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await getAllCategories(); 
+                const categoryNames = response?.data?.map(category => category.name);
+                setCategories(categoryNames);
+                
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+                toast({ 
+                    title: "Error", 
+                    description: "Could not load categories.", 
+                    variant: "destructive" 
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+    const listToDisplay = categories?.length > 0 ? categories : [];
+
+    const visibleCategories = listToDisplay?.slice(0, MAX_CATEGORIES_TO_SHOW);
   const phoneNumber = "+918989496905";
 const email = "info@shreesaibiotech.com";
 const address =
@@ -120,8 +150,8 @@ const address =
                 ["Products", "/products"],
                 ["Enzymes", "/sweeteners"],
                 ["Product List", "/products"],
-                ["News", "/newslist-1"],
-                ["Knowledge", "/info/"],
+                ["News", "/news"],
+                ["Knowledge", "/knowledge"],
                 ["Contact Us", "/contact-us"],
                 ["Feedback", "/contact-us"],
               ].map(([label, link]) => (
@@ -139,22 +169,19 @@ const address =
           <div>
             <h3 className="font-bold mb-4 text-lg">Categories</h3>
             <ul className="space-y-2 text-sm">
-              {[
-                ["Botanical Extract", "/standard-herb-extract/"],
-                ["Ratio Extract", "/ratio-extract/"],
-                ["Oleoresin", "/oleoresin/"],
-                ["Fruit Powder", "/fruit-powder/"],
-                ["Natural Food Pigment", "/plant-pigment/"],
-                ["Collagen And Peptide", "/collagen-and-peptide/"],
-              ].map(([label, link]) => (
-                <li key={label}>
-                  <a href={`${link}`} className="hover:underline">
-                    <i className="iconfont icon-youjiantou mr-2" />
-                    {label}
-                  </a>
-                </li>
-              ))}
+                {visibleCategories.map((label) => (
+                    <li key={label}>
+                        <a 
+                            href={`/products/category/${label}`} 
+                            className="hover:underline"
+                        >
+                            <i className="iconfont icon-youjiantou mr-2" />
+                            {label}
+                        </a>
+                    </li>
+                ))}
             </ul>
+        
           </div>
 
           {/* Contact Info & QR Code */}

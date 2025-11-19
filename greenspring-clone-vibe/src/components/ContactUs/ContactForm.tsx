@@ -13,7 +13,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     company_name: "",
     subject: "",
     description:
-      "Welcome to send inquiry! We are a factory supplier of natural plant active ingredients. Request free samples now!*",
+      "Hi! Shree Sai Biotech, I want to know more about your products. Can you please provide more details?",
   });
 
   const handleChange = (
@@ -83,7 +83,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           <input
             type="text"
             name="name"
-            placeholder="Your Name:*"
+            placeholder="Your Name*"
             value={formData.name}
             onChange={handleChange}
             required
@@ -92,7 +92,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           <input
             type="email"
             name="email"
-            placeholder="E-mail:*"
+            placeholder="E-mail*"
             required
             value={formData.email}
             onChange={handleChange}
@@ -102,7 +102,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
             international
             defaultCountry="IN"
             name="mobile"
-            placeholder="mobile/WhatsApp:*"
+            placeholder="Mobile/WhatsApp*"
             value={formData.mobile}
             onChange={handlePhoneChange}
             required
@@ -111,7 +111,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           <input
             type="text"
             name="company_name"
-            placeholder="company_name:"
+            placeholder="Company Name"
             value={formData.company_name}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
@@ -121,7 +121,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
         <input
           type="text"
           name="subject"
-          placeholder="Subject:"
+          placeholder="Subject"
           value={formData.subject}
           onChange={handleChange}
           className="w-full border border-gray-300 rounded-md px-4 py-2 mb-6 focus:ring-2 focus:ring-green-600 outline-none"
@@ -140,7 +140,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
             type="submit"
             className="bg-green-700 text-white px-8 py-3 rounded-md font-semibold hover:bg-green-800 transition"
           >
-            LEAVE A description
+            LEAVE A MESSAGE
           </button>
         </div>
       </form>
