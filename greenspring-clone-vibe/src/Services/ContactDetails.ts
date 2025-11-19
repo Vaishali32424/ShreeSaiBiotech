@@ -5,7 +5,7 @@ export async function createContactApi<T, U extends Record<string, unknown>>(
   data: U
 ) {
   return MainAPIService.fetchData<T>({
-    url: "contact-details/create/",
+    url: "contact/create",
     method: "post",
     data,
   });
@@ -13,7 +13,7 @@ export async function createContactApi<T, U extends Record<string, unknown>>(
 export async function getcontactdetails<T>(
 ) {
   return MainAPIService.fetchData<T>({
-    url: `get/contact-details`,
+    url: `contact/get/all`,
     method: "get",
   });
 }

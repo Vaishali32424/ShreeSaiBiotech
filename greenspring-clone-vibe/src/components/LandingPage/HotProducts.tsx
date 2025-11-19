@@ -17,7 +17,7 @@ const HotProducts: React.FC = () => {
     const fetchHotProducts = async () => {
       try {
         const data = await getHotProducts(); 
-        setHotProducts(data || []);
+        setHotProducts(data?.data || []);
       } catch (err) {
         console.error("Error fetching hot products:", err);
       }
@@ -26,15 +26,7 @@ const HotProducts: React.FC = () => {
     fetchHotProducts();
   }, []);
 
-  const getProductImage = (name: string, category: string) => {
-    if (!name) {
-      return "https://via.placeholder.com/400x300.png?text=No+Image";
-    }
-    const cleanName = name.replace(/<\/?[^>]+(>|$)/g, "").trim();
-  const imagePath = `/assets/Hot-products-images/${encodeURIComponent(cleanName)}.png`; // Assuming .png, adjust if needed
-    return imagePath;
-  };
-
+ 
   /** Handle multiple file extension fallbacks */
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
@@ -74,7 +66,7 @@ const HotProducts: React.FC = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {hotProducts.map((product) => (
+          {hotProducts?.map((product) => (
             <div
               key={product.id}
               className="group bg-white border border-green-700 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col"
@@ -82,7 +74,7 @@ const HotProducts: React.FC = () => {
               {/* Image */}
               <div className="relative overflow-hidden">
                 <img
-                  src={getProductImage(product.name)}
+                  src={product.image_url}
                   alt={product.name}
                   className="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"

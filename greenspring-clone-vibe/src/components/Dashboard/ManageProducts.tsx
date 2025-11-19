@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct, updateProduct } from '@/Services/Productscrud';
+import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct, updateProduct, updateHotProduct } from '@/Services/Productscrud';
 import { Eye, Heart, Pencil, Plus, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '../ui/use-toast';
@@ -9,7 +9,7 @@ interface Product {
   name: string;
   image_url: string;
   short_details: Record<string, string>;
-    isHotProduct: boolean; // 👈 ADD THIS
+    hot_product: boolean; // 👈 ADD THIS
 
 }
 
@@ -79,15 +79,15 @@ const ManageProducts: React.FC = () => {
   };
 const handleToggleHotProduct = async (product: Product) => {
   try {
-    const updatedStatus = !product.isHotProduct;
+    const updatedStatus = !product.hot_product;
 
-    await updateProduct(product.id, {
-      isHotProduct: updatedStatus,
+    await updateHotProduct(product.id, {
+      hot_product: updatedStatus,
     });
 
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === product.id ? { ...p, isHotProduct: updatedStatus } : p
+        p.id === product.id ? { ...p, hot_product: updatedStatus } : p
       )
     );
 
@@ -164,13 +164,13 @@ const handleToggleHotProduct = async (product: Product) => {
              <button
   onClick={() => handleToggleHotProduct(product)}
   className={`p-2 rounded-full ${
-    product.isHotProduct
+    product.hot_product
       ? "bg-red-600 text-white hover:bg-red-700"
       : "bg-gray-200 text-red-600 hover:bg-gray-300"
   }`}
   title="Toggle Hot Product"
 >
-  {product.isHotProduct ? (
+  {product.hot_product ? (
     <Heart size={20} fill="currentColor" />
   ) : (
     <Heart size={20} />

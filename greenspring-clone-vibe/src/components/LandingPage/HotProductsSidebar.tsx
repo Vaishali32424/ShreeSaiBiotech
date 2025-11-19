@@ -12,7 +12,7 @@ export default function HotProductsSidebar() {
     const fetchHotProducts = async () => {
       try {
         const data = await getHotProducts(); // <-- API call
-        setHotProducts(data || []);
+        setHotProducts(data?.data || []);
       } catch (err) {
         console.error("Error fetching hot products:", err);
       }
@@ -28,7 +28,7 @@ export default function HotProductsSidebar() {
         </h3>
 
         <ul className="space-y-3">
-            {hotProducts.slice(0, 4).map((product) => (
+            {hotProducts?.slice(0, 4).map((product) => (
                 <li key={product.id} className="pb-2 border-b last:border-b-0 border-gray-100">
 
                     <NavLink
@@ -37,7 +37,7 @@ export default function HotProductsSidebar() {
                     >
 
                         <img
-                            src={product.image}
+                            src={product.image_url}
                             alt={product.name}
                             className="w-[70px] h-[55px] object-cover rounded-sm flex-shrink-0"
                             onError={(e) => { 

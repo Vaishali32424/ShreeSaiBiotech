@@ -238,7 +238,7 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
             {/* --- Product Header Section (Image/Specs) --- */}
             <div className="flex flex-col md:flex-row gap-8">
                 <img
-                    src={getProductImage(name)}
+                    src={productData.image_url}
                     alt={name}
                     className="w-64 h-64 object-cover rounded"
                     loading="lazy"
