@@ -96,6 +96,6 @@ class ContactResponse(BaseModel):
     id: int
     name: str
     email: str
-    phone: Optional[str] = None
+    mobile: Optional[str] = None
     description: str
     created_at: datetime

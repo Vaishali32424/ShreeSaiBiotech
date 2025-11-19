@@ -21,7 +21,6 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
-
 @router.post("/create", response_model=ProductOut)
 def create_product(
     product: ProductCreate,
@@ -151,3 +150,17 @@ def get_all_hot_products(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Hot product not found")
     return hot_products
 
+@router.get("/get/all/search/{product_name}", response_model=List[ProductOut])
+def product_search(product_name: str, db: Session = Depends(get_db)):
+    search_term = f"%{product_name}%"
+
+    matched_products = (
+        db.query(Product)
+        .filter(Product.name.ilike(search_term))
+        .all()
+    )
+
+    if not matched_products:
+        raise HTTPException(status_code=404, detail="No matching products found")
+
+    return matched_products
