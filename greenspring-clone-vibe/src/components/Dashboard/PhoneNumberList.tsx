@@ -74,7 +74,7 @@ const PhoneNumberList: React.FC = () => {
                             <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Email</th>
                             <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Phone</th>
                             <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Message</th>
-                                                        <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Product Name</th>
+                                                        {/* <th className="px-3 py-3 text-left text-xs font-bold text-gray-600">Product Name</th> */}
 
 
                         </tr>
@@ -110,9 +110,9 @@ const PhoneNumberList: React.FC = () => {
                                         ? contact.description.slice(0, 60) + "..."
                                         : contact.description}
                                 </td>
-    <td className="px-3 py-1 max-w-xs">
+    {/* <td className="px-3 py-1 max-w-xs">
                                     {contact.product_name || "N/A"}
-                                </td>
+                                </td> */}
                               
                             </tr>
                         ))}

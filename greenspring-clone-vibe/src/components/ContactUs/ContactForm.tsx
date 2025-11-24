@@ -50,7 +50,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           
                 toast({
                 title: "Success✅",
-                description: "description sent successfully and saved to database!",
+                description: "We Have Got your query!",
             });
 
                       setFormData({
