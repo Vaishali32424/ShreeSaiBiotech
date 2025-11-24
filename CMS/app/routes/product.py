@@ -37,7 +37,7 @@ async def create_product(
     content_sections_dict = json.loads(content_sections)
 
     # Create/Get category
-    db_category = db.query(ProductCategory).filter_by(name=category_name).first()
+    db_category = db.query(ProductCategory).filter_by(id=category_name).first()
     if not db_category:
         db_category = ProductCategory(name=category_name)
         db.add(db_category)
@@ -58,7 +58,7 @@ async def create_product(
         short_details=short_details_dict,
         content_sections=content_sections_dict,
         image_url=uploaded.get("secure_url"),
-        image_pulic_id=uploaded.get("public_id")
+        image_public_id=uploaded.get("public_id")
     )
 
     db.add(product)
