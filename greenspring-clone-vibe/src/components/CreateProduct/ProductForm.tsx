@@ -313,72 +313,73 @@ const createSlug = (text) => {
     .replace(/[^\w-]+/g, '')
     .replace(/--+/g, '-');
 };
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-const sectionData = {};
 
-    if (contentSections.length === 1 && contentSections[0].title === 'Product Description') {
-
-        sectionData.contentSections = contentSections;
-    } else {
-        sectionData.contentSections = contentSections;
-    }
+    const formData = new FormData();
+    const tableHtml = convertDetailsToHtmlTable(shortDetails);
     const selectedCat = categories.find((c) => c.id === category);
-const tableHtml = convertDetailsToHtmlTable(shortDetails); // 💡 New function call
-    const apiPayload = {
-      name: name,
-      image_url: imageBase64,
-     short_details: {
-            table_description: tableHtml, // 💡 HTML string ko save karen
-        },
-      content_sections: {
+
+    let productIdToUse;
+    if (isEditMode) {
+        productIdToUse = productId;
+    } else {
+        productIdToUse = createSlug(name);
+    }
+    formData.append('id', productIdToUse);
+    formData.append('name', name);
+    formData.append('category_name',  selectedCat ? selectedCat.name : category); 
+
+    const shortDetailsPayload = {
+        table_description: tableHtml,
+    };
+    formData.append('short_details', JSON.stringify(shortDetailsPayload));
+
+    const contentSectionsPayload = {
         contentSections,
         product_cards_data: {
-          grid_layout: gridLayout,
-          cards: productCards.map((card) => ({
-            title: card.title,
-            properties: card.properties,
-            image_base64: card.image,
+            grid_layout: gridLayout,
+
+            cards: productCards.map((card) => ({
+                title: card.title,
+                properties: card.properties,
+                 image_base64: card.image,
             image_filename: card.fileName,
-          })),
+            })),
         },
         certificates: certificates.map((cert) => ({
-          name: cert.name,
-          image_base64: cert.image,
+            name: cert.name,
+    image_base64: cert.image,
           image_filename: cert.fileName,
-        })),
+                })),
         customer_reviews: customerReviews,
         faq_items: faqItems,
         footer_text: footerText,
-      },
-category: {
-        // name: category, 
-        name: selectedCat ? selectedCat.name : category,
-      },
     };
+    formData.append('content_sections', JSON.stringify(contentSectionsPayload));
 
-if (isEditMode) {
-        apiPayload.id = productId; 
-    } else {
-        apiPayload.id = createSlug(name);
+    if (imageFile) {
+        formData.append('image', imageFile); 
     }
+
+
     try {
-      if (isEditMode) {
-        await updateProduct(productId, apiPayload);
-        toast({ title: "Success✅", description: "Product updated successfully!" });
-      } else {
-        await createNewProduct(apiPayload);
-        toast({ title: "Success✅", description: `Product "${name}" created successfully!` });
-      }
-      navigate("/dashboard");
+        if (isEditMode) {
+            await updateProduct(productId, formData); 
+            toast({ title: "Success✅", description: "Product updated successfully!" });
+        } else {
+            await createNewProduct(formData);
+            toast({ title: "Success✅", description: `Product "${name}" created successfully!` });
+        }
+        navigate("/dashboard");
     } catch (error) {
-      console.error(
-        "❌ Error submitting product data:",
-        error.message || error
-      );
-              toast({ title: "Failed ❌",  description: "Product update failed!" });
+        console.error(
+            "❌ Error submitting product data:",
+            error.message || error
+        );
+        toast({ title: "Failed ❌", description: "Product update failed!" });
     }
-  };
+};
 
   const inputClass =
     "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
@@ -434,8 +435,8 @@ if (isEditMode) {
             placeholder="Coenzyme Powder"
           />
 
-          {/* <label className={labelClass + " mt-4"}>Main Product Image</label>
-          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> */}
+<label className={labelClass + " mt-4"}>Main Product Image</label>
+          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> 
         </div>
 
         {/* --- Short Details --- */}

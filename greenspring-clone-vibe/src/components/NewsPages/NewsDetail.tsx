@@ -108,7 +108,7 @@ const NewsDetail = () => {
                 {/* View (Example placeholder, assuming 'View: 129') */}
                 <div className="flex items-center">
                     <EyeIcon className="w-4 h-4 mr-1 text-green-600" />
-                    <span>{newsDetail.initial_views}</span> 
+                    <span>{newsDetail.initial_view}</span> 
                 </div>
 
              
@@ -118,7 +118,7 @@ const NewsDetail = () => {
                     <img 
                         src={newsDetail.image_url} 
                         alt={newsDetail.news_title} 
-                        className="w-full h-auto object-cover rounded-lg shadow-md"
+                        className="w-full h-auto object-fit rounded-lg shadow-md"
                     />
                 </div>
             )}

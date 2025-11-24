@@ -11,7 +11,7 @@ const ProductCenter: React.FC = () => {
         setError(null);
         try {
             // API कॉल
-            const response = await getProductsByCategory(5); 
+            const response = await getProductsByCategory(14); 
          
             setProducts(response.data || response); 
             

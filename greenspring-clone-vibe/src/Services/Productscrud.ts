@@ -1,4 +1,6 @@
+import api from "@/Apis/axios";
 import MainAPIService from "./MainAPIService";
+import { AxiosResponse } from "axios";
 
 export async function getAllProducts<T>(
 ) {
@@ -15,15 +17,7 @@ export async function listOrganisationByOrgId<T>(params: number, searchInput: st
   });
 }
 
-export async function createNewProduct<T, U extends Record<string, unknown>>(
-  data: U
-) {
-  return MainAPIService.fetchData<T>({
-    url: "product/create/",
-    method: "post",
-    data,
-  });
-}
+
 export async function deleteProduct<T>(params: any) {
   return MainAPIService.fetchData<T>({
     url: `product/delete/by/id/${params}`,
@@ -65,16 +59,7 @@ export async function getUserImage<T>(params: any) {
   });
 }
 
-export async function updateProduct<T, U extends Record<string, unknown>>(
-  params: any,
-  data: U
-) {
-  return MainAPIService.fetchData<T>({
-    url: `product/edit/by/id/${params}`,
-    method: "put",
-    data,
-  });
-}
+
 export async function updateHotProduct<T, U extends Record<string, unknown>>(
   params: any,
   data: U
@@ -96,5 +81,23 @@ export async function getHotProducts<T>() {
   return MainAPIService.fetchData<T>({
     url: 'product/get/all/hot',
     method: 'get',
+  });
+}
+export async function createNewProduct<T>(formData: FormData): Promise<AxiosResponse<T>> {
+
+  return api.post<T>("product/create/", formData, {
+
+    headers: {
+      "Content-Type": undefined, 
+    },
+  });
+}
+export async function updateProduct<T>( params: any, formData: FormData): Promise<AxiosResponse<T>> {
+
+  return api.put<T>(`product/edit/by/id/${params}`, formData, {
+
+    headers: {
+      "Content-Type": undefined, 
+    },
   });
 }

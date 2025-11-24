@@ -42,7 +42,7 @@ export default function ProductGrid({ productsData, categories }) {
         {products.map((p) => (
           <div key={p.id} className="bg-white rounded-lg border border-gray-200 shadow p-4 flex flex-col">
             <img
-                  src={getProductImage(p.name, selectedCategoryName)}
+                  src={p.image_url}
                   alt={p.name}
                   className="w-full h-56 object-fit transform group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"

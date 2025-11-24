@@ -12,53 +12,56 @@ import { getAllNews, getNewsByCategory } from '@/Services/NewsCrud'
 
 const AllNews = () => {
     // ... categories array
-    const categories = [
-        { name: "Company News", href: "/news", slug: "" }, // slug: "" for default route
-        { name: "Industry News", href: "/news/industry-news", slug: "industry_news" },
-        { name: "Exibition Information", href: "/news/exibition-information", slug: "exibition_information" },
-    ];
+   const categories = [
+  { name: "Company News", href: "/news", slug: "" },
+  { name: "Industry News", href: "/news/industry-news", slug: "industry-news" },
+  { name: "Exibition Information", href: "/news/exibition-information", slug: "exibition-information" },
+];
+
         const [loading, setLoading] = useState(false);
 
     const [newsList, setNewsList] = useState([]); 
     
     const location = useLocation();
-    const { categorySlug } = useParams(); // Note: This will only work if AllNews is rendered 
+    const { categorySlug } = useParams(); 
                      
-    const determineCategory = () => {
-        const pathSegments = location.pathname.split('/').filter(Boolean); // ['news', 'industry-news']
-        const currentSlug = pathSegments.length > 1 ? pathSegments[1] : ''; // 'industry-news' or ''
-        
-        return categories.find(cat => cat.slug === currentSlug) || categories[0]; // Default to first category
-    };
-        const fetchNews = async (selectedCategorySlug) => {
-        setLoading(true);
-        try {
-            let result;
+ const determineCategory = () => {
+  const pathSegments = location.pathname.split('/').filter(Boolean);
+  const currentSlug = pathSegments[1] || "";
+  
+  return categories.find(cat => cat.slug === currentSlug) || categories[0];
+};
 
-            if (!selectedCategorySlug || selectedCategorySlug === "") {
-                result = await getAllNews(); 
-            } else {
-                result = await getNewsByCategory(selectedCategorySlug);
-            }
-            
-            setNewsList(result.data); 
-        } catch (error) {
-            console.error("Error fetching news:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+     const fetchNews = async (selectedCategorySlug) => {
+  setLoading(true);
+  try {
+    let result;
+    const backendSlug = selectedCategorySlug.replace(/-/g, "_"); 
+
+    if (!selectedCategorySlug) {
+      result = await getAllNews(); 
+    } else {
+      result = await getNewsByCategory(backendSlug);
+    }
+
+    setNewsList(result.data);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
     
-    // 6. URL बदलने पर data फ़ेच करने के लिए useEffect का उपयोग करें
-    // location.pathname पर निर्भरता (dependency) सेट करें
-    useEffect(() => {
-        // determineCategory() के अनुसार वर्तमान कैटेगरी प्राप्त करें 
-        const currentCategory = determineCategory();
-    
-        if (!location.pathname.includes('/detail/')) {
-            fetchNews(currentCategory.slug);
-        }
-    }, [location.pathname]); 
+   
+ useEffect(() => {
+  const currentCategory = determineCategory();
+
+  if (!location.pathname.includes('/detail/')) {
+    fetchNews(currentCategory.slug);
+  }
+}, [location.pathname]);
+
 
     return (
         <>

@@ -6,14 +6,14 @@ import { getKnowledgeById } from "@/Services/KnowledgeCrud";
 import { toast } from "../ui/use-toast";
 
 export default function KnowledgeDetail() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [article, setArticle] = useState(null);
         const [currentUrl, setCurrentUrl] = useState("");
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await getKnowledgeById(id);
+        const response = await getKnowledgeById(slug);
         const data = response?.data || response;
 
         setArticle(data);
@@ -22,11 +22,11 @@ export default function KnowledgeDetail() {
       }
     };
 
-    if (id) fetchArticle();
+    if (slug) fetchArticle();
         if (typeof window !== 'undefined') {
             setCurrentUrl(window.location.href);
         }
-  }, [id]);
+  }, [slug]);
 
   if (!article) {
     return (
@@ -53,16 +53,16 @@ export default function KnowledgeDetail() {
           })}
         </span>
 
-        <span>        {article.knowledge_views} Views
+        <span>        {article.knowledge_view} Views
 </span>
       </div>
 
       {/* Main Image (if any) */}
-      {article.image && (
+      {article.image_url && (
         <img
           src={article.image_url}
           alt={article.knowledge_title}
-          className="w-full max-h-[450px] object-cover rounded-lg mb-6"
+                        className="w-full h-auto object-fit rounded-lg shadow-md"
           onError={(e) => {
             e.currentTarget.src =
               "https://via.placeholder.com/800x450?text=No+Image";

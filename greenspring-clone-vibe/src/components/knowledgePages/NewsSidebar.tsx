@@ -45,7 +45,7 @@ export default function KnowledgeSidebar() {
                             className="flex items-center gap-3 hover:bg-gray-50 transition p-1 rounded"
                         >
                             <img
-                                src={article.image}
+                                src={article.image_url}
                                 alt={article.knowledge_title}
                                 className="w-[70px] h-[55px] object-cover rounded-sm flex-shrink-0"
                             />

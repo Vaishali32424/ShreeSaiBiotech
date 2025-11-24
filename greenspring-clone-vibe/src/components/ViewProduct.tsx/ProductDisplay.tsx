@@ -1,7 +1,7 @@
 // src/components/ViewProduct.tsx/ProductDisplay.tsx
 
 import React, { useEffect, useState } from 'react'; // 💡 (1) आवश्यक हुक्स आयात करें
-import { useParams } from 'react-router-dom';     // 💡 (2) useParams आयात करें
+import { Link, useParams } from 'react-router-dom';     // 💡 (2) useParams आयात करें
 import { getProductsData } from '@/Services/Productscrud'; // 💡 (3) API सर्विस आयात करें
 import ProductCardRenderer from './ProductCardRenderer'; 
 import { toast } from '../ui/use-toast';
@@ -122,17 +122,18 @@ if (rich_content_sections && rich_content_sections.length > 0) {
 
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white shadow-xl min-h-screen">
+      <Link to="/dashboard" className="text-xl font-bold text-gray-900 mb-4">Go to Dashboard</Link>
       <div className=" p-8 rounded-lg mb-8">
         <h1 className="text-4xl font-extrabold text-gray-900 mb-2">{name}</h1>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8 mb-10">
-        <div className="md:col-span-2">
+        <div className="md:col-span-1">
           {image_url && (
             <img 
               src={image_url} 
               alt={name} 
-              className="w-full h-auto max-h-40 object-contain rounded-lg shadow-lg border border-gray-200" 
+              className="w-60 h-60 object-contain rounded-lg shadow-lg border border-gray-200" 
             />
           )}
         </div>
