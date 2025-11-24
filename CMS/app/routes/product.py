@@ -26,7 +26,7 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
 async def create_product(
     id: str = Form(...),
     name: str = Form(...),
-    category_name: str = Form(...),
+    category_name: int = Form(...),
     short_details: str = Form(...),
     content_sections: str = Form(...),
     image: Optional[UploadFile] = File(None),
