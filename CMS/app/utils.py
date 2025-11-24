@@ -6,7 +6,9 @@ from sqlalchemy import MetaData, text
 def insert_data():
  
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_dir, "All_product_details1.json")
+    # file_path = os.path.join(base_dir, "products_images.json")
+    file_path = os.path.join(base_dir, "products_with_images.json")
+
     with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f, strict=False)
     
@@ -28,7 +30,8 @@ def insert_data():
                     id=item.get("id"),
                     name=item.get("name"),
                     category_id=category.id,
-                    image_url=None,
+                    image_url=item.get("image_url"),
+                    image_public_id=item.get("image_public_id"),
                     short_details={"table_description": item.get("TableDescription")},
                     content_sections={
                         "paragraph_description": item.get("ParagraphDescription"),

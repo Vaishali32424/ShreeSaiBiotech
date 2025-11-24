@@ -15,7 +15,8 @@ class Product(Base):
  
     id = Column(String(255), primary_key=True, index=True)  # keep as string but increased length
     name = Column(String(200), nullable=False)
-    image_url = Column(String(2000), nullable=True)
+    image_url = Column(String(1100), nullable=True)
+    image_public_id = Column(String(255), nullable=True)
     hot_product = Column(Boolean, default=False)
     short_details = Column(JSON, nullable=True)
     content_sections = Column(JSON, nullable=True)

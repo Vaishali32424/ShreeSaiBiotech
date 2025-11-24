@@ -60,6 +60,7 @@ def knowledge_update(
     date: date = Form(None),
     short_description: Optional[str] = Form(None),
     long_description: Optional[str] = Form(None),
+    initial_view: Optional[str] = Form(None),
     image: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
@@ -72,6 +73,7 @@ def knowledge_update(
     update_fields = {
         "knowledge_title": knowledge_title,
         "date": date,
+        "initial_view": initial_view,
         "short_description": short_description,
         "long_description": long_description
     }

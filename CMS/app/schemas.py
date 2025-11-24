@@ -18,7 +18,7 @@ class CategoryOut(BaseModel):
 
 class ProductBase(BaseModel):
     name: str
-    id: str
+    id: Optional[str]
     image_url: Optional[str]
     short_details: Optional[Dict[str, Any]]
     content_sections: Optional[Dict[str, Any]]

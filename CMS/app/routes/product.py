@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from app.schemas import *
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from app.utils import *
@@ -21,14 +21,22 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
+
 @router.post("/create", response_model=ProductOut)
-def create_product(
-    product: ProductCreate,
-    image: UploadFile = File(...),
+async def create_product(
+    id: str = Form(...),
+    name: str = Form(...),
+    category_name: str = Form(...),
+    short_details: str = Form(...),
+    content_sections: str = Form(...),
+    image: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
-    # 1. check / create category
-    category_name = product.category.name
+    # Convert JSON fields directly
+    short_details_dict = json.loads(short_details)
+    content_sections_dict = json.loads(content_sections)
+
+    # Create/Get category
     db_category = db.query(ProductCategory).filter_by(name=category_name).first()
     if not db_category:
         db_category = ProductCategory(name=category_name)
@@ -36,35 +44,29 @@ def create_product(
         db.commit()
         db.refresh(db_category)
 
-    # 2. remove category from payload
-    product_data = product.dict()
-    product_data.pop("category")
+    # Upload image to Cloudinary
+    uploaded = cloudinary.uploader.upload(
+        image.file,
+        folder="product_images"
+    )
 
-    # 3. add FK
-    product_data["category_id"] = db_category.id
+    # Save product in DB
+    product = Product(
+        id=id,
+        name=name,
+        category_id=db_category.id,
+        short_details=short_details_dict,
+        content_sections=content_sections_dict,
+        image_url=uploaded.get("secure_url"),
+        image_pulic_id=uploaded.get("public_id")
+    )
 
-    # 4. upload image to Cloudinary
-    try:
-        upload_result = cloudinary.uploader.upload(
-            image.file,
-            folder="product_images"
-        )
-        image_url = upload_result.get("secure_url")
-        public_id = upload_result.get("public_id")
-
-        product_data["image_url"] = image_url
-        product_data["image_public_id"] = public_id
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
-
-    # 5. create product
-    db_product = Product(**product_data)
-    db.add(db_product)
+    db.add(product)
     db.commit()
-    db.refresh(db_product)
+    db.refresh(product)
 
-    return db_product
+    return product
+
 
 @router.get("/by/category/{category_id}", response_model=List[ProductOut])
 def get_products_by_cat_id(category_id: int, db: Session = Depends(get_db)):
