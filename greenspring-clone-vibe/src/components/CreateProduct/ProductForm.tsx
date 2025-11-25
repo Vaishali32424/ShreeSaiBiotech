@@ -435,8 +435,8 @@ const handleSubmit = async (e) => {
             placeholder="Coenzyme Powder"
           />
 
-<label className={labelClass + " mt-4"}>Main Product Image</label>
-          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> 
+          {/* <label className={labelClass + " mt-4"}>Main Product Image</label>
+          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> */}
         </div>
 
         {/* --- Short Details --- */}

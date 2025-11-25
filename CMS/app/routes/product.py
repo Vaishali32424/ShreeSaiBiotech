@@ -21,52 +21,56 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
-
 @router.post("/create", response_model=ProductOut)
 async def create_product(
     id: str = Form(...),
     name: str = Form(...),
     category_name: int = Form(...),
-    short_details: str = Form(...),
-    content_sections: str = Form(...),
-    image: Optional[UploadFile] = File(None),
+    short_details: str = Form(...),       # JSON string
+    content_sections: str = Form(...),    # JSON string
+    image: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    # Convert JSON fields directly
-    short_details_dict = json.loads(short_details)
-    content_sections_dict = json.loads(content_sections)
+    # Convert JSON strings to dict
+    try:
+        short_details_dict = json.loads(short_details)
+    except:
+        raise HTTPException(400, "short_details must be valid JSON")
 
-    # Create/Get category
+    try:
+        content_sections_dict = json.loads(content_sections)
+    except:
+        raise HTTPException(400, "content_sections must be valid JSON")
+
+    # Create/Get Category
     db_category = db.query(ProductCategory).filter_by(id=category_name).first()
     if not db_category:
-        db_category = ProductCategory(name=category_name)
+        db_category = ProductCategory(id=category_name)
         db.add(db_category)
         db.commit()
         db.refresh(db_category)
 
-    # Upload image to Cloudinary
-    uploaded = cloudinary.uploader.upload(
+    # Upload image
+    upload_result = cloudinary.uploader.upload(
         image.file,
         folder="product_images"
     )
 
-    # Save product in DB
+    # Create Product
     product = Product(
         id=id,
         name=name,
         category_id=db_category.id,
         short_details=short_details_dict,
         content_sections=content_sections_dict,
-        image_url=uploaded.get("secure_url"),
-        image_public_id=uploaded.get("public_id")
+        image_url=upload_result.get("secure_url"),
+        image_public_id=upload_result.get("public_id"),
     )
 
     db.add(product)
     db.commit()
     db.refresh(product)
-
     return product
-
 
 @router.get("/by/category/{category_id}", response_model=List[ProductOut])
 def get_products_by_cat_id(category_id: int, db: Session = Depends(get_db)):
@@ -98,26 +102,48 @@ def read_product(product_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-@router.put("/edit/by/id/{product_id}", response_model=ProductOut)
-def update_product(product_id: str, updated: ProductCreate, db: Session = Depends(get_db)):
-    product = db.query(Product).get(product_id)
+@router.put("/edit/by/{product_id}", response_model=ProductOut)
+async def update_product(
+    product_id: str,
+    name: Optional[str] = Form(None),
+    short_details: Optional[str] = Form(None),
+    content_sections: Optional[str] = Form(None),
+    image: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+):
+    product = db.get(Product, product_id)
+
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    update_data = updated.dict(exclude_unset=True)
+    # Update only if provided
+    if name is not None:
+        product.name = name
 
-    for key, value in update_data.items():
-        attr = getattr(Product, key, None)
+    if short_details is not None:
+        try:
+            product.short_details = json.loads(short_details)
+        except:
+            product.short_details = short_details
 
-        # Skip if attribute does not exist
-        if not isinstance(attr, InstrumentedAttribute):
-            continue
+    if content_sections is not None:
+        try:
+            product.content_sections = json.loads(content_sections)
+        except:
+            product.content_sections = content_sections
 
-        # Skip relationship fields (causes your error)
-        if isinstance(attr.property, RelationshipProperty):
-            continue
+    # Handle new image upload
+    if image is not None:
+        # Delete old Cloudinary image if exists
+        if product.image_public_id:
+            cloudinary.uploader.destroy(product.image_public_id)
 
-        setattr(product, key, value)
+        upload_res = cloudinary.uploader.upload(
+            image.file,
+            folder="product_images"
+        )
+        product.image_url = upload_res.get("secure_url")
+        product.image_public_id = upload_res.get("public_id")
 
     db.commit()
     db.refresh(product)

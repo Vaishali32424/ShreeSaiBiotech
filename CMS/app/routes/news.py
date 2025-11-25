@@ -95,6 +95,7 @@ def update_news(
 
     if long_description is not None:
         existing_news.long_description = long_description
+        
 
     # 👉 Only upload if image is provided
     if image is not None and image.filename:
