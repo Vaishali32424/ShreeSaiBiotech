@@ -25,6 +25,7 @@ const ProductForm = () => {
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
   const [name, setName] = useState("");
+    const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageBase64, setImageBase64] = useState("");
 
@@ -315,7 +316,7 @@ const createSlug = (text) => {
 };
 const handleSubmit = async (e) => {
     e.preventDefault();
-
+setLoading(true);
     const formData = new FormData();
     const tableHtml = convertDetailsToHtmlTable(shortDetails);
     const selectedCat = categories.find((c) => c.id === category);
@@ -378,6 +379,8 @@ const handleSubmit = async (e) => {
             error.message || error
         );
         toast({ title: "Failed ❌", description: "Product update failed!" });
+    } finally {
+      setLoading(false);
     }
 };
 
@@ -435,8 +438,8 @@ const handleSubmit = async (e) => {
             placeholder="Coenzyme Powder"
           />
 
-          {/* <label className={labelClass + " mt-4"}>Main Product Image</label>
-          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} /> */}
+          <label className={labelClass + " mt-4"}>Main Product Image</label>
+          <ImageUploader onUpload={handleImageUpload} preview={imageBase64} />
         </div>
 
         {/* --- Short Details --- */}
@@ -611,12 +614,38 @@ const handleSubmit = async (e) => {
         </div>
 
         {/* --- Submit --- */}
-        <button
-          type="submit"
-          className="w-full py-3 bg-indigo-600 text-white text-lg font-bold rounded-md hover:bg-indigo-700"
+      <button
+    type="submit"
+    className="w-full py-3 bg-indigo-600 text-white text-lg font-bold rounded-md hover:bg-indigo-700 flex items-center justify-center" // 💡 Added flex classes
+    disabled={loading} // 💡 Disable the button while loading
+>
+    {loading ? (
+        // 💡 Display the Loading Spinner
+        <svg 
+            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24"
         >
-          {isEditMode ? "Update Product" : "Add this product"}
-        </button>
+            <circle 
+                className="opacity-25" 
+                cx="12" 
+                cy="12" 
+                r="10" 
+                stroke="currentColor" 
+                strokeWidth="4"
+            ></circle>
+            <path 
+                className="opacity-75" 
+                fill="currentColor" 
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+        </svg>
+    ) : (
+        // 💡 Display the text when not loading
+        isEditMode ? "Update Product" : "Add this product"
+    )}
+</button>
       </form>
 
       {/* {payload && (

@@ -14,6 +14,11 @@ import {
     // Assuming you have this function in Productscrud
 } from '@/Services/Productscrud'; 
 import HotProductsSidebar from "../LandingPage/HotProductsSidebar";
+import WhyChooseUs from "../WhyChooseUs/WhyChooseUs/WhyChooseUs";
+import Cards from "../WhyChooseUs/WhyChooseUs/Cards";
+import FactorySection from "../WhyChooseUs/WhyChooseUs/FactorySection";
+import HotProducts from "../LandingPage/HotProducts";
+import Certificates from "../WhyChooseUs/Factory&certificates/Certificates";
 
 // TypeScript Interfaces for clarity (adjust if your API response is different)
 interface Product {
@@ -144,9 +149,32 @@ const ProductsPage = () => {
         return (
             <>
                 <Header />
-                <div className="text-center py-20">
-                    <p className="text-xl text-green-700">Loading product data...</p>
-                </div>
+               <div className="text-center pt-36 pb-20">
+    {/* 💡 Circular Progress Indicator (Spinner) */}
+    <div className="flex justify-center items-center space-x-3">
+        <svg 
+            className="animate-spin h-8 w-8 text-green-700" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24"
+        >
+            <circle 
+                className="opacity-25" 
+                cx="12" 
+                cy="12" 
+                r="10" 
+                stroke="currentColor" 
+                strokeWidth="4"
+            ></circle>
+            <path 
+                className="opacity-75" 
+                fill="currentColor" 
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+        </svg>
+        <p className="text-xl text-green-700">Loading products</p>
+    </div>
+</div>
                 <Footer />
             </>
         );
@@ -184,7 +212,6 @@ const ProductsPage = () => {
                 <div className="flex gap-8 py-10">
                     <aside className="w-64">
                         {/* Hide Sidebar if in Search Mode and no data is present, or show simplified view */}
-                        {(!isSearchMode || (isSearchMode && categoryNames.length > 0)) && (
                             <div className=" bg-green-600 rounded-xl shadow-sm p-4">
                                 {/* 💡 Sidebar needs the list of category names (categoryNames/sidebarCategories)
                                      to display links correctly, which link to /products/category/:categoryId */}
@@ -195,14 +222,14 @@ const ProductsPage = () => {
                                     searchTerm={searchQuery}
                                 /> 
                             </div>
-                        )}
+                        
                         <HotProductsSidebar />
                     </aside>
 
                     <div className="flex-1">
                         {/* Display Error Message */}
                         {error && <div className="text-center py-10 text-red-500">{error}</div>}
-                        
+{loading && <div className="text-center py-10 text-red-500">Loading Products...</div>}
                         {/* Routing for Product Display */}
                         <Routes>
                             <Route
@@ -238,7 +265,13 @@ const ProductsPage = () => {
                     </div>
                 </div>
             </section>
-            <Footer />
+            <section className="px-20">
+                <p className="text-2xl text-center font-bold py-4  ">Why Choose Us- Shree Sai Biotech®</p>
+  <Cards/>
+  <HotProducts/>
+  <Certificates/>
+        <FactorySection/></section>
+                    <Footer />
         </>
     );
 };

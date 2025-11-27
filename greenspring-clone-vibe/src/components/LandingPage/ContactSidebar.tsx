@@ -40,23 +40,24 @@ const ContactSidebar = () => {
         {
           id: Date.now() + 1,
           sender: "bot",
-          text: "We provide premium plant extracts for food, pharma, and cosmetics industries — with 37+ years of experience!",
+          text: "We specialize in high-quality plant extracts for the food, pharmaceutical, and cosmetics industries. Our products include natural raw materials and customized application solutions, ensuring compliance with various certifications like ISO 9001 and halal.Fda Etc.",
           time,
         },
       
        {
   id: Date.now() + 3,
   sender: "bot",
-  text: `📞 You can contact us via the following methods:
-
-• Phone: +91-8989496905
-• Email: info@shreesaibiotech.com
-• WhatsApp: +91-8989496905
-• Address: 2nd Floor, Ms-A, Shop A 212, VIP Marg, Mall Godown Road, New Siyaganj, Indore - 452007, Madhya Pradesh, India
-
-If you have any specific inquiries, feel free to reach out!`,
+  text: `Tell No. +91 8989496905 Tell NO.+91 0731 4022477 , +91 98260 94417 , +91 8989929729
+Please leave your phone, email, or WhatsApp contact information for further assistance!`,
   time,
-}
+},
+     {
+  id: Date.now() + 3,
+  sender: "bot",
+  text: `Welcome to send your inquiry! We are a factory supplier of natural plant active ingredients. Request your free samples now!`,
+  time,
+},
+
       ];
 
       botMessages.forEach((msg, index) => {

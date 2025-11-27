@@ -5,6 +5,9 @@ const OurFactory = () =>  {
     "/assets/laboratory.jpeg",
     "/assets/factory.jpeg",
      "/assets/shreesaioffice.jpeg",
+     "/assets/factory3.jpeg",
+     "/assets/factory4.jpeg",
+     "/assets/factory6.jpeg",
     "https://www.greenspringshop.com/Content/uploads/2021389378/20210520090157d55f282d68044b27bd0b703d071a585e.jpg",
   
   ];
