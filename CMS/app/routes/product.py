@@ -95,7 +95,7 @@ def get_all_products(db: Session = Depends(get_db)):
     all_products = db.query(Product).all()
     return all_products  
 
-@router.get("/by/id/{product_id}", response_model=ProductOut)
+@router.get("/by/{product_id}", response_model=ProductOut)
 def read_product(product_id: str, db: Session = Depends(get_db)):
     product = db.query(Product).get(product_id)
     if not product:

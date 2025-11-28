@@ -75,7 +75,7 @@ def clear_all_tables(engine):
                 if seq_result:
                     conn.execute(text(f"ALTER SEQUENCE {seq_result} RESTART WITH 1;"))
 
-        trans.commit()
+        trans.commit() 
 
 ## For MySQL
 # def clear_all_tables(engine):
