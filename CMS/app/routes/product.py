@@ -11,6 +11,7 @@ from app.cloudinary_config import *
 
 router = APIRouter()
 
+#perfect
 @router.post("/create/cat")
 def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     new_cat = ProductCategory(
@@ -20,6 +21,7 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_cat)
     return new_cat
+
 
 @router.post("/create", response_model=ProductOut)
 async def create_product(
@@ -120,13 +122,13 @@ async def update_product(
     if name is not None:
         product.name = name
 
-    if short_details is not None:
+    if short_details not in (None, "", "null"):
         try:
             product.short_details = json.loads(short_details)
         except:
             product.short_details = short_details
 
-    if content_sections is not None:
+    if content_sections not in (None, "", "null"):
         try:
             product.content_sections = json.loads(content_sections)
         except:
@@ -134,19 +136,23 @@ async def update_product(
 
     # Handle new image upload
     if image is not None:
-        # Delete old Cloudinary image if exists
         if product.image_public_id:
             cloudinary.uploader.destroy(product.image_public_id)
 
-        upload_res = cloudinary.uploader.upload(
-            image.file,
-            folder="product_images"
-        )
+        upload_res = cloudinary.uploader.upload(image.file, folder="product_images")
         product.image_url = upload_res.get("secure_url")
         product.image_public_id = upload_res.get("public_id")
 
     db.commit()
     db.refresh(product)
+
+    # ⭐ FIX: Clean before returning to satisfy Pydantic
+    if product.content_sections in ("", "null"):
+        product.content_sections = None
+
+    if product.short_details in ("", "null"):
+        product.short_details = None
+
     return product
 
 @router.delete("/delete/by/id/{product_id}")
@@ -161,7 +167,6 @@ def delete_product(product_id: str, db: Session = Depends(get_db)):
 @router.put("/hot/{id}")
 def hot_product_add(id: str, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == id).first()
-
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
@@ -192,3 +197,31 @@ def product_search(product_name: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No matching products found")
 
     return matched_products
+
+@router.post("/upload/certificates")
+def upload_images(images: list[UploadFile] = File(...)):
+    results = []
+    for image in images:
+        upload_result = cloudinary.uploader.upload(
+            image.file,
+            folder="certificates_images"
+        )
+        results.append({
+            "image_url": upload_result.get("secure_url"),
+            "image_public_id": upload_result.get("public_id")
+        })
+    return {"uploaded_images": results}
+
+@router.post("/upload/cards")
+def upload_images(images: list[UploadFile] = File(...)):
+    results = []
+    for image in images:
+        upload_result = cloudinary.uploader.upload(
+            image.file,
+            folder="cards_images"
+        )
+        results.append({
+            "image_url": upload_result.get("secure_url"),
+            "image_public_id": upload_result.get("public_id")
+        })
+    return {"uploaded_images": results}

@@ -3,6 +3,8 @@ from typing import Optional, Dict, Any
 from enum import Enum as PyEnum
 from datetime import date
 from datetime import datetime
+from pydantic import field_validator
+
 
 
 class ProductCat(BaseModel):
@@ -43,6 +45,13 @@ class ProductOut(BaseModel):
     content_sections: Optional[Dict[str, Any]]
     category: Optional[CategoryOut]    # nested category data
     model_config = ConfigDict(from_attributes=True)
+
+    @field_validator("content_sections", "short_details", mode="before")
+    def convert_empty_strings(cls, v):
+        if v == "" or v is None:
+            return {}
+        return v
+
 
 class NewsCategoryEnum(str, PyEnum):
     company_news = "company_news"

@@ -72,7 +72,7 @@ export async function updateHotProduct<T, U extends Record<string, unknown>>(
 }
 export async function getProductsData<T>(params: any) {
   return MainAPIService.fetchData<T>({
-    url: `/product/by/id/${params}`,
+    url: `/product/by/${params}`,
     method: "get",
   });
 }
