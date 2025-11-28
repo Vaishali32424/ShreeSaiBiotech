@@ -93,6 +93,16 @@ const Certificates = () => {
       src: "/pdfs/LNumber.pdf",
       title: "L: Number:21B",
     },
+     {
+      img: "/assets/Certificates/OFP.jpeg",
+      src: "/pdfs/OFP.pdf",
+      title: "Organic Food Processor",
+    },
+     {
+      img: "/assets/Certificates/Abc.jpeg",
+      src: "/pdfs/Abc.pdf",
+      title: "AD CODE",
+    },
   ];
 
   return (
@@ -103,11 +113,7 @@ const Certificates = () => {
         </div>
 
         <p className="text-center text-gray-700 max-w-4xl mx-auto mb-10 mt-5">
-          The company always adheres to the corporate mission of creating a
-          healthy life, strictly controls product quality, and is certified with
-          ISO9001, Halal, and Kosher certificates. We continuously make
-          innovations and developments and have been recognized as a high-tech
-          enterprise for many consecutive years.
+        The company always adheres to the corporate mission of creating healthy life, strictly controls product quality and is certified with ISO9001 quality management system certificate, Halal and Kosher certificates. The company is continuously making innovations and developments and has being issued with high-tech enterprise certificate for many consecutive years. At the same time, it was granted a number of patent for inventions by State Intellectual property Office(SSB IND).
         </p>
 
         {/* Certificates Grid */}
@@ -124,7 +130,7 @@ const Certificates = () => {
                   src={cert.img}
                   alt={cert.title}
                   loading="lazy"
-                  className="object-cover filter blur-[2px] transition duration-300 "
+                  className="object-fit filter blur-[2px] transition duration-300 "
                 />
               </div>
               <p className="mt-2 text-gray-800 bg-black/15 w-full text-center font-semibold text-sm">

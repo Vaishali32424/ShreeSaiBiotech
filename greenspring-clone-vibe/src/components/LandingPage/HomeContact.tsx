@@ -25,7 +25,7 @@ const HomeContact = () => {
           {/* Counters */}
           <div className="flex justify-between mt-6 text-center text-white">
             <div>
-              <p className="text-3xl font-bold">2000+</p>
+              <p className="text-3xl font-bold">5000+</p>
               <p className="text-sm">Product Variety</p>
             </div>
             <div>
@@ -49,7 +49,7 @@ const HomeContact = () => {
           </div>
 
           {/* Email */}
-          <p className="text-lg md:text-xl font-semibold text-green-700 mb-4">
+          <p className="text-lg md:text-xl font-semibold text-white mb-4">
             <a href="mailto:info@shreesaibiotech.com">
               info@shreesaibiotech.com
             </a>
@@ -59,11 +59,7 @@ const HomeContact = () => {
           <p className="text-white mb-6 leading-relaxed">
             <span className="font-semibold">Innovation And Service</span>
             <br />
-            We provide various dosage forms and neutral packaging including
-            mixed powders, granules, soft capsules, hard capsules, tablets, soft
-            candies, etc. to meet the different needs of customers. Green Spring
-            has been committed to supplying customers with natural, safe and
-            organic plant extracts.
+        This array of Pure Herbal Extracts is suitable for treating various medical conditions. These Plant Extracts have been produced from dehydrated fruit juice, flower petals, roots, seeds, bars and other parts of medicinal plants. Pure content and long storage life are their main aspects.
           </p>
 
           {/* Contact button */}
@@ -80,9 +76,7 @@ const HomeContact = () => {
               How to ensure product quality?
             </p>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Our products comply with the standards of Regulation (EC) No
-              396/2005 and Pollutant Regulation No 2023/915, and have been
-              certified by BRC, IFS, Halal, Kosher, and ISO9001.
+             Our products comply with the standards of Regulation (T.L) No 06-24/0152/004441 and Pollutant Regulation No D.L.O.1958/SE007253, and have been certified by BRC, IFS, Halal, Kosher, and ISO9001.
             </p>
           </div>
         </div>

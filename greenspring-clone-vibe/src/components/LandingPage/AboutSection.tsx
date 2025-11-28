@@ -34,9 +34,7 @@ export default function AboutSection() {
             Shree Sai Biotech
           </h2>
           <p className="text-gray-600 mb-6">
-Shree sai Biotech® offer a range of botanical extract products with
-            proven health benefits to meet the demands of our customers in the
-            food, cosmetic, healthcare and natural color industries.
+SHREE SAI BIOTECH® Offer a Range of Botanical Extract Products With Proven Health Benefits to Meet the Demands of Our Customers in The Ayurvedic & Herbal Powders. Food, Cosmetic, Healthcare and Natural Powder Color Industries.
           </p>
 
           {/* Features List */}

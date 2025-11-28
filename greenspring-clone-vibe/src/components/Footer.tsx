@@ -68,7 +68,7 @@ const address =
                 className="mb-4 w-32" />
             </a>
             <p className="text-sm">
-              We have more than 5,000 kinds of products, and not all of them
+              We have more than 5,000+ kinds of products, and not all of them
               are listed on our website. Please contact us if you cannot find
               it on our site.
             </p>
