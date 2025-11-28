@@ -8,6 +8,8 @@ const OurFactory = () =>  {
      "/assets/factory3.jpeg",
      "/assets/factory4.jpeg",
      "/assets/factory6.jpeg",
+          "/assets/factory7.jpeg",
+
     "https://www.greenspringshop.com/Content/uploads/2021389378/20210520090157d55f282d68044b27bd0b703d071a585e.jpg",
   
   ];
@@ -21,11 +23,7 @@ const OurFactory = () =>  {
 
       {/* Description */}
       <p className="text-center text-gray-700 mt-4 max-w-5xl mx-auto">
-        The company has a cooperative factory covering an area of more than
-        1,000 mu (165 acres), with advanced extraction equipment and mature
-        extraction technology, and continuously cooperates with university
-        research units to ensure product research and development, and
-        strengthen product quality.
+      The company has a Plant factory covering an area of more than 480 mu(60 acres), with advanced extraction equipment and mature extraction technology, and continuous cooperates with university research units to ensure product research and development, and strengthen product quality.
       </p>
 
       {/* Images Grid */}

@@ -24,12 +24,7 @@ const cases = [
   },
   {
     title: "Tablet & Effervescent Tablet",
-    description: `*Tablets: Coated, available in a variety of shapes and colors
-*Specification selection: 250mg, 500mg, 1000mg/tablet
-*Provide a variety of effervescent tablets: VC effervescent tablets, multivitamin effervescent tablets, zinc/iron/calcium effervescent tablets, slimming effervescent tablets, etc.
-*Flavors: Orange, Lemon, Peach, Strawberry, Blueberry, Apple, Grape or your recipe
-*Packing: 4g/tablet or any other weight you want, 10 or 20 pieces/tube , 100 tubes/carton
-*Provide packaging customization and specialty label design services such as various packaging (bags or bottles)`,
+    description: `Industries Established in the year of 1988, Shree Sai Biotech has been a trusted provider of standardized herbal extracts in India. Their state-of-the-art manufacturing facility and network of raw material suppliers ensure quality and consistency. Shree Sai caters to diverse clientele, from major pharmaceutical companies to traditional Ayurvedic practitioners, providing a one-stop shop Indore, Madhya Pradesh, India. for all your herbal extract needs."`,
     image: "assets/Raw-material.jpeg",
   },
 ];
