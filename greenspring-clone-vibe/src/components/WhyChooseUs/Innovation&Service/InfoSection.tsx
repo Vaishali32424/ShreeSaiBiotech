@@ -52,7 +52,7 @@ const sectionData = [
 
 const InfoSection = () => {
   return (
-    <div className="space-y-12 my-10 bg-gray-100 p-6">
+    <><div className="text-center text-lg font-bold text-green-800 my-4 py-2">SHREE SAI BIOTECH envisions to become a Global Leader in the Healthcare Industry, driving Sustainable Growth through Innovation, Strategic Partnerships and relentless focus on Customer Satisfaction</div><div className="space-y-12 my-10 bg-gray-100 p-6">
       {sectionData.map((section, index) => (
         <div
           key={index}
@@ -63,8 +63,7 @@ const InfoSection = () => {
             <img
               src={section.image}
               alt={section.title}
-              className="w-full h-[300px] object-cover "
-            />
+              className="w-full h-[300px] object-cover " />
           </div>
 
           {/* Text */}
@@ -82,7 +81,7 @@ const InfoSection = () => {
           </div>
         </div>
       ))}
-    </div>
+    </div></>
   );
 };
 

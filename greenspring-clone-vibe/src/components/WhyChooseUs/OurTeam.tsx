@@ -6,25 +6,35 @@ import PageBanner from '../PageBanner'
 const OurTeam = () => {
      const team = [
     {
-      name: "Qiang Hua",
+      name: "Mr. Navin",
       role: "CEO",
-      img: "https://www.greenspringshop.com/Content/uploads/2023389378/20231113105109ea0887ba935e4cb18a817797df6bc9e5.jpg?size=1600x0",
+      img: "assets/Teams/Navin.jpeg",
     },
     {
-      name: "Jady",
-      role: "Vice General Manager",
-      img: "https://www.greenspringshop.com/Content/uploads/2023389378/2023111310520592067729e3ff4af5b66033d4b3d3bc97.jpg?size=x0",
+      name: "Ms. Jady Chen",
+      role: "Sales Director",
+      img: "assets/Teams/sales-director.jpeg",
     },
    
     {
       name: "Yan Liang",
-      role: "Quality Control",
-      img: "https://www.greenspringshop.com/Content/uploads/2023389378/20231113105109ea0887ba935e4cb18a817797df6bc9e5.jpg?size=1600x0",
+      role: "General Manager",
+      img: "assets/Teams/general-manager.jpeg",
     },
      {
       name: "Cassie Zhao",
-      role: "Sales Director",
-      img: "https://www.greenspringshop.com/Content/uploads/2023389378/2023111310520592067729e3ff4af5b66033d4b3d3bc97.jpg?size=x0",
+      role: "Sales Manager",
+      img: "assets/Teams/sales-manager.jpeg",
+    },
+     {
+      name: "Cassie Zhao",
+      role: "Quality Control",
+      img: "assets/Teams/quality-control.jpeg",
+    },
+     {
+      name: "Cassie Zhao",
+      role: "Sales  Executive",
+      img: "assets/Teams/sales-executive.jpeg",
     },
   ];
   return (
