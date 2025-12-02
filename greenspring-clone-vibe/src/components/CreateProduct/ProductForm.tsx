@@ -344,15 +344,17 @@ setLoading(true);
             cards: productCards.map((card) => ({
                 title: card.title,
                 properties: card.properties,
-                 image_base64: card.image,
-            image_filename: card.fileName,
+                image_url: card.image,              // API returned URL
+                image_public_id: card.publicId,     // for delete/edit later
+                image_filename: card.fileName,
             })),
         },
         certificates: certificates.map((cert) => ({
-            name: cert.name,
-    image_base64: cert.image,
+          name: cert.name,
+          image_url: cert.image,
+          image_public_id: cert.publicId,
           image_filename: cert.fileName,
-                })),
+        })),
         customer_reviews: customerReviews,
         faq_items: faqItems,
         footer_text: footerText,
@@ -592,6 +594,7 @@ setLoading(true);
             onUpdate={handleCertUpdate}
             onRemove={removeCertificate}
           />
+         
           <button
             type="button"
             onClick={addCertificate}

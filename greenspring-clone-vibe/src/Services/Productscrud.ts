@@ -94,7 +94,26 @@ export async function createNewProduct<T>(formData: FormData): Promise<AxiosResp
 }
 export async function updateProduct<T>( params: any, formData: FormData): Promise<AxiosResponse<T>> {
 
-  return api.put<T>(`product/edit/by/id/${params}`, formData, {
+  return api.put<T>(`product/edit/by/${params}`, formData, {
+
+    headers: {
+      "Content-Type": undefined, 
+    },
+  });
+}
+
+export async function uploadCertificate<T>( formData: FormData): Promise<AxiosResponse<T>> {
+
+  return api.post<T>(`product/upload/certificates`, formData, {
+
+    headers: {
+      "Content-Type": undefined, 
+    },
+  });
+}
+export async function UploadCardsImage<T>( formData: FormData): Promise<AxiosResponse<T>> {
+
+  return api.post<T>(`product/upload/cards`, formData, {
 
     headers: {
       "Content-Type": undefined, 

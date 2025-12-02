@@ -11,24 +11,22 @@ const sectionData = [
   },
   {
     title: "CUSTOM OIL & OIL POWDER MANUFACTURER SERVICING GLOBALLY",
-    description:
-      "SHREE SAI BIOTECH envisions to become a Global Leader in the Healthcare Industry, driving Sustainable Growth through Innovation, Strategic Partnerships and relentless focus on Customer Satisfaction.",
+    description: "Reckoned as a leading manufacturer and exporter, SHREE SAI BIOTECH Care was successfully established in the year 1988 and since then serving the needs of our clients. Under the stern leadership of our CEO, Mr.Navin Deveda, our ISO 9001 certified company has become an  worth organization, dealing with offering herbal products to the clients. At our esteemed firm, we follow cGMP standards that help us in maintaining the quality control norms and also by doing constant research; we are able to improve the quality of the existing product range.",
     image:
       "https://www.greenspringshop.com/uploads/18070/page/20250609090723fae16.jpg?size=1536x0",
   },
   {
-    title: "HERBAL OIL BLENDS FOR GLOBAL INDUSTRIES",
+    title: "DEVELOPMENT OF CUSTOMIZED FORMULA IN NATURAL PRODUCTS",
     description:
-      "We create customized blends of herbal oils and powders for diverse industries, ensuring high quality, purity, and global compliance to meet the demands of every market segment.",
-    image:
-      "https://www.greenspringshop.com/Content/uploads/2023389378/202302081455289c3063eeecdf47f5850ecdcdec312d90.jpg",
+      "As a custom formulator we provide turn-key solutions helping customers develop customized formulations from a wide range of natural products. Our clients often choose Green Spring for our ability to develop ingredients of higher potency, made possible by our cutting-edge technology - from capsules, softgels, pills, dry mixes, emulsions and more.",
+    image: "https://www.greenspringshop.com/Content/uploads/2023389378/20230208160220605569e4b8ce47b681e6efaf43f82997.jpg",
   },
   {
-    title: "TURNKEY BOTANICAL SOLUTIONS",
+    title: "PRIVATE LABELING & PACKAGINGFOR CUSTOM OIL/POWDER PRODUCTS",
     description:
-      "With decades of experience, Shree Sai BioTech provides end-to-end solutions for businesses – from bulk raw materials to white-label finished products ready for market launch.",
+      "We custom formulate raw ingredients that can be manufactured into finished products for bottle labeling and packaging for direct-to-customer sales. Green Spring  innovative formulation technology delivers the exact product you're looking for while maintaining the integrity of our natural ingredients, helping you meet your desired label claims (like Non-GMO, Vegan, and more).We're leading the oil & oil powder industry through innovative technology and advanced business acumen: from high oil load oil powders and bioactive microencapsulated powders with improved absorption uptake to bottling, labeling and shrink sleeve-ing your finished product.",
     image:
-      "https://www.greenspringshop.com/uploads/18070/page/20250609090723fae16.jpg?size=1536x0",
+      "https://www.greenspringshop.com/Content/uploads/2023389378/20230208150926a3595a257bb64e8bae8e685bb2d9ecaa.jpg",
   },
 ];
 

@@ -338,26 +338,38 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
                 )}
                 {/* ... (Certificates, Reviews, FAQ sections remain the same) ... */}
                 {/* --- Certificates Section --- */}
-                {certificates && certificates.length > 0 && (
-                    <section className="mb-6 p-6 bg-yellow-50 rounded-lg">
-                        <SectionTitleBar title="Certifications" />
-                        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-                            {certificates.map((cert, index) => (
-                                <div key={cert.id || index} className="flex flex-col items-center p-2 border rounded-md bg-white shadow-sm">
-                                    {cert.image_base64 && (
-                                        <img
-                                            src={cert.image_base64}
-                                            alt={cert.name || "Certificate"}
-                                            className="w-full h-20 object-contain mb-2"
-                                        />
-                                    )}
-                                    <p className="text-xs font-semibold text-center text-gray-700">{cert.name}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <hr className="my-6 border-t-2 border-gray-100" />
-                    </section>
-                )}
+            {certificates && certificates.length > 0 && (
+  <section className="mb-6 p-6 bg-white rounded-lg">
+    <SectionTitleBar title="Certifications" />
+
+    {/* GRID — 6 per row, responsive */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mt-6">
+
+      {certificates.map((cert, index) => (
+        <div 
+          key={cert.id || index} 
+          className="flex flex-col items-center"
+        >
+          {/* IMAGE BOX */}
+          <div className="w-full h-52 bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden flex items-center justify-center">
+            <img
+              src={cert.image_url}
+              alt={cert.name}
+              className="w-full h-full object-contain"
+            />
+          </div>
+
+          {/* LABEL */}
+          <div className="mt-3 px-6 py-1 bg-green-800 text-white rounded-full text-xs font-semibold text-center">
+            {cert.name}
+          </div>
+        </div>
+      ))}
+
+    </div>
+  </section>
+)}
+
 
                 {customer_reviews && customer_reviews.length > 0 && (
                     <section className="mb-6 p-6 bg-green-50 rounded-lg">

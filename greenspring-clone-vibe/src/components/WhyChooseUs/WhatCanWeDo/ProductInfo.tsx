@@ -3,11 +3,11 @@ import React from "react";
 
 const ProductInfo = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 text-center space-y-6">
+    <div className="text-center mx-auto px-4 py-10 space-y-6">
       {/* Top Heading */}
-      <p className="text-sm text-gray-800">
+      <i className="text-sm font-bold text-teal-800">
       SHREE SAI BIOTECH  is a leading manufacturer and supplier of quality STANDARDIZED HERBAL EXTRACTS since 1988. An exclusive manufacturing facility and dedicated raw materials supplier network makes us the one-stop-shop for all your requirements of standardized herbal extracts, herbal raw material and other plant derivatives from India.
-      </p>
+      </i>
 
       {/* Middle Paragraph */}
       <p className="text-sm text-gray-700 leading-relaxed">

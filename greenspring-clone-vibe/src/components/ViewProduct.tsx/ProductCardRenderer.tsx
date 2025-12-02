@@ -29,9 +29,9 @@ const ProductCardRenderer = ({ cardData }) => {
           className="border-t-4 border-green-600 rounded-lg shadow-lg overflow-hidden bg-white p-5 flex flex-col h-full"
         >
           {/* Image (if exists) */}
-          {card?.image_base64 && (
+          {card?.image_url && (
             <img
-              src={card?.image_base64}
+              src={card?.image_url}
               alt={card?.title || `Card image ${index + 1}`}
               className="w-full h-32 object-contain mb-4"
             />
