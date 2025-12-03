@@ -47,20 +47,7 @@ const [shortDetails, setShortDetails] = useState<
   }, []);
 const generateUniqueId = () => `row-${Date.now()}-${Math.random()}`;
 
-// useEffect(() => {
-//     if (productId) {
-//         if (productId) {
-            
-//             if (productData.short_details && productData.short_details.table_description) {
-//                 const htmlString = productData.short_details.table_description;
-//                 const newDetails = parseHtmlTableToDetails(htmlString); // 💡 New function call
-//                 setShortDetails(newDetails);
-//             } else {
-//                 setShortDetails([]);
-//             }
-//         }
-//     }
-// }, [productId]);
+
 useEffect(() => {
     if (isEditMode && productId) {
       const fetchProductData = async () => {
@@ -210,7 +197,7 @@ const parseHtmlTableToDetails = (htmlString: string): DetailItem[] => {
     customerReviews: "Customer Reviews",
     faq: "FAQ",
   });
-
+console.log(category)
 
   // 💡 --- Short Details ---
   const handleDetailChange = (id, field, value) => {
@@ -329,7 +316,7 @@ setLoading(true);
     }
     formData.append('id', productIdToUse);
     formData.append('name', name);
-    formData.append('category_name',  selectedCat ? selectedCat.name : category); 
+    formData.append('category_name',  selectedCat ? selectedCat.id : category); 
 
     const shortDetailsPayload = {
         table_description: tableHtml,

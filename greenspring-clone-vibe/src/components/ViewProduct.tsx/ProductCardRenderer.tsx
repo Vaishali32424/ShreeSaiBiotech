@@ -33,7 +33,7 @@ const ProductCardRenderer = ({ cardData }) => {
             <img
               src={card?.image_url}
               alt={card?.title || `Card image ${index + 1}`}
-              className="w-full h-32 object-contain mb-4"
+              className="w-full h-50 object-contain mb-4"
             />
           )}
 
