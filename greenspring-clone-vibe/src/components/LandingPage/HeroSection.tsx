@@ -2,6 +2,7 @@ import { FaShieldAlt, FaRegHeart, FaTools, FaStar } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import heroPlant from "/assets/hero-plant.jpg";
 import secondImage from "/assets/hero-plant-03.jpg";
+import thirdImage from "/assets/hero-plant-03.webp";
 
 const slides = [
   {
@@ -22,6 +23,18 @@ const slides = [
   {
     image: secondImage,
     title: "Natural Ingredients, Pure Quality",
+    description: (
+      <>
+        <p className="mb-2 sm:mb-3">
+          Sourcing nature’s finest elements for your products.
+        </p>
+        <p>Trusted by global brands in nutrition, skincare, and health.</p>
+      </>
+    ),
+  },
+   {
+    image: thirdImage,
+    title: "Ayurvedic Ingredients, Pure Quality",
     description: (
       <>
         <p className="mb-2 sm:mb-3">

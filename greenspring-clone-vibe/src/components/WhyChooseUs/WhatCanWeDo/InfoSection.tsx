@@ -5,7 +5,7 @@ const sectionData = [
   {
     title: "BULK BOTANICAL EXTRACT OIL AND POWDER SUPPLIER",
     description:
-      "Shree Sai BioTech is the leading bulk botanical extract oil and powder supplier in the China, contributing to company growth in a variety of competitive, global industries. We understand our customers require the flexibility to order small and large quantities of raw ingredients and may need help developing a final product with white labeling to get on the market faster. We provide the volume of products you need and the manufacturing capabilities to get you both in bulk on a weekly, monthly, or bi-annual basis.",
+      "Shree Sai BioTech is the leading bulk botanical extract oil and powder supplier in the India, contributing to company growth in a variety of competitive, global industries. We understand our customers require the flexibility to order small and large quantities of raw ingredients and may need help developing a final product with white labeling to get on the market faster. We provide the volume of products you need and the manufacturing capabilities to get you both in bulk on a weekly, monthly, or bi-annual basis.",
     image:
       "https://www.greenspringshop.com/Content/uploads/2023389378/202302081455289c3063eeecdf47f5850ecdcdec312d90.jpg",
   },

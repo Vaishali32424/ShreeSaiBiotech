@@ -42,7 +42,7 @@ const CompanyAdvantage: React.FC = () => {
           <span className="block w-20 h-[2px] bg-green-700 mx-auto mt-2"></span>
         </h2>
         <p className="text-gray-500 mt-3">
-          A natural sweetener supplier with over 25 years of experience
+          A natural sweetener supplier with over 37+ years of experience
         </p>
       </div>
 

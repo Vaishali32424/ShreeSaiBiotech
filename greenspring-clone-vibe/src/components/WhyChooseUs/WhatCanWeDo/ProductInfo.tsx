@@ -5,9 +5,9 @@ const ProductInfo = () => {
   return (
     <div className="text-center mx-auto px-4 py-10 space-y-6">
       {/* Top Heading */}
-      <i className="text-sm font-bold text-teal-800">
+      <a  href="/products" className="text-sm italic font-bold text-teal-800">
       SHREE SAI BIOTECH  is a leading manufacturer and supplier of quality STANDARDIZED HERBAL EXTRACTS since 1988. An exclusive manufacturing facility and dedicated raw materials supplier network makes us the one-stop-shop for all your requirements of standardized herbal extracts, herbal raw material and other plant derivatives from India.
-      </i>
+      </a>
 
       {/* Middle Paragraph */}
       <p className="text-sm text-gray-700 leading-relaxed">
@@ -22,9 +22,9 @@ const ProductInfo = () => {
         <p className="text-green-700 font-semibold text-sm">
           We have more than 5,000+ kinds of products, and not all of them are
           listed on our website. Please{" "}
-          <span className="italic underline cursor-pointer">
-            contact us
-          </span>{" "}
+          <a href="/contact-us" className="italic underline cursor-pointer">
+            contact us 
+          </a>{" "}
           if you cannot find it on our site.
         </p>
       </div>

@@ -29,13 +29,13 @@ Ayurvedic Herbal Powder Manufacturers  Botanical Extract 37 More Than 37 Years B
           </div>
 
           {/* Right Image */}
-          <div>
-            <img
-              src="https://www.greenspringshop.com/images/modular/134/modular-1.webp"
-              alt="Company Factory"
-              className="rounded-lg shadow-lg"
-            />
-          </div>
+           <div className="w-full h-full">
+    <img
+      src="/assets/factory7.jpeg"
+      alt="Company Factory"
+      className="rounded-lg shadow-lg w-full h-full object-contain"
+    />
+  </div>
         </div>
 
         {/* Bottom Stats Section */}

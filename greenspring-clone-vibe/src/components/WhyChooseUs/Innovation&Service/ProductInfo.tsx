@@ -21,9 +21,9 @@ const ProductInfo = () => {
         <p className="text-green-700 font-semibold text-sm">
           We have more than 5,000+ kinds of products, and not all of them are
           listed on our website. Please{" "}
-          <span className="italic underline cursor-pointer">
+          <a href="/contact-us"  className="italic underline cursor-pointer">
             contact us
-          </span>{" "}
+          </a>{" "}
           if you cannot find it on our site.
         </p>
       </div>

@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useMemo, useEffect } from "react";
 
-const PRODUCTS_PER_PAGE = 10;
+const PRODUCTS_PER_PAGE = 12;
 
 export default function ProductGrid({ productsData, categories, isSearchMode, searchTerm }) {
     const { categoryId } = useParams();
@@ -116,7 +116,7 @@ export default function ProductGrid({ productsData, categories, isSearchMode, se
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {paginatedProducts.map((p) => (
-                    <div key={p.id} className="bg-white rounded-lg border border-gray-200 shadow p-4 flex flex-col">
+                    <div key={p.id} className="bg-white rounded-lg border-2 border-gray-200 shadow-xl p-4 flex flex-col">
                         <img
                             src={p.image_url}
                             alt={p.name}

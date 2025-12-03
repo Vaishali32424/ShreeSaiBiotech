@@ -32,7 +32,7 @@ const cases = [
 const LatestCaseSection: React.FC = () => {
   return (
     <section
-      className="py-16 bg-cover h-[400px] bg-center"
+      className="py-16 bg-cover h-[280px] bg-center"
       style={{
         backgroundImage:
          "url('https://www.greenspringshop.com/uploads/202318070/ImgScroll/ba4250654d-0e66-4183-8ccf-85bc6c58b815.jpg')",

@@ -5,37 +5,50 @@ import PageBanner from '../PageBanner'
 
 const OurTeam = () => {
      const team = [
+       {
+      name: "Ankita",
+      role: "Director",
+      img: "assets/Teams/sales-director.jpeg",
+    },
+     {
+      name: "Anil",
+      role: "Director",
+      img: "assets/Teams/sales-director.jpeg",
+    },
     {
       name: "Mr. Navin",
       role: "CEO",
       img: "assets/Teams/Navin.jpeg",
     },
-    {
-      name: "Ms. Jady Chen",
-      role: "Sales Director",
-      img: "assets/Teams/sales-director.jpeg",
-    },
    
     {
-      name: "Yan Liang",
+      name: "Rajesh",
       role: "General Manager",
       img: "assets/Teams/general-manager.jpeg",
     },
+   
      {
-      name: "Cassie Zhao",
-      role: "Sales Manager",
-      img: "assets/Teams/sales-manager.jpeg",
-    },
-     {
-      name: "Cassie Zhao",
+      name: "Preet",
       role: "Quality Control",
       img: "assets/Teams/quality-control.jpeg",
     },
      {
-      name: "Cassie Zhao",
+      name: "Rajesh",
       role: "Sales  Executive",
       img: "assets/Teams/sales-executive.jpeg",
     },
+      {
+      name: "Reena",
+      role: "Sales  Executive",
+      img: "assets/Teams/sales-executive.jpeg",
+    },
+     {
+      name: "Rani",
+      role: "Sales  Executive",
+      img: "assets/Teams/sales-executive.jpeg",
+    },
+  
+  
   ];
   return (
  <>
@@ -67,7 +80,7 @@ const OurTeam = () => {
               <img
                 src={member.img}
                 alt={member.name}
-                className="w-full h-[380px] object-contain"
+                className="w-[250px] h-[250px] object-fit"
               />
 
               {/* Curve Shape */}

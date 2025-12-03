@@ -36,8 +36,7 @@ const ProductCenter: React.FC = () => {
             Interested in Sweetener?
           </h3>
           <p className="mb-4">
-            Shree Sai Biotech® has over 23 years of partner relationships,
-            industry expertise, innovation and service that everyone at Shree
+            Shree Sai Biotech® has over 37+ years and service that everyone at Shree
             Sai Biotech® brings to our customers each and every day. Contact us
             for your nutraceutical and pharmaceutical solutions:
           </p>
@@ -88,7 +87,7 @@ const ProductCenter: React.FC = () => {
         {products?.map((product, index) => (
           <div
             key={product.id}
-            className="border rounded shadow hover:shadow-md transition overflow-hidden"
+            className="border rounded border-green-700 shadow hover:shadow-md transition overflow-hidden"
           >
             <div className="bg-green-700 text-white text-xs font-bold py-1 px-2 flex justify-between items-center">
               <span>Shree Sai BioTech</span>
@@ -97,7 +96,7 @@ const ProductCenter: React.FC = () => {
             <img
               src={product.image_url}
               alt={product.name}
-              className="w-full h-40 object-contain bg-white"
+              className="w-full h-50 object-fit bg-white"
             />
 
             <div className="p-4 text-sm text-gray-800">

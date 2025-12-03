@@ -2,7 +2,7 @@ import React from "react";
 
 const SugarReductionPage: React.FC = () => {
   return (
-    <div className="bg-white py-12 px-4 md:px-12 lg:px-24">
+    <div className="bg-white py-12 px-4 md:px-12 lg:px-10">
       <div className="text-center mb-12">
         <h2 className="text-2xl md:text-3xl font-semibold text-black">
           Technological Innovation In Reducing Sugar With Natural Sweeteners

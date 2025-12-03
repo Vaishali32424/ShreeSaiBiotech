@@ -202,7 +202,7 @@ If you have any specific inquiries, feel free to reach out!`;
           <div
             className="
               bg-white shadow-2xl rounded-lg flex flex-col border border-gray-200
-              w-[90vw] sm:w-[400px] md:w-[450px] h-[65vh] sm:h-[500px]
+              w-[90vw] sm:w-[400px] md:w-[350px] h-[65vh] sm:h-[500px]
             "
           >
             <div className="bg-green-700 text-white px-4 py-3 flex justify-between items-center rounded-t-lg">

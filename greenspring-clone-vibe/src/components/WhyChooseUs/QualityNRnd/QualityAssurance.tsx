@@ -19,6 +19,12 @@ const documents = [
   "Technical Data Sheets (TDS)",
   "MSDS",
   "Allergen test charts & statements",
+  "BSE/TSE statements",
+"GMO free statements",
+"Process flow charts"," Method of Analysis",
+"Non-Aflatoxins contamination certificate",
+"PAHs free declaration",
+" CITES regulatory compliance"
 ];
 
 const QualityAssurance = () => {
