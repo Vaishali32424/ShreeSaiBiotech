@@ -22,7 +22,6 @@ def create_category(payload: ProductCat, db: Session = Depends(get_db)):
     db.refresh(new_cat)
     return new_cat
 
-
 @router.post("/create", response_model=ProductOut)
 async def create_product(
     id: str = Form(...),
@@ -164,17 +163,21 @@ def delete_product(product_id: str, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Product deleted successfully"}
 
-@router.put("/hot/{id}")
-def hot_product_add(id: str, db: Session = Depends(get_db)):
-    product = db.query(Product).filter(Product.id == id).first()
+@router.patch("/hot/{id}")
+def toggle_hot_product(id: str, db: Session = Depends(get_db)):
+    product = db.query(Product).filter(Product.id == id).one_or_none()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    product.hot_product = True
+    product.hot_product = not product.hot_product  # toggle boolean
     db.commit()
     db.refresh(product)
-
-    return {"message": "Product added to hot product list", "update_product": product}
+    message = (
+        "Product added to hot product list"
+        if product.hot_product
+        else "Product removed from hot product list"
+    )
+    return {"message": message, "updated_product": product}
 
 @router.get('/get/all/hot', response_model=List[ProductOut])
 def get_all_hot_products(db: Session = Depends(get_db)):
