@@ -98,7 +98,8 @@ def get_all_products(db: Session = Depends(get_db)):
 
 @router.get("/by/{product_id}", response_model=ProductOut)
 def read_product(product_id: str, db: Session = Depends(get_db)):
-    product = db.query(Product).get(product_id)
+    # product = db.query(Product).get(product_id)
+    product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
@@ -228,3 +229,10 @@ def upload_images(images: list[UploadFile] = File(...)):
             "image_public_id": upload_result.get("public_id")
         })
     return {"uploaded_images": results}
+
+from sqlalchemy import exists
+
+@router.get("/existence/by/{id}")
+def find_product(id: str, db: Session = Depends(get_db)):
+    exists_query = db.query(exists().where(Product.id == id)).scalar()
+    return {"exists": exists_query}
