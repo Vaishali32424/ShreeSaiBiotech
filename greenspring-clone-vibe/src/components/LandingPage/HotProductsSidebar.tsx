@@ -21,7 +21,7 @@ export default function HotProductsSidebar() {
     fetchHotProducts();
   }, []);
   return (
-    <aside className="w-full text-gray-800 sidebar mt-10">
+    <aside className="w-full text-gray-800 shadow-md rounded-md p-4 sidebar mt-10">
 
         <h3 className="text-lg font-semibold mb-4 text-orange-600 border-b pb-2 border-orange-400">
             🔥 Hot Selling Products

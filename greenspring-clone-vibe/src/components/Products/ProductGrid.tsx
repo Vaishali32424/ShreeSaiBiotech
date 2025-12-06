@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useMemo, useEffect } from "react";
 
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 16;
 
 export default function ProductGrid({ productsData, categories, isSearchMode, searchTerm }) {
     const { categoryId } = useParams();
@@ -115,24 +115,34 @@ export default function ProductGrid({ productsData, categories, isSearchMode, se
             <h1 className="text-2xl font-bold mb-6">{selectedCategoryName} </h1>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {paginatedProducts.map((p) => (
-                    <div key={p.id} className="bg-white rounded-lg border-2 border-gray-200 shadow-xl p-4 flex flex-col">
-                        <img
-                            src={p.image_url}
-                            alt={p.name}
-                            className="w-full h-56 object-fit transform group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                            onError={handleImageError}
-                        />
-                        <h2 className="mt-2 text-lg font-semibold flex-grow">{p.name}</h2>
-                        <Link
-                            to={`/products/product/${p.id}`}
-                            className="text-green-700 hover:underline mt-2 self-start"
-                        >
-                            Read More
-                        </Link>
-                    </div>
-                ))}
+              {paginatedProducts.map((p) => {
+    
+   
+
+    return (
+      <div key={p.id} className="bg-white rounded-lg border-2 border-gray-200 shadow-xl p-4 flex flex-col">
+        
+        <img
+          src={p.image_url}
+          alt={p.name}
+          className="w-full h-56 object-fit transform group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+          onError={handleImageError}
+        />
+
+        <h2 className="mt-2 text-lg font-semibold flex-grow">{p.name}</h2>
+
+     
+        <Link
+          to={`/products/product/${p.id}`}
+          className="text-green-700 hover:underline mt-2 self-start"
+        >
+          Read More
+        </Link>
+      </div>
+    );
+})}
+
             </div>
 
             {/* NEW PAGINATION CONTROLS */}

@@ -52,6 +52,13 @@ export async function createCategory<T>(data: { name: string }) {
     data,
   });
 }
+
+export async function ProductExistense<T>( name: string ) {
+  return MainAPIService.fetchData<T>({
+    url: `product/existence/by/${name}`,
+    method: 'get',
+  });
+}
 export async function getUserImage<T>(params: any) {
   return MainAPIService.fetchData<T>({
     url: `profile-attachment/get-attachment-by-username/${params}`,
@@ -66,7 +73,7 @@ export async function updateHotProduct<T, U extends Record<string, unknown>>(
 ) {
   return MainAPIService.fetchData<T>({
     url: `/product/hot/${params}`,
-    method: "put",
+    method: "patch",
     data,
   });
 }

@@ -323,7 +323,12 @@ const Toolbar = ({ editor, onUploadClick }) => {
   const activeBtnClass = "bg-green-200 border-green-400";
 
   return (
-    <div className="flex flex-wrap items-center gap-2 p-3 border border-gray-300 rounded-t-md bg-gray-50">
+      <div
+  className="flex flex-wrap items-center gap-2 p-3 border 
+  border-gray-300 rounded-t-md bg-gray-50
+  sticky top-50 z-50"
+>
+
       {/* TEXT FORMATTING */}
       <button
         type="button"

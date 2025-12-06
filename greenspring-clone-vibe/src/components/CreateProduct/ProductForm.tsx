@@ -28,6 +28,39 @@ const ProductForm = () => {
     const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageBase64, setImageBase64] = useState("");
+const [slug, setSlug] = useState("");
+const [exists, setExists] = useState(null);
+const [loadingName, setLoadingName] = useState(false);
+
+useEffect(() => {
+  if (name.length < 3) {
+    setExists(null);
+    return;
+  }
+
+  const delay = setTimeout(() => {
+    const newSlug = createSlug(name);
+    setSlug(newSlug);
+    checkProductExists(newSlug);
+  }, 300);
+
+  return () => clearTimeout(delay);
+}, [name]);
+
+const checkProductExists = async (slugValue) => {
+  try {
+    setLoading(true);
+    const res = await fetch(
+      `https://shreesaibiotech.onrender.com/product/existence/by/${slugValue}`
+    );
+    const data = await res.json();
+    setExists(data.exists);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const [gridLayout, setGridLayout] = useState("3x3");
   const [productCards, setProductCards] = useState([]);
@@ -420,12 +453,29 @@ setLoading(true);
         <div className="p-4 bg-white shadow-md rounded-lg">
           <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
           <label className={labelClass}>Product Name</label>
-          <input
-            value={name}
-            onChange={e => setName(e.target.value)}
-            className={inputClass}
-            placeholder="Coenzyme Powder"
-          />
+ 
+
+  <input
+    value={name}
+    onChange={e => setName(e.target.value)}
+    placeholder="Coenzyme Powder"
+    className="border p-2"
+  />
+
+  {loading && <p className="text-blue-500 text-sm">Checking...</p>}
+
+  {exists === true && (
+    <p className="text-red-500 text-sm mt-1">
+      Duplicate product!
+    </p>
+  )}
+
+  {exists === false && (
+    <p className="text-green-500 text-sm mt-1">
+      This product name doesn't exist
+    </p>
+  )}
+
 
           <label className={labelClass + " mt-4"}>Main Product Image</label>
           <ImageUploader onUpload={handleImageUpload} preview={imageBase64} />

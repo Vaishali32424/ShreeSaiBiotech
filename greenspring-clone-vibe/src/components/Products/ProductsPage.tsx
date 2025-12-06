@@ -19,6 +19,7 @@ import Cards from "../WhyChooseUs/WhyChooseUs/Cards";
 import FactorySection from "../WhyChooseUs/WhyChooseUs/FactorySection";
 import HotProducts from "../LandingPage/HotProducts";
 import Certificates from "../WhyChooseUs/Factory&certificates/Certificates";
+import PhoneNumberSidebar from "./PhoneNumberSidebar";
 
 // TypeScript Interfaces for clarity (adjust if your API response is different)
 interface Product {
@@ -224,6 +225,7 @@ const ProductsPage = () => {
                             </div>
                         
                         <HotProductsSidebar />
+                        <PhoneNumberSidebar />
                     </aside>
 
                     <div className="flex-1">

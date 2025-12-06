@@ -25,10 +25,21 @@ const AllKnowledgeList = () => {
 
     fetchKnowledge();
   }, []);
+const getSnippet = (htmlString: string, wordLimit: number = 50) => {
+  if (!htmlString) return '';
+
+  const plainText = htmlString.replace(/<[^>]*>/g, '');
+  const words = plainText.trim().split(/\s+/);
+
+  if (words.length > wordLimit) {
+    return words.slice(0, wordLimit).join(' ') + '...';
+  }
+  return plainText;
+};
 
     return (
-        <div className="p-4 bg-white rounded-xl shadow-lg">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">All Knowledge Articles</h1>
+        <div className="p-4 bg-white rounded-xl ">
+            <h1 className="text-3xl font-bold text-gray-800  pb-2">All Knowledge Articles</h1>
             
           
                 <div className="space-y-6"> 
@@ -68,7 +79,7 @@ const AllKnowledgeList = () => {
                                         </Link>
                                         
                                         <p className="text-gray-600 mb-4 line-clamp-3">
-                                            {article.short_description}
+  {getSnippet(article?.long_description, 30)}
                                         </p>
                                         
                  <div className="mt-auto">
