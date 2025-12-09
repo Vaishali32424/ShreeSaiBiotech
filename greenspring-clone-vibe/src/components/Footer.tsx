@@ -148,7 +148,7 @@ const address =
                 ["Home", "/"],
                 ["About Us", "/about-us"],
                 ["Products", "/products"],
-                ["Enzymes", "/sweeteners"],
+                ["Sweetner", "/sweeteners"],
                 ["Product List", "/products"],
                 ["News", "/news"],
                 ["Knowledge", "/knowledge"],

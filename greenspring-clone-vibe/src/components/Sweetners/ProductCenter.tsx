@@ -83,28 +83,23 @@ const ProductCenter: React.FC = () => {
         Product Center
       </div>
 
-  <div className="w-full py-12 bg-green-800" >
-  
 
+<div className="w-full py-12 bg-green-800" >
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto px-4">
     {products?.map((product) => (
       <div
         key={product.id}
         className="border rounded border-green-700 shadow hover:shadow-md transition overflow-hidden bg-white"
       >
-        {/* Top Ribbon */}
-        <div className="bg-green-700 text-white text-xs font-bold py-1 px-2 text-center">
-          Shree Sai BioTech
+     
+        <div className=" p-2 flex items-center justify-center">
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="w-full h-60 object-fit" 
+          />
         </div>
-
-        {/* Product Image */}
-        <img
-          src={product.image_url}
-          alt={product.name}
-          className="w-full h-48 object-cover"
-        />
-
-        {/* Content */}
+ 
         <div className="p-4 text-sm text-gray-800">
           <h4 className="font-semibold mb-1">{product.name}</h4>
           <p className="my-2">{product.description}</p>

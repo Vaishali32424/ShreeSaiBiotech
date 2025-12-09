@@ -33,7 +33,7 @@ const getGridCols = () => {
   if (singleColumn || items.length <= 5) return "grid-cols-1 w-[200px]";
   if (items.length <= 12) return "grid-cols-2  w-[900px] ";
   if (items.length <= 24) return "grid-cols-3  w-[900px] ";
-  return "grid-cols-4  w-[700px] ";
+  return "grid-cols-3  w-[700px] ";
 };
 
 

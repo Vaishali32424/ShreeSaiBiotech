@@ -37,7 +37,6 @@ export default function Sidebar({ categories }) {
                 <NavLink
                   to={`/products/category/${encodeURIComponent(category)}`}
                   className={({ isActive: isCurrentActive }) =>
-                    // Use isCurrentActive from NavLink prop for better consistency
                     `flex-1 text-left font-medium transition-colors duration-200 ${
                       isCurrentActive || isOpen
                         ? "text-white font-semibold"
@@ -64,7 +63,7 @@ export default function Sidebar({ categories }) {
               {/* Nested Products (collapsible) */}
               <div
                 className={`overflow-hidden transition-all duration-300 ${
-                  openCategory === category ? "max-h-96 mt-2" : "max-h-0"
+                  openCategory === category ? " mt-2" : "max-h-0"
                 }`}
               >
                 <ul className="ml-4 space-y-1 border-l border-slate-300 pl-4">

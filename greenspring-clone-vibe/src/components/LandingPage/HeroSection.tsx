@@ -34,7 +34,7 @@ const slides = [
   },
    {
     image: thirdImage,
-    title: ".",
+    title: "",
     description: (
       <>
       <p className="mb-2 text-transparent sm:mb-3">
@@ -96,7 +96,7 @@ const HeroSection = () => {
         <div className="relative z-10 container mx-auto px-4 h-full flex justify-center items-center text-center">
           <div className="w-full max-w-3xl text-white">
             {/* Certifications */}
-            <div className="flex justify-center flex-wrap gap-2 mb-4 sm:mb-6">
+            {/* <div className="flex justify-center flex-wrap gap-2 mb-4 sm:mb-6">
               {["ISO", "BRC", "CA", "BRCS", "IFS", "K", "HALAL"].map((label) => (
                 <div
                   key={label}
@@ -105,7 +105,7 @@ const HeroSection = () => {
                   {label}
                 </div>
               ))}
-            </div>
+            </div> */}
 
             {/* Title */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6 leading-tight">

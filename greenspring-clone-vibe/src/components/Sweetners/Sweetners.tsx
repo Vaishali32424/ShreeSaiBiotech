@@ -18,8 +18,8 @@ const Products = () => {
  <>
       <Header />
       <PageBanner
-        title={"Enzymes"}
-        breadcrumb={"Enzymes"}
+        title={"Sweetner"}
+        breadcrumb={"Sweetner"}
         backgroundImage="assets/farming.jpg"
       />
       <section className='px-20'>

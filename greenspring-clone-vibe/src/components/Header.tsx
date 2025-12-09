@@ -42,9 +42,7 @@ const Header = () => {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            // 💡 5. Search Button पर क्लिक करने पर /products पर query parameter के साथ नेविगेट करें
             navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
-            // सर्च बार को बंद करें (वैकल्पिक)
             setShowSearch(false);
             setSearchTerm(''); // सर्च टर्म क्लियर करें
         } else {
@@ -238,7 +236,7 @@ useEffect(() => {
             <a href="/" className="text-primary font-medium hover:text-primary-dark transition-colors text-sm">{t("home")}</a>
             <NavigationDropdown title={t("about_us")} items={companyDropdownItems} route="/why-choose-us" />
             <NavigationDropdown title={t("products")}  navigateById={true} items={productsDropdownItems} route={"/products"} />
-            <a href="/sweeteners" className="text-foreground text-sm hover:text-primary transition-colors">{t("Enzymes")}</a>
+            <a href="/sweeteners" className="text-foreground text-sm hover:text-primary transition-colors">{t("Sweetner")}</a>
                         <NavigationDropdown title={t("news")}  navigateById={true} items={newsDropdownItems} route={"/news"} />
 
             <a href="/knowledge" className="text-foreground text-sm hover:text-primary transition-colors">{t("knowledge")}</a>

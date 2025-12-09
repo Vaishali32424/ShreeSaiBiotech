@@ -324,9 +324,7 @@ const Toolbar = ({ editor, onUploadClick }) => {
 
   return (
       <div
-  className="flex flex-wrap items-center gap-2 p-3 border 
-  border-gray-300 rounded-t-md bg-gray-50
-  sticky top-50 z-50"
+   className="flex flex-wrap items-center gap-2 p-3 border border-gray-300 rounded-t-md bg-white sticky top-4 z-50 shadow-sm"
 >
 
       {/* TEXT FORMATTING */}
@@ -519,9 +517,11 @@ const RichTextEditor = ({ initialContent, onChange }) => {
       const sel = editor.state.selection;
       if (sel && !sel.empty && sel.from !== sel.to) {
         try {
-          const coords = editor.view.coordsAtPos(sel.to);
+          // use midpoint of selection for stable popup position
+          const midPos = Math.floor((sel.from + sel.to) / 2);
+          const coords = editor.view.coordsAtPos(midPos);
           const left = (coords.left + coords.right) / 2;
-          const top = coords.top - 40;
+          const top = coords.top - 40; // place popup slightly above selection
           setLinkTooltipState({ visible: true, top, left });
         } catch (e) {
           setLinkTooltipState((s) => ({ ...s, visible: false }));
@@ -602,7 +602,7 @@ const RichTextEditor = ({ initialContent, onChange }) => {
 
       {linkTooltipState.visible && (
         <div
-          className="absolute z-50 bg-white border border-green-400 rounded shadow-lg px-3 py-2 text-sm"
+          className="fixed z-50 bg-white border border-green-400 rounded shadow-lg px-3 py-2 text-sm"
           style={{
             top: linkTooltipState.top,
             left: linkTooltipState.left,

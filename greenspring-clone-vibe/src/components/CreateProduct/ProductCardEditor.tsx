@@ -62,7 +62,7 @@ const ProductCardEditor = ({ card, index, onUpdate, onRemove }) => {
       <label className={labelClass}>Card Title</label>
       <input
         type="text"
-        placeholder="e.g., GREEN SPRING® Coenzyme Q10 98%-101% powder"
+        placeholder=""
         value={card.title || ''}
         onChange={(e) => handleInputChange('title', e.target.value)}
         className={inputClass}

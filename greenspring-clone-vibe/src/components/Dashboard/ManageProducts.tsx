@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct, updateProduct, updateHotProduct } from '@/Services/Productscrud';
+import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct, updateProduct, updateHotProduct, deleteCategory, updateCategory } from '@/Services/Productscrud';
 import { Eye, Heart, Pencil, Plus, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '../ui/use-toast';
@@ -24,22 +24,30 @@ const ManageProducts: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
+  
+  // 🆕 NEW STATE FOR CATEGORY MANAGEMENT
+  const [showCategoryDeleteConfirm, setShowCategoryDeleteConfirm] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+  // 🎯 Track if the category has products
+  const [categoryHasProducts, setCategoryHasProducts] = useState(false); 
+  const [showCategoryEditModal, setShowCategoryEditModal] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  
   const navigate = useNavigate();
 
-  // Fetch all categories on mount
+const fetchCategories = async () => {
+    try {
+      const result = await getAllCategories<Category[]>();
+      setCategories(result.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await getAllCategories<Category[]>();
-        setCategories(result.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
     fetchCategories();
   }, []);
-
-  // Fetch products (either all or by category)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -113,28 +121,135 @@ const handleToggleHotProduct = async (product: Product) => {
   const handleViewClick = (productId: string) => {
     navigate(`/view/${productId}`);
   };
+  
+  const handleEditCategory = (category: Category) => {
+    setCategoryToEdit(category);
+    setNewCategoryName(category.name);
+    setShowCategoryEditModal(true);
+  };
+  
+const confirmEditCategory = async () => {
+  if (categoryToEdit && newCategoryName.trim()) {
+    try {
+      const categoryName = newCategoryName.trim();
+
+      await updateCategory(categoryToEdit.id, { categoryName });
+
+      setCategories((prev) =>
+        prev.map((cat) =>
+          cat.id === categoryToEdit.id ? { ...cat, name: categoryName } : cat
+        )
+      );
+
+      setShowCategoryEditModal(false);
+      setCategoryToEdit(null);
+      fetchCategories();
+
+      toast({
+        title: "Success✅",
+        description: `Category renamed to ${categoryName}!`,
+      });
+    } catch (error) {
+      console.error("Error updating category:", error);
+      toast({
+        title: "Error❌",
+        description: "Error updating category. Check console.",
+      });
+    }
+  }
+};
+
+  
+  const handleDeleteCategoryClick = async (category: Category) => {
+    try {
+        setCategoryToDelete(category);
+        const productsResult = await getProductsByCategory<Product[]>(category.id);
+        const hasProducts = productsResult.data && productsResult.data.length > 0;
+        
+        setCategoryHasProducts(hasProducts); // Store the result
+        setShowCategoryDeleteConfirm(true); // Show the modal
+    } catch (error) {
+        console.error("Error checking products for category:", error);
+        toast({ title: "Error❌", description: "Failed to check category products." });
+    }
+  };
+  
+  const confirmDeleteCategory = async () => {
+    if (categoryToDelete && !categoryHasProducts) {
+      try {
+      
+        
+        await deleteCategory(categoryToDelete.id);
+        setCategories(categories.filter((cat) => cat.id !== categoryToDelete.id));
+                if (selectedCategory === categoryToDelete.id) {
+            setSelectedCategory(null);
+        }
+        
+        setShowCategoryDeleteConfirm(false);
+        setCategoryToDelete(null);
+        setCategoryHasProducts(false);
+            fetchCategories();
+        toast({ title: "Success✅", description: "Category deleted successfully!" });
+        
+      } catch (error) {
+        console.error('Error deleting category:', error);
+        toast({ title: "Error❌", description: "Error deleting category. Please check console for details." });
+      }
+    } else if (categoryHasProducts) {
+        // This should not happen if the button is disabled, but is a safe fallback
+        toast({ 
+            title: "🚫 Cannot Delete Category", 
+            description: "Please shift all products from this category to another category before deleting it.", 
+            variant: "destructive" 
+        });
+    }
+  };
+
 
   return (
     <div className="flex h-full">
       {/* Sidebar */}
-      <aside className="w-56 bg-gray-100 border-r p-4">
+      <aside className="w-64 bg-gray-100 border-r p-4">
         <h2 className="text-xl font-semibold mb-4">Categories</h2>
         <ul className="space-y-2">
           <li
             onClick={() => setSelectedCategory(null)}
-            className={`cursor-pointer p-2 rounded-md ${!selectedCategory ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+            className={`cursor-pointer p-2 rounded-md flex justify-between items-center ${!selectedCategory ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
           >
-            All Products
+            <span>All Products</span>
           </li>
           {categories?.map((cat) => (
             <li
               key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`cursor-pointer p-2 rounded-md ${
+              className={`p-2 rounded-md flex justify-between items-center ${
                 selectedCategory === cat.id ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
               }`}
             >
-              {cat.name}
+              <span
+                onClick={() => setSelectedCategory(cat.id)}
+                className="cursor-pointer flex-grow"
+              >
+                {cat.name}
+              </span>
+              
+              {/* 🆕 NEW CATEGORY ACTIONS */}
+              <div className="flex space-x-2 ml-2">
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleEditCategory(cat); }}
+                  className={`p-1 rounded-full ${selectedCategory === cat.id ? 'text-blue-500 bg-white hover:bg-gray-100' : 'text-gray-600 hover:text-blue-500'}`}
+                  title="Edit Category"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleDeleteCategoryClick(cat); }}
+                  className={`p-1 rounded-full ${selectedCategory === cat.id ? 'text-red-500 bg-white hover:bg-gray-100' : 'text-gray-600 hover:text-red-500'}`}
+                  title="Delete Category"
+                >
+                  <Trash size={16} />
+                </button>
+              </div>
+              {/* 🔚 END NEW CATEGORY ACTIONS */}
             </li>
           ))}
         </ul>
@@ -207,8 +322,9 @@ const handleToggleHotProduct = async (product: Product) => {
         </div>
       </main>
 
+      {/* PRODUCT Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
             <p>Are you sure you want to delete this product?</p>
@@ -224,6 +340,87 @@ const handleToggleHotProduct = async (product: Product) => {
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
               >
                 Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🎯 CATEGORY Delete Confirmation Modal (MODIFIED) */}
+      {showCategoryDeleteConfirm && categoryToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className={`text-xl font-bold mb-4 ${categoryHasProducts ? 'text-orange-600' : 'text-red-600'}`}>
+                {categoryHasProducts ? 'Deletion Prevented' : 'Confirm Category Deletion'}
+            </h2>
+            
+            <p className='mb-4'>
+              Are you sure you want to delete the category: {categoryToDelete.name}?
+            </p>
+            
+            {categoryHasProducts ? (
+                 <div className='p-3 bg-red-100 text-red-800 border-l-4 border-red-500'>
+                    <p className='text-sm font-semibold'>
+                        🚫 Cannot delete while products exist.
+                    </p>
+                    <p className='text-sm mt-1'>
+                        Please **recategorize** its products to another category before attempting to delete this category.
+                    </p>
+                 </div>
+            ) : (
+                <p className='text-sm text-gray-600'>
+                    This category is empty. Deletion will proceed upon confirmation.
+                </p>
+            )}
+
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={() => { setShowCategoryDeleteConfirm(false); setCategoryToDelete(null); setCategoryHasProducts(false); }}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteCategory}
+                className={`px-4 py-2 text-white rounded-md ${categoryHasProducts ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'}`}
+                disabled={categoryHasProducts} // Disable button if products exist
+              >
+                {categoryHasProducts ? 'Products Exist' : 'Delete Category'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🆕 CATEGORY Edit Modal */}
+      {showCategoryEditModal && categoryToEdit && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-xl font-bold mb-4">Edit Category: {categoryToEdit.name}</h2>
+            <label htmlFor="newCategoryName" className="block text-sm font-medium text-gray-700 mb-1">
+              New Category Name             </label>
+            <input
+              id="newCategoryName"
+              type="text"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter new name"
+            />
+            
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={() => { setShowCategoryEditModal(false); setCategoryToEdit(null); }}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmEditCategory}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                disabled={!newCategoryName.trim() || newCategoryName.trim() === categoryToEdit.name}
+              >
+                Save Changes
               </button>
             </div>
           </div>
