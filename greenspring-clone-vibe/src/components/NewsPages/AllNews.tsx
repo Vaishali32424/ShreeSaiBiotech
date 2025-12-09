@@ -9,6 +9,7 @@ import { Route, Routes, useLocation, useParams } from 'react-router-dom'
 import NewsDetail from './NewsDetail'
 import HotProductsSidebar from '../LandingPage/HotProductsSidebar'
 import { getAllNews, getNewsByCategory } from '@/Services/NewsCrud'
+import PhoneNumberSidebar from '../Products/PhoneNumberSidebar'
 
 const AllNews = () => {
     // ... categories array
@@ -78,6 +79,7 @@ const AllNews = () => {
                         {/* NewsSidebar को currentCategory पास करें ताकि वह active state दिखा सके */}
                         <NewsSidebar newsList={newsList} /> 
                         <HotProductsSidebar /> 
+                                                <PhoneNumberSidebar/>
                     </aside>
                     
                     <div className='flex-1'>

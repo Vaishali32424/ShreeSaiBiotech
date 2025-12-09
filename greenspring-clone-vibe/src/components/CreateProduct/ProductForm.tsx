@@ -11,6 +11,7 @@ import {
   createNewProduct,
   getAllCategories,
   getProductsData,
+  ProductExistence,
   updateProduct,
 } from "@/Services/Productscrud";
 import { toast } from "../ui/use-toast";
@@ -33,6 +34,8 @@ const [exists, setExists] = useState(null);
 const [loadingName, setLoadingName] = useState(false);
 
 useEffect(() => {
+    if (isEditMode) return;
+
   if (name.length < 3) {
     setExists(null);
     return;
@@ -47,16 +50,14 @@ useEffect(() => {
   return () => clearTimeout(delay);
 }, [name]);
 
-const checkProductExists = async (slugValue) => {
+const checkProductExists = async (slugValue: string) => {
   try {
     setLoading(true);
-    const res = await fetch(
-      `https://shreesaibiotech.onrender.com/product/existence/by/${slugValue}`
-    );
-    const data = await res.json();
-    setExists(data.exists);
+    const data = await ProductExistence(slugValue);
+    setExists(data.data.exists);
   } catch (err) {
     console.error(err);
+    setExists(false);
   } finally {
     setLoading(false);
   }

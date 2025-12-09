@@ -34,13 +34,13 @@ const slides = [
   },
    {
     image: thirdImage,
-    title: "Ayurvedic Ingredients, Pure Quality",
+    title: ".",
     description: (
       <>
-        <p className="mb-2 sm:mb-3">
+      <p className="mb-2 text-transparent sm:mb-3">
           Sourcing nature’s finest elements for your products.
         </p>
-        <p>Trusted by global brands in nutrition, skincare, and health.</p>
+        <p className="text-transparent">Trusted by global brands in nutrition, skincare, and health.</p>
       </>
     ),
   },
@@ -87,7 +87,7 @@ const HeroSection = () => {
       {/* Hero Section */}
       <div className="relative h-[500px] sm:h-[550px] lg:h-[600px] overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+          className="absolute inset-0 bg-cover bg-center lg:mt-20 transition-all duration-1000"
           style={{ backgroundImage: `url(${currentSlide.image})` }}
         />
 

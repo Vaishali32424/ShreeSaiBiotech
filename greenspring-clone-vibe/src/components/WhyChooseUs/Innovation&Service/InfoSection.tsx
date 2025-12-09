@@ -84,37 +84,7 @@ const InfoSection = () => {
 
 
 
-         <div className="grid md:grid-cols-2 gap-10 items-center">
-
-        {/* Left Text Section */}
-        <div>
-          <h2 className="text-xl font-bold text-teal-800 leading-snug">
-            We Manufacture Raw Ingredients For Businesses In Any Industry, Including:
-          </h2>
-
-          <ul className="mt-6 space-y-3 text-[15px] text-gray-800">
-            <li className="list-disc ml-5">Food</li>
-            <li className="list-disc ml-5">Drink</li>
-            <li className="list-disc ml-5">Supplement</li>
-            <li className="list-disc ml-5">Nutraceuticals</li>
-            <li className="list-disc ml-5">Pet Nutrition</li>
-            <li className="list-disc ml-5">Beauty Products</li>
-            <li className="list-disc ml-5">Essential Oils</li>
-            <li className="list-disc ml-5">Homeopathic Ingredients</li>
-            <li className="list-disc ml-5">Sports Nutrition</li>
-          </ul>
-        </div>
-
-        {/* Right Image */}
-        <div>
-          <img
-            src="assets/abcdd.webp"
-            alt="Manufacturing Image"
-            className="w-full h-[380px] object-cover rounded-md shadow"
-          />
-        </div>
-
-      </div>
+       
     </div></>
   );
 };

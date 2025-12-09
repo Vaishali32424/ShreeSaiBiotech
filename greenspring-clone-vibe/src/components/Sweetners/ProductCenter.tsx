@@ -83,49 +83,57 @@ const ProductCenter: React.FC = () => {
         Product Center
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-        {products?.map((product, index) => (
-          <div
-            key={product.id}
-            className="border rounded border-green-700 shadow hover:shadow-md transition overflow-hidden"
+  <div className="w-full py-12 bg-green-800" >
+  
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto px-4">
+    {products?.map((product) => (
+      <div
+        key={product.id}
+        className="border rounded border-green-700 shadow hover:shadow-md transition overflow-hidden bg-white"
+      >
+        {/* Top Ribbon */}
+        <div className="bg-green-700 text-white text-xs font-bold py-1 px-2 text-center">
+          Shree Sai BioTech
+        </div>
+
+        {/* Product Image */}
+        <img
+          src={product.image_url}
+          alt={product.name}
+          className="w-full h-48 object-cover"
+        />
+
+        {/* Content */}
+        <div className="p-4 text-sm text-gray-800">
+          <h4 className="font-semibold mb-1">{product.name}</h4>
+          <p className="my-2">{product.description}</p>
+
+          <button
+            onClick={() => window.location.href = `/products/product/${product.id}`}
+            className="mt-2 inline-flex items-center text-green-600 hover:text-green-700 font-medium text-sm"
           >
-            <div className="bg-green-700 text-white text-xs font-bold py-1 px-2 flex justify-between items-center">
-              <span>Shree Sai BioTech</span>
-            </div>
-
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="w-full h-50 object-fit bg-white"
-            />
-
-            <div className="p-4 text-sm text-gray-800">
-              <h4 className="font-semibold mb-1">{product.name}</h4>
-              <p className="my-2">{product.description}</p>
-<button
-                  onClick={() => window.location.href = `/products/product/${product.id}`}
-                  className="mt-2 inline-flex items-center text-green-600 hover:text-green-700 font-medium text-sm"
-                >
-                  Read  More
-                  <svg
-                    className="ml-1 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-            </div>
-             
-          </div>
-        ))}
+            Read More
+            <svg
+              className="ml-1 w-4 h-4 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
+    ))}
+  </div>
+</div>
+
     </div>
   );
 };

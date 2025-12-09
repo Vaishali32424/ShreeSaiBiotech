@@ -53,7 +53,8 @@ export async function createCategory<T>(data: { name: string }) {
   });
 }
 
-export async function ProductExistense<T>( name: string ) {
+
+export async function ProductExistence<T>(name: string) {
   return MainAPIService.fetchData<T>({
     url: `product/existence/by/${name}`,
     method: 'get',

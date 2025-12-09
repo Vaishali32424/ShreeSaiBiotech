@@ -11,6 +11,7 @@ import AllKnowledgeList from './AllKnowledgeList'
 import KnowledgeDetail from './KnowledgeDetail'
 import KnowledgeSidebar from './NewsSidebar'
 import HotProductsSidebar from '../LandingPage/HotProductsSidebar'
+import PhoneNumberSidebar from '../Products/PhoneNumberSidebar'
 
 const AllKnowledge = () => {
     
@@ -31,6 +32,7 @@ const AllKnowledge = () => {
                         <KnowledgeSidebar /> 
                         
                         <HotProductsSidebar /> 
+                        <PhoneNumberSidebar/>
                     </aside>
                     
                     <div className='flex-1'>

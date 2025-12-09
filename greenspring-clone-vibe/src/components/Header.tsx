@@ -103,16 +103,28 @@ useEffect(() => {
       {/* ✅ Top Bar - hidden on mobile */}
       <div className="hidden sm:block bg-header-bg text-white py-1 sm:py-0 sm:px-4">
         <div className="container mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-2">
-              <Phone className="w-4 h-4" />
-              <span className="text-nowrap text-sm">{t("phone")}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Mail className="w-4 h-4" />
-              <span>{t("email")}</span>
-            </div>
-          </div>
+          <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-6">
+
+  <Phone className="w-4 h-4" />
+  <a
+    href="tel:+918989496905"
+    className="text-nowrap text-sm hover:underline"
+  >
+    {t("phone")}
+  </a>
+</div>
+
+<div className="flex items-center space-x-2">
+  <Mail className="w-4 h-4" />
+  <a
+    href="mailto:info@shreesaibiotech.com"
+    className="text-sm hover:underline"
+  >
+    {t("email")}
+  </a>
+</div>
+</div>
           <div className="sm:flex items-center hidden  space-x-4">
             {/* Language Switch Desktop */}
             <DropdownMenu>
@@ -332,9 +344,10 @@ useEffect(() => {
     <NavigationDropdown title={t("about_us")} items={companyDropdownItems} route="/why-choose-us" />
     <NavigationDropdown title={t("products")} items={productsDropdownItems} route={"/products"} />
 
-    <a href="#" className="block text-foreground">{t("sweeteners")}</a>
-    <a href="#" className="block text-foreground">{t("news")}</a>
-    <a href="#" className="block text-foreground">{t("knowledge")}</a>
+    <a href="/sweeteners" className="block text-foreground">{t("sweeteners")}</a>
+                        <NavigationDropdown title={t("news")}  navigateById={true} items={newsDropdownItems} route={"/news"} />
+
+            <a href="/knowledge" className="text-foreground text-sm hover:text-primary transition-colors">{t("knowledge")}</a>    <a href="/knowledge" className="block text-foreground">{t("knowledge")}</a>
     <a href="/contact-us" className="block text-foreground">{t("contact_us")}</a>
 
     <Button className="w-full bg-primary hover:bg-primary-dark text-white rounded-md font-medium">

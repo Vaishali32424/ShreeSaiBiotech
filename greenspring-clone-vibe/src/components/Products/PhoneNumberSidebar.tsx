@@ -10,6 +10,7 @@ const PhoneNumberSidebar = () => {
     email: "",
     mobile: "",
     company_name: "",
+    product_name: "",
     subject: "",
     description:
       "Hi! Shree Sai Biotech, I want to know more about your products. Can you please provide more details?",
@@ -57,6 +58,7 @@ const PhoneNumberSidebar = () => {
         mobile: "",
         company_name: "",
         subject: "",
+        product_name: "",
         description:
           "Hi! Shree Sai Biotech, I want to know more about your products. Can you please provide more details?",
       });
@@ -105,6 +107,16 @@ const PhoneNumberSidebar = () => {
           onChange={handlePhoneChange}
           className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-green-600"
           placeholder="Mobile / WhatsApp*"
+        />
+ <input
+          type="text"
+          name="product_name"
+          placeholder="Product Name"
+          value={formData.product_name}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-green-600"
+          required
+
         />
 
         <input

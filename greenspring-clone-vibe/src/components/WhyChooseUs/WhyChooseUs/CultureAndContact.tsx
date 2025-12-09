@@ -25,28 +25,33 @@ const CultureAndContact = ({ showCards = false,  }) => {
     },
   ];
 
-  const contactItems = [
-    {
-      icon: <Mail size={28} />,
-      title: "Write to us",
-      desc: "Our email address: info@shreesaibiotech.com",
-    },
-    {
-      icon: <MapPin size={28} />,
-      title: "Visiting us",
+const contactItems = [
+  {
+    icon: <Mail size={28} />,
+    title: "Write to us",
+    desc: "Our email address: info@shreesaibiotech.com",
+    link: "mailto:info@shreesaibiotech.com"
+  },
+  {
+    icon: <MapPin size={28} />,
+    title: "Visiting us",
       desc: "2nd Floor, Ms-A, Shop A 212, VIP Marg, Mall Godown Road, New Siyaganj, Indore - 452007, Madhya Pradesh, India.",
-    },
-    {
-      icon: <MessageCircle size={28} />,
-      title: "Whatsapp & Telephone",
-      desc: "Whatsapp : +91-8989496905  & Telephone: 0731-4022477",
-    },
-    {
-      icon: <Phone size={28} />,
-      title: "Contact directly at our Office",
+    link: "https://maps.google.com/?q=ShreeSaiBiotech,Indore"
+  },
+  {
+    icon: <MessageCircle size={28} />,
+    title: "Whatsapp & Telephone",
+    desc: "Whatsapp : +91-8989496905 & Telephone: 0731-4022477",
+    link: "https://wa.me/918989496905"
+  },
+  {
+    icon: <Phone size={28} />,
+    title: "Contact directly at our Office",
       desc: "Mfg: Facilty Address : Plot No. 368-369 Dharmat Road,sanwer,Indore , 452001-madhya Pradesh, India",
-    },
-  ];
+    link: "tel:+917314022477"
+  },
+];
+
 
   return (
     <>
@@ -92,25 +97,26 @@ const CultureAndContact = ({ showCards = false,  }) => {
           </div>
 
           {/* Contact Boxes */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto px-10">
-            {contactItems.map((item, index) => (
-              <div
-                key={index}
-                className="group border border-green-700 rounded-lg p-6 text-center shadow-sm hover:shadow-md transform transition duration-300 ease-in-out hover:scale-90"
-              >
-                {/* Icon */}
-                <div className="text-green-700 mb-3 flex justify-center transform transition duration-500 group-hover:-scale-x-100">
-                  {item.icon}
-                </div>
+   <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-7xl mx-auto px-10">
+  {contactItems.map((item, index) => (
+    <a
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      key={index}
+      className="group cursor-pointer border border-green-700 rounded-lg p-6 text-center shadow-sm hover:shadow-md transform transition duration-300 ease-in-out hover:scale-90"
+    >
+      <div className="text-green-700 mb-3 flex justify-center transform transition duration-500 group-hover:-scale-x-100">
+        {item.icon}
+      </div>
 
-                {/* Title */}
-                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+      <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
 
-                {/* Description */}
-                <p className="text-sm text-gray-700">{item.desc}</p>
-              </div>
-            ))}
-          </div>
+      <p className="text-sm text-gray-700">{item.desc}</p>
+    </a>
+  ))}
+</div>
+
         </div>
     </>
   );

@@ -32,7 +32,7 @@ const sectionData = [
 
 const InfoSection = () => {
   return (
-    <div className="space-y-12 my-10 bg-gray-100">
+    <><div className="space-y-12 my-10 bg-gray-100">
       {sectionData.map((section, index) => (
         <div
           key={index}
@@ -40,22 +40,17 @@ const InfoSection = () => {
         >
           {/* Image */}
           <div
-            className={`${
-              index % 2 === 1 ? "md:order-2" : "md:order-1"
-            }`}
+            className={`${index % 2 === 1 ? "md:order-2" : "md:order-1"}`}
           >
             <img
               src={section.image}
               alt={section.title}
-              className="w-full h-[300px] object-cover"
-            />
+              className="w-full h-[300px] object-cover" />
           </div>
 
           {/* Text */}
           <div
-            className={`p-8 ${
-              index % 2 === 1 ? "md:order-1" : "md:order-2"
-            }`}
+            className={`p-8 ${index % 2 === 1 ? "md:order-1" : "md:order-2"}`}
           >
             <h2 className="text-sm font-bold text-green-800 ">
               {section.title}
@@ -66,7 +61,36 @@ const InfoSection = () => {
           </div>
         </div>
       ))}
-    </div>
+    </div><div className="grid md:grid-cols-2 my-10 gap-10 items-center">
+
+        {/* Left Text Section */}
+        <div>
+          <h2 className="text-xl font-bold text-teal-800 leading-snug">
+            We Manufacture Raw Ingredients For Businesses In Any Industry, Including:
+          </h2>
+
+          <ul className="mt-6 space-y-3 text-[15px] text-gray-800">
+            <li className="list-disc ml-5">Food</li>
+            <li className="list-disc ml-5">Drink</li>
+            <li className="list-disc ml-5">Supplement</li>
+            <li className="list-disc ml-5">Nutraceuticals</li>
+            <li className="list-disc ml-5">Pet Nutrition</li>
+            <li className="list-disc ml-5">Beauty Products</li>
+            <li className="list-disc ml-5">Essential Oils</li>
+            <li className="list-disc ml-5">Homeopathic Ingredients</li>
+            <li className="list-disc ml-5">Sports Nutrition</li>
+          </ul>
+        </div>
+
+        {/* Right Image */}
+        <div>
+          <img
+            src="assets/abcdd.webp"
+            alt="Manufacturing Image"
+            className="w-full h-[380px] object-cover rounded-md shadow" />
+        </div>
+
+      </div></>
   );
 };
 
