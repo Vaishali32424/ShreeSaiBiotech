@@ -62,9 +62,10 @@ class Contact(Base):
     __tablename__ = "contact"
 
     id = Column(Integer, primary_key=True, index=True)
+    product_name = Column(String(200), nullable=False)
     name = Column(String(100))
     mobile = Column(String(20), unique=True)
-    email = Column(String(100), unique=True)
+    email = Column(String(100), unique=True, nullable=False)
     company_name = Column(String(100))
     subject = Column(String(200))
     description = Column(Text)
