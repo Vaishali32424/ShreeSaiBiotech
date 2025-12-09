@@ -70,7 +70,7 @@ def Email_send(email_msg: str):
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()  # Initiate TLS
         server.login('sales.biotechss02@gmail.com', G_Passkey)  # Use environment variables for security
-        server.sendmail('sales.biotechss02@gmail.com', 'sumit.997716@gmail.com', email_msg)
+        server.sendmail('sales.biotechss02@gmail.com', 'info@shreesaibiotech.com', email_msg)
         server.quit()
         return "Email sent successfully"
     except Exception as e:
