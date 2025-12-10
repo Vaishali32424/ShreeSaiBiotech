@@ -131,13 +131,13 @@ export async function UploadCardsImage<T>( formData: FormData): Promise<AxiosRes
 
 export const deleteCategory = (id: string) =>
   MainAPIService.fetchData({
-    url: `category/delete/${id}`,
+    url: `product/category/delete/${id}`,
     method: 'delete',
   });
 
 export const updateCategory = (id: string, data: any) =>
   MainAPIService.fetchData({
-    url: `category/edit/by/${id}`,
+    url: `product/category/edit/by/${id}`,
     method: 'put',
     data,
   });

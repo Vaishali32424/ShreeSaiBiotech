@@ -107,7 +107,7 @@ def read_product(product_id: str, db: Session = Depends(get_db)):
 @router.put("/edit/by/{product_id}", response_model=ProductOut)
 async def update_product(
     product_id: str,
-    category: int,
+    category_name: int = Form(...),
     name: Optional[str] = Form(None),
     short_details: Optional[str] = Form(None),
     content_sections: Optional[str] = Form(None),
@@ -117,9 +117,8 @@ async def update_product(
     product = db.get(Product, product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-    # Update only if provided
-    if category not in (None, "", "null"):
-        product.category_id = category
+    if category_name not in (None, "", "null"):
+        product.category_id = category_name
     if name is not None:
         product.name = name
     if short_details not in (None, "", "null"):
@@ -127,22 +126,17 @@ async def update_product(
             product.short_details = json.loads(short_details)
         except:
             product.short_details = short_details
-
     if content_sections not in (None, "", "null"):
         try:
             product.content_sections = json.loads(content_sections)
         except:
             product.content_sections = content_sections
-
-    # Handle new image upload
     if image is not None:
         if product.image_public_id:
             cloudinary.uploader.destroy(product.image_public_id)
-
         upload_res = cloudinary.uploader.upload(image.file, folder="product_images")
         product.image_url = upload_res.get("secure_url")
         product.image_public_id = upload_res.get("public_id")
-
     db.commit()
     db.refresh(product)
     if product.content_sections in ("", "null"):
@@ -243,10 +237,10 @@ def category_delete(id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Category deleted successfully"}
 
-@router.patch("/edit/category_name/{category_id}")
+@router.put("/category/edit/by/{category_id}")
 def update_product_category(
     category_id: int,
-    category_name: str = Form(...),
+    payload: CategoryUpdate,
     db: Session = Depends(get_db)
 ):
     category = db.query(ProductCategory).filter(
@@ -256,7 +250,7 @@ def update_product_category(
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
 
-    category.name = category_name
+    category.name = payload.categoryName
     db.commit()
     db.refresh(category)
 

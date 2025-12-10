@@ -6,7 +6,6 @@ from datetime import datetime
 from pydantic import field_validator
 
 
-
 class ProductCat(BaseModel):
     name: str
     model_config = ConfigDict(from_attributes=True)
@@ -109,3 +108,6 @@ class ContactResponse(BaseModel):
     mobile: Optional[str] = None
     description: str
     created_at: datetime
+
+class CategoryUpdate(BaseModel):
+    categoryName: str
