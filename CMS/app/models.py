@@ -1,28 +1,38 @@
 from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, Enum, Boolean, DateTime
 from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
+from sqlalchemy.orm import relationship
  
 Base = declarative_base()
- 
+
 class ProductCategory(Base):
     __tablename__ = "product_category"
- 
+
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(150), unique=True, nullable=False)
- 
+
+    products = relationship(
+        "Product",
+        back_populates="category",
+        cascade="all, delete-orphan"
+    )
 class Product(Base):
     __tablename__ = "products"
- 
-    id = Column(String(255), primary_key=True, index=True)  # keep as string but increased length
+    id = Column(String(255), primary_key=True, index=True)
     name = Column(String(200), nullable=False)
     image_url = Column(String(1100), nullable=True)
     image_public_id = Column(String(255), nullable=True)
     hot_product = Column(Boolean, default=False)
     short_details = Column(JSON, nullable=True)
     content_sections = Column(JSON, nullable=True)
- 
-    category_id = Column(Integer, ForeignKey("product_category.id"))
-    category = relationship("ProductCategory", backref="products")
+    category_id = Column(
+        Integer,
+        ForeignKey("product_category.id", ondelete="CASCADE")
+    )
+    category = relationship(
+        "ProductCategory",
+        back_populates="products"
+    )
 
 class News(Base):
     __tablename__ = "news"

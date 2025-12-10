@@ -107,6 +107,7 @@ def read_product(product_id: str, db: Session = Depends(get_db)):
 @router.put("/edit/by/{product_id}", response_model=ProductOut)
 async def update_product(
     product_id: str,
+    category: int,
     name: Optional[str] = Form(None),
     short_details: Optional[str] = Form(None),
     content_sections: Optional[str] = Form(None),
@@ -114,14 +115,13 @@ async def update_product(
     db: Session = Depends(get_db)
 ):
     product = db.get(Product, product_id)
-
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-
     # Update only if provided
+    if category not in (None, "", "null"):
+        product.category_id = category
     if name is not None:
         product.name = name
-
     if short_details not in (None, "", "null"):
         try:
             product.short_details = json.loads(short_details)
@@ -145,11 +145,8 @@ async def update_product(
 
     db.commit()
     db.refresh(product)
-
-    # ⭐ FIX: Clean before returning to satisfy Pydantic
     if product.content_sections in ("", "null"):
         product.content_sections = None
-
     if product.short_details in ("", "null"):
         product.short_details = None
 
@@ -236,3 +233,35 @@ from sqlalchemy import exists
 def find_product(id: str, db: Session = Depends(get_db)):
     exists_query = db.query(exists().where(Product.id == id)).scalar()
     return {"exists": exists_query}
+
+@router.delete("/category/delete/by/{id}")
+def category_delete(id: int, db: Session = Depends(get_db)):
+    category = db.query(ProductCategory).filter(ProductCategory.id == id).first()
+    if not category:
+        raise HTTPException(status_code=404, detail="Product not found")
+    db.delete(category)
+    db.commit()
+    return {"message": "Category deleted successfully"}
+
+@router.patch("/edit/category_name/{category_id}")
+def update_product_category(
+    category_id: int,
+    category_name: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    category = db.query(ProductCategory).filter(
+        ProductCategory.id == category_id
+    ).first()
+
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    category.name = category_name
+    db.commit()
+    db.refresh(category)
+
+    return {
+        "message": "Product category updated successfully",
+        "category_id": category.id,
+        "category_name": category.name
+    }

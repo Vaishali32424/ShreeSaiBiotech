@@ -11,45 +11,38 @@ load_dotenv()
 
 router = APIRouter()
 
+from fastapi import BackgroundTasks
+
 @router.post("/create")
-def create_contact(contact: ContactCreate, db: Session = Depends(get_db)):
-    # Check if mobile already exists
+def create_contact(
+    contact: ContactCreate,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
     if contact.mobile:
-        existing_mobile = db.query(Contact).filter(Contact.mobile == contact.mobile).first()
-        if existing_mobile:
+        if db.query(Contact).filter(Contact.mobile == contact.mobile).first():
             raise HTTPException(status_code=400, detail="Mobile number already exists")
-    # Check if email already exists
     if contact.email:
-        existing_email = db.query(Contact).filter(Contact.email == contact.email).first()
-        if existing_email:
+        if db.query(Contact).filter(Contact.email == contact.email).first():
             raise HTTPException(status_code=400, detail="Email already exists")
-    new_contact = Contact(
-        product_name=contact.product_name,
-        name=contact.name,
-        mobile=contact.mobile,
-        email=contact.email,
-        company_name=contact.company_name,
-        subject=contact.subject,
-        description=contact.description
-    )
+    new_contact = Contact(**contact.dict())
     db.add(new_contact)
     db.commit()
     db.refresh(new_contact)
-    # ✅ Email message with all form details
     email_msg = f"""
     New Contact Form Submission
     Product Name: {contact.product_name}
     Name: {contact.name}
     Mobile: {contact.mobile}
     Email: {contact.email}
-    Company Name: {contact.company_name}
+    Company: {contact.company_name}
     Subject: {contact.subject}
-    Message:
-    {contact.description}
+    Message: {contact.description}
     """
-    response = Email_send(email_msg)
+    # ✅ Run email in background
+    background_tasks.add_task(Email_send, email_msg)
     return {
-        "message": "Contact created successfully and email sent",
+        "message": "Contact created successfully",
         "data": new_contact
     }
 
@@ -65,17 +58,19 @@ import smtplib
 G_Passkey = os.getenv("G_Passkey")
 
 def Email_send(email_msg: str):
-    # Send email using SMTP
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()  # Initiate TLS
-        server.login('sales.biotechss02@gmail.com', G_Passkey)  # Use environment variables for security
-        server.sendmail('sales.biotechss02@gmail.com', 'info@shreesaibiotech.com', email_msg)
+        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
+        server.starttls()
+        server.login('sales.biotechss02@gmail.com', G_Passkey)
+        server.sendmail(
+            'sales.biotechss02@gmail.com',
+            'sumit.997716@gmail.com',
+            email_msg
+        )
         server.quit()
-        return "Email sent successfully"
     except Exception as e:
-        return f"Failed to send email: {e}"
-    
+        print("Email error:", e)
+
 
 # from email.mime.text import MIMEText
 
