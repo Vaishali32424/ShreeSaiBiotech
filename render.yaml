@@ -2,8 +2,18 @@ services:
   - type: web
     name: shreesaibiotech-api
     env: python
-    buildCommand: cd CMS && pip install -r requirements.txt
-    startCommand: cd CMS && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+    buildCommand: |
+      cd CMS
+      pip install -r requirements.txt
+
+    startCommand: |
+      cd CMS
+      uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
+
+      - key: DATABASE_URL
+        sync: false
