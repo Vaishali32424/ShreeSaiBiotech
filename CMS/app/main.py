@@ -32,14 +32,14 @@ app.include_router(contact_router, prefix='/contact', tags=["contact api's"])
 
 
 # Create tables on startup (only if database is available)
-@app.on_event("startup")
-async def startup_event():
-    try:
-        Base.metadata.create_all(bind=engine)
-        print("Database tables created/verified successfully")
-    except Exception as e:
-        print(f"WARNING: Could not create database tables: {e}")
-        print("Make sure DATABASE_URL or MySQL connection variables are set correctly in Railway.")
+# @app.on_event("startup")
+# async def startup_event():
+#     try:
+#         Base.metadata.create_all(bind=engine)
+#         print("Database tables created/verified successfully")
+#     except Exception as e:
+#         print(f"WARNING: Could not create database tables: {e}")
+#         print("Make sure DATABASE_URL or MySQL connection variables are set correctly in Railway.")
 
 @app.get("/")
 def root():

@@ -33,3 +33,11 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# from supabase import create_client, Client
+
+# SUPABASE_URL = 'https://fsbrubznebeirvotufjw.supabase.co'
+# SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzYnJ1YnpuZWJlaXJ2b3R1Zmp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2OTg2ODIsImV4cCI6MjA4MTI3NDY4Mn0.e6JIe_E3NWEpBmY1knqzv4k5i9J3nhhO0gKfRwluoaM'
+
+# supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
