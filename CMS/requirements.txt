@@ -6,8 +6,5 @@ python-multipart==0.0.20
 SQLAlchemy==2.0.44
 uvicorn==0.38.0
 psycopg[binary]
-<<<<<<< HEAD
 psycopg2-binary
-=======
->>>>>>> eb4ef53caa5eff7c6c350faf001ff46462f528d9
 cloudinary
