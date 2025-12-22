@@ -19,7 +19,7 @@ if DATABASE_URL.startswith("postgres://"):
 try:
     engine = create_engine(
     DATABASE_URL,
-    connect_args={"sslmode": "require"}
+    # connect_args={"sslmode": "require"}
 )
 except Exception as e:
     print(f"ERROR: Failed to create database engine: {e}")
