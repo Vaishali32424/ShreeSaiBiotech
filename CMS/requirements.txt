@@ -1,5 +1,5 @@
 fastapi==0.121.0
-alembic==2.0.22
+alembic>=2.0.20
 pydantic==2.12.4
 PyMySQL==1.1.2
 python-dotenv==1.2.1
