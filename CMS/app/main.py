@@ -41,13 +41,13 @@ app.include_router(contact_router, prefix='/contact', tags=["contact api's"])
 #         print(f"WARNING: Could not create database tables: {e}")
 #         print("Make sure DATABASE_URL or MySQL connection variables are set correctly in Railway.")
 
-@app.on_event("startup")
-def run_migrations():
-    from alembic import command
-    from alembic.config import Config
+# @app.on_event("startup")
+# def run_migrations():
+#     from alembic import command
+#     from alembic.config import Config
 
-    alembic_cfg = Config("alembic.ini")
-    command.upgrade(alembic_cfg, "head")
+#     alembic_cfg = Config("alembic.ini")
+#     command.upgrade(alembic_cfg, "head")
 
 
 @app.get("/")

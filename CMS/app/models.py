@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, Enum, Boolean, DateTime
 from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
- 
-Base = declarative_base()
+from app.database import Base  
 
 class ProductCategory(Base):
     __tablename__ = "product_category"
