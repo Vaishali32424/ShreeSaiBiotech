@@ -4,49 +4,68 @@ from app.database import get_db
 from sqlalchemy import MetaData, text
 
 def insert_data():
- 
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    # file_path = os.path.join(base_dir, "products_images.json")
     file_path = os.path.join(base_dir, "products_with_images.json")
 
     with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f, strict=False)
-    
-    db = next(get_db())  # <--- FIX
-    
+
+    db = next(get_db())
+
     try:
         for category_name, products in data.items():
-    
-            # check + create product category
-            category = db.query(ProductCategory).filter_by(name=category_name).first()
+
+            # 🔹 category (safe)
+            category = (
+                db.query(ProductCategory)
+                .filter(ProductCategory.name == category_name)
+                .first()
+            )
+
             if not category:
                 category = ProductCategory(name=category_name)
                 db.add(category)
                 db.commit()
                 db.refresh(category)
-    
-            for item in products:
-                product = Product(
-                    id=item.get("id"),
-                    name=item.get("name"),
-                    category_id=category.id,
-                    image_url=item.get("image_url"),
-                    image_public_id=item.get("image_public_id"),
-                    short_details={"table_description": item.get("TableDescription")},
-                    content_sections={
-                        "paragraph_description": item.get("ParagraphDescription"),
-                        "description": item.get("Description")
-                    }
-                )
-                db.add(product)
-    
+
+            # 🔥 CRITICAL FIX: disable autoflush
+            with db.no_autoflush:
+                for item in products:
+                    product_id = item.get("id")
+
+                    exists = (
+                        db.query(Product.id)
+                        .filter(Product.id == product_id)
+                        .first()
+                    )
+                    if exists:
+                        continue
+
+                    product = Product(
+                        id=product_id,
+                        name=item.get("name"),
+                        category_id=category.id,
+                        image_url=item.get("image_url"),
+                        image_public_id=item.get("image_public_id"),
+                        hot_product=False,
+                        short_details={
+                            "table_description": item.get("TableDescription")
+                        },
+                        content_sections={
+                            "paragraph_description": item.get("ParagraphDescription"),
+                            "description": item.get("Description")
+                        }
+                    )
+
+                    db.add(product)
+
         db.commit()
-        print("Data inserted successfully!")
-    
+        print("✅ Data inserted (duplicates skipped safely)")
+
     except Exception as e:
         db.rollback()
-        print("Error:", e)
-    
+        print("❌ Error while inserting data:", e)
+
     finally:
         db.close()
 
