@@ -1,60 +1,41 @@
 from logging.config import fileConfig
-import os
-from app.models import *
 from sqlalchemy import engine_from_config, pool
 from alembic import context
+from dotenv import load_dotenv
+import os
 
-# this is the Alembic Config object
+load_dotenv()
+
+from app.database import Base  # single Base
+from app.models import Product, ProductCategory, News, Knowledge, Contact  # explicit imports
+
 config = context.config
+config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
+fileConfig(config.config_file_name)
 
-# Interpret the config file for Python logging.
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
-
-# IMPORT YOUR Base
-from app.database import Base  # adjust if path differs
 target_metadata = Base.metadata
 
-
-def get_database_url():
-    url = os.getenv("DATABASE_URL")
-    if not url:
-        raise RuntimeError("DATABASE_URL is not set")
-    return url
-
-
 def run_migrations_offline():
+    url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=get_database_url(),
+        url=url,
         target_metadata=target_metadata,
         literal_binds=True,
-        compare_type=True,
+        dialect_opts={"paramstyle": "named"},
     )
-
     with context.begin_transaction():
         context.run_migrations()
 
-
 def run_migrations_online():
     connectable = engine_from_config(
-        {
-            "sqlalchemy.url": get_database_url()
-        },
+        config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
-        connect_args={"sslmode": "require"},  # REQUIRED for Supabase
     )
-
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            compare_type=True,
-        )
-
+        context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()
-
 
 if context.is_offline_mode():
     run_migrations_offline()

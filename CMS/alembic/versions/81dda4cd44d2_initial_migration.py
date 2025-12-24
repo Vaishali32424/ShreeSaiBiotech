@@ -1,8 +1,8 @@
-"""initial postgres schema
+"""initial migration
 
-Revision ID: 07c924f15482
+Revision ID: 81dda4cd44d2
 Revises: 
-Create Date: 2025-12-16 18:08:37.670609
+Create Date: 2025-12-24 23:44:56.262631
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '07c924f15482'
+revision: str = '81dda4cd44d2'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -49,7 +49,14 @@ def upgrade() -> None:
     op.create_index(op.f('ix_knowledge_id'), 'knowledge', ['id'], unique=False)
     op.create_table('news',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('news_category', sa.Enum('company_news', 'industry_news', 'company_exhibition', name='news_category_enum'), nullable=False),
+    sa.Enum(
+    'company_news',
+    'industry_news',
+    'company_exhibition',
+    name='news_category_enum',
+    create_type=False
+),
+
     sa.Column('news_title', sa.String(length=200), nullable=False),
     sa.Column('date', sa.Date(), nullable=True),
     sa.Column('initial_view', sa.Integer(), nullable=True),

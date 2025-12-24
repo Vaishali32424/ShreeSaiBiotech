@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, JSON, ForeignKey, Date, Text, En
 from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
 from app.database import Base  
+from sqlalchemy.dialects.postgresql import ENUM
 
 class ProductCategory(Base):
     __tablename__ = "product_category"
@@ -32,27 +33,34 @@ class Product(Base):
         back_populates="products"
     )
 
+from sqlalchemy import Enum
+
+news_category_enum = Enum(
+    "company_news",
+    "industry_news",
+    "company_exhibition",
+    name="news_category_enum",
+    create_type=False  # 👈 prevents duplicate ENUM creation
+)
+
+
 class News(Base):
     __tablename__ = "news"
 
     id = Column(Integer, primary_key=True, index=True)
+
     news_category = Column(
-    Enum(
-        "company_news",
-        "industry_news",
-        "company_exhibition",
-        name="news_category_enum"
-    ),
-    nullable=False
+        news_category_enum,
+        nullable=False
     )
+
     news_title = Column(String(200), nullable=False)
     date = Column(Date)
     initial_view = Column(Integer, default=0)
     short_description = Column(Text)
     long_description = Column(Text)
     image_url = Column(String(2000), nullable=True)
-    image_public_id = Column(String(500), nullable=True)   # <-- REQUIRED
-
+    image_public_id = Column(String(500), nullable=True)
 
 class Knowledge(Base):
     __tablename__ = "knowledge"
