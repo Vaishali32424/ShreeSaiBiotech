@@ -3,6 +3,8 @@ from app.models import Product, ProductCategory
 from app.database import get_db
 from sqlalchemy import MetaData, text
 
+from sqlalchemy.dialects.postgresql import insert
+
 def insert_data():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, "products_with_images.json")
@@ -15,7 +17,7 @@ def insert_data():
     try:
         for category_name, products in data.items():
 
-            # 🔹 category (safe)
+            # Category
             category = (
                 db.query(ProductCategory)
                 .filter(ProductCategory.name == category_name)
@@ -28,39 +30,31 @@ def insert_data():
                 db.commit()
                 db.refresh(category)
 
-            # 🔥 CRITICAL FIX: disable autoflush
-            with db.no_autoflush:
-                for item in products:
-                    product_id = item.get("id")
+            values = []
+            for item in products:
+                values.append({
+                    "id": item.get("id"),
+                    "name": item.get("name"),
+                    "category_id": category.id,
+                    "image_url": item.get("image_url"),
+                    "image_public_id": item.get("image_public_id"),
+                    "hot_product": False,
+                    "short_details": {
+                        "table_description": item.get("TableDescription")
+                    },
+                    "content_sections": {
+                        "paragraph_description": item.get("ParagraphDescription"),
+                        "description": item.get("Description")
+                    }
+                })
 
-                    exists = (
-                        db.query(Product.id)
-                        .filter(Product.id == product_id)
-                        .first()
-                    )
-                    if exists:
-                        continue
+            stmt = insert(Product).values(values)
+            stmt = stmt.on_conflict_do_nothing(index_elements=["id"])
 
-                    product = Product(
-                        id=product_id,
-                        name=item.get("name"),
-                        category_id=category.id,
-                        image_url=item.get("image_url"),
-                        image_public_id=item.get("image_public_id"),
-                        hot_product=False,
-                        short_details={
-                            "table_description": item.get("TableDescription")
-                        },
-                        content_sections={
-                            "paragraph_description": item.get("ParagraphDescription"),
-                            "description": item.get("Description")
-                        }
-                    )
-
-                    db.add(product)
+            db.execute(stmt)
 
         db.commit()
-        print("✅ Data inserted (duplicates skipped safely)")
+        print("✅ Products inserted (duplicates ignored safely)")
 
     except Exception as e:
         db.rollback()
