@@ -90,7 +90,7 @@ const AllKnowledgeList = () => {
             className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 group flex flex-col md:flex-row"
           >
             <div className="md:w-1/4 w-full h-48 md:h-auto overflow-hidden flex-shrink-0">
-              <Link to={`/knowledge/detail/${article.id}`}>
+              <Link to={`/detail/${article.id}`}>
                 <img
                   src={article.image_url}
                   alt={article.knowledge_title}
@@ -108,7 +108,7 @@ const AllKnowledgeList = () => {
                 </span>
               </div>
 
-              <Link to={`/knowledge/detail/${article.id}`}>
+              <Link to={`/detail/${article.id}`}>
                 <h2 className="text-xl font-bold text-gray-800 mt-2 mb-2 group-hover:text-green-700 transition-colors line-clamp-2">
                   {article.knowledge_title}
                 </h2>
@@ -120,7 +120,7 @@ const AllKnowledgeList = () => {
 
               <div className="mt-auto">
                 <Link
-                  to={`knowledge/detail/${article.id}`}
+                  to={`detail/${article.id}`}
                   className="inline-flex items-center text-green-700 font-semibold hover:text-green-800 transition-colors"
                 >
                   Read More <i className="fas fa-arrow-right ml-2 text-sm"></i>

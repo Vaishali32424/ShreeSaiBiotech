@@ -51,7 +51,7 @@ const HotProducts: React.FC = () => {
     <section className="pb-20  bg-gradient-to-br from-gray-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto px-6">
         {/* Heading */}
-        <div className="text-center mb-14">
+        <div className="text-center mt-4 mb-14">
           <p className="text-green-600 font-semibold uppercase tracking-widest">
             Hot Sell
           </p>

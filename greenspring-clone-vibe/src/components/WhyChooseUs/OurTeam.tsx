@@ -56,7 +56,7 @@ const OurTeam = () => {
       <PageBanner
         title={"Meet Our Team"}
         breadcrumb={"About Us / Meet Our Team"}
-        backgroundImage="https://www.greenspringshop.com/uploads/202318070/ImgScroll/ba202302141100313844589.jpg?size=1920x300"
+        backgroundImage="assets/Teams/teams-banner.jpeg"
       />
     <section className="pb-12 bg-gray-50 ">
       <div className="max-w-7xl mx-auto px-6">
