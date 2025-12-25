@@ -18,13 +18,13 @@ const sectionData = [
   {
     title: "DEVELOPMENT OF CUSTOMIZED FORMULA IN NATURAL PRODUCTS",
     description:
-      "As a custom formulator we provide turn-key solutions helping customers develop customized formulations from a wide range of natural products. Our clients often choose Green Spring for our ability to develop ingredients of higher potency, made possible by our cutting-edge technology - from capsules, softgels, pills, dry mixes, emulsions and more.",
+      "As a custom formulator we provide turn-key solutions helping customers develop customized formulations from a wide range of natural products. Our clients often choose  Shree sai Biotech  for our ability to develop ingredients of higher potency, made possible by our cutting-edge technology - from capsules, softgels, pills, dry mixes, emulsions and more.",
     image: "https://www.greenspringshop.com/Content/uploads/2023389378/20230208160220605569e4b8ce47b681e6efaf43f82997.jpg",
   },
   {
     title: "PRIVATE LABELING & PACKAGINGFOR CUSTOM OIL/POWDER PRODUCTS",
     description:
-      "We custom formulate raw ingredients that can be manufactured into finished products for bottle labeling and packaging for direct-to-customer sales. Green Spring  innovative formulation technology delivers the exact product you're looking for while maintaining the integrity of our natural ingredients, helping you meet your desired label claims (like Non-GMO, Vegan, and more).We're leading the oil & oil powder industry through innovative technology and advanced business acumen: from high oil load oil powders and bioactive microencapsulated powders with improved absorption uptake to bottling, labeling and shrink sleeve-ing your finished product.",
+      "We custom formulate raw ingredients that can be manufactured into finished products for bottle labeling and packaging for direct-to-customer sales.  Shree sai Biotech   innovative formulation technology delivers the exact product you're looking for while maintaining the integrity of our natural ingredients, helping you meet your desired label claims (like Non-GMO, Vegan, and more).We're leading the oil & oil powder industry through innovative technology and advanced business acumen: from high oil load oil powders and bioactive microencapsulated powders with improved absorption uptake to bottling, labeling and shrink sleeve-ing your finished product.",
     image:
       "https://www.greenspringshop.com/Content/uploads/2023389378/20230208150926a3595a257bb64e8bae8e685bb2d9ecaa.jpg",
   },

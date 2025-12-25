@@ -12,8 +12,7 @@ const ProductInfo = () => {
 
       {/* Middle Paragraph */}
       <p className="text-sm text-gray-700 leading-relaxed">
-    We provide various dosage forms and neutral packaging including mixed powders, granules, soft capsules, hard capsules, tablets, soft candies, etc. to meet the different needs of customers. Green Spring has been committed to supplying customers with natural, safe and organic plant extracts. All the products we supply, carry out the highest standards in the international industry, complying with EU EC396, EU 2023/915 standards and the highest solvent residue standards.
-      </p>
+Reckoned as a leading Manufacturer and Exporter SHREE SAI BIOTECH  is a Quality ISO,GMP.FDA.STANDARDIZED HERBAL EXTRACTS since 1988. An exclusive manufacturing facility and Dedicated raw Materials supplier Network makes us the one-stop-shop for all your Requirements of standardized herbal extracts, herbal raw material and other plant derivatives from India      </p>
 
       {/* Notice */}
       <div className="space-y-2">
