@@ -33,16 +33,14 @@ class Product(Base):
         back_populates="products"
     )
 
-from sqlalchemy import Enum
 
 news_category_enum = Enum(
     "company_news",
     "industry_news",
     "company_exhibition",
     name="news_category_enum",
-    create_type=False  # 👈 prevents duplicate ENUM creation
+    create_type=False
 )
-
 
 class News(Base):
     __tablename__ = "news"
@@ -53,7 +51,6 @@ class News(Base):
         news_category_enum,
         nullable=False
     )
-
     news_title = Column(String(200), nullable=False)
     date = Column(Date)
     initial_view = Column(Integer, default=0)
@@ -78,7 +75,7 @@ class Contact(Base):
     __tablename__ = "contact"
 
     id = Column(Integer, primary_key=True, index=True)
-    product_name = Column(String(200), nullable=False)
+    product_name = Column(String(200))
     name = Column(String(100))
     mobile = Column(String(20), unique=True)
     email = Column(String(100), unique=True, nullable=False)

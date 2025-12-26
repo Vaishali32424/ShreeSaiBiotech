@@ -26,14 +26,13 @@ def create_news(
     image: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    # Cloudinary upload
     upload_result = cloudinary.uploader.upload(
         image.file,
         folder="news_images"
     )
 
     new_news = News(
-        news_category=news_category.value,
+        news_category=news_category,  # ✅ FIXED
         news_title=news_title,
         date=date,
         initial_view=initial_view,

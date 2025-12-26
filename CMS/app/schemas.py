@@ -93,13 +93,13 @@ class KnowledgeResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class ContactCreate(BaseModel):
-    product_name: str
-    name: Optional[str]
-    mobile: Optional[str]
-    email: Optional[str]
-    company_name: Optional[str]
-    subject: Optional[str]
-    description: Optional[str]
+    product_name: Optional[str] = None
+    name: Optional[str] = None
+    mobile: Optional[str] = None
+    email: Optional[str] = None
+    company_name: Optional[str] = None
+    subject: Optional[str] = None
+    description: Optional[str] = None
 
 class ContactResponse(BaseModel):
     id: int

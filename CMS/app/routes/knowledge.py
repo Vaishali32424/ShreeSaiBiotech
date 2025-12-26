@@ -43,15 +43,17 @@ def get_knowledge_by_id(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Knowledge not found")
     return knowledge
 
-    
-@router.delete('/delete/by/{id}')
-def knowledge_delete(id: str, db: Session = Depends(get_db)):
-    knowledge = db.query(Knowledge).get()
+
+@router.delete("/delete/by/{id}")
+def knowledge_delete(id: int, db: Session = Depends(get_db)):
+    knowledge = db.get(Knowledge, id)
     if not knowledge:
-        raise HTTPException(status_code=404, detail="Knoledge not found")
+        raise HTTPException(status_code=404, detail="Knowledge not found")
+
     db.delete(knowledge)
     db.commit()
     return {"message": "Knowledge deleted successfully"}
+
 
 @router.put("/edit/by/{id}", response_model=KnowledgeResponse)
 def knowledge_update(
