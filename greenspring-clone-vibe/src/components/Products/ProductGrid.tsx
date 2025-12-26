@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useMemo, useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import PhoneNumberModal from "./PhoneNumberModal";
 
 const PRODUCTS_PER_PAGE = 16;
@@ -7,6 +7,7 @@ const PRODUCTS_PER_PAGE = 16;
 export default function ProductGrid({
   productsData,
   categories,
+  categoryMeta,
   isSearchMode,
   searchTerm,
 }) {
@@ -24,10 +25,15 @@ export default function ProductGrid({
   } else if (categoryId) {
     selectedCategoryName = decodeURIComponent(categoryId);
   } else {
-    selectedCategoryName = categories?.[0] || "All Products";
+    selectedCategoryName = categories?.[0];
   }
 
   const allProducts = productsData?.[selectedCategoryName] || [];
+
+  const categoryDescription =
+    !isSearchMode && selectedCategoryName
+      ? categoryMeta?.[selectedCategoryName]?.description
+      : "";
 
   useEffect(() => {
     setCurrentPage(1);
@@ -41,20 +47,7 @@ export default function ProductGrid({
     return allProducts.slice(start, start + PRODUCTS_PER_PAGE);
   }, [allProducts, currentPage]);
 
-  // ---------------- IMAGE FALLBACK ----------------
-  const handleImageError = (e) => {
-    const img = e.currentTarget;
-    const placeholder =
-      "https://via.placeholder.com/400x300.png?text=No+Image";
-
-    if (img.src.endsWith(".png")) img.src = img.src.replace(".png", ".jpg");
-    else if (img.src.endsWith(".jpg"))
-      img.src = img.src.replace(".jpg", ".jpeg");
-    else img.src = placeholder;
-
-    img.onerror = null;
-  };
-
+ 
   // ---------------- READ MORE HANDLER ----------------
   const handleReadMoreClick = (product) => {
     const hasVisited = localStorage.getItem("hasVisited");
@@ -87,24 +80,31 @@ export default function ProductGrid({
   // ---------------- RENDER ----------------
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">{selectedCategoryName}</h1>
+      <h1 className="text-2xl font-bold mb-4">{selectedCategoryName}</h1>
+
+      {categoryDescription && (
+        <div className="mb-6 p-4 bg-gray-50 border rounded-lg">
+          <div
+            className="prose max-w-none prose-green"
+            dangerouslySetInnerHTML={{ __html: categoryDescription }}
+          />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {paginatedProducts.map((p) => (
           <div
             key={p.id}
-            className="bg-white rounded-lg border shadow-lg p-4 flex flex-col"
+            className="bg-white border rounded-lg shadow p-4 flex flex-col"
           >
             <img
               src={p.image_url}
               alt={p.name}
-              className="w-full h-56 object-contain"
-              loading="lazy"
-              onError={handleImageError}
+              className="h-56 object-contain"
+                            loading="lazy"
+
             />
-
-            <h2 className="mt-2 text-lg font-semibold flex-grow">{p.name}</h2>
-
+            <h2 className="mt-2 font-semibold">{p.name}</h2>
             <button
               onClick={() => handleReadMoreClick(p)}
               className="text-green-700 hover:underline mt-2 self-start"

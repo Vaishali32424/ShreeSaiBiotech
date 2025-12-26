@@ -87,9 +87,9 @@ useEffect(() => {
   ];
 
   const newsDropdownItems = [
-    { label: t("Company News"), href: "/news" },
+    { label: t("Company News"), href: "/news/company-news" },
     { label: t("Industry News"), href: "/news/industry-news" },
-        { label: t("Exibition Information"), href: "/news/exibition-information" },
+        { label: t("Exibition Information"), href: "/news/company-exhibition" },
 
 
   ];

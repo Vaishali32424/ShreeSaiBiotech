@@ -27,6 +27,7 @@ import NewsDashboard from "./components/Dashboard/NewsManagement/NewsDashboard";
 import KnowledgeDashboard from "./components/Dashboard/KnowledgePages/KnowledgeDashboard";
 import AllNews from "./components/NewsPages/AllNews";
 import AllKnowledge from "./components/knowledgePages/AllKnowledge";
+import EditCategory from "./components/Dashboard/EditCategory";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -60,6 +61,7 @@ const App = () => (
 <Route path="/dashboard/news/*" element={<NewsDashboard />} />
 <Route path="/dashboard/knowledge/*" element={<KnowledgeDashboard />} />
 <Route path="/news/*" element={<AllNews />} />
+<Route path="/edit-category/:id" element={<EditCategory />} />
 <Route path="/knowledge/*" element={<AllKnowledge />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

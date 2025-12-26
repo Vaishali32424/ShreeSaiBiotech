@@ -3,6 +3,7 @@ import { getAllProducts, getProductsByCategory, getAllCategories, deleteProduct,
 import { Eye, Heart, Pencil, Plus, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '../ui/use-toast';
+import RichTextEditor from '../CreateProduct/RichTextEditor';
 
 interface Product {
   id: string;
@@ -24,7 +25,8 @@ const ManageProducts: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
-  
+  const [newCategoryName, setNewCategoryName] = useState("");
+const [newCategoryDescription, setNewCategoryDescription] = useState("");
   // 🆕 NEW STATE FOR CATEGORY MANAGEMENT
   const [showCategoryDeleteConfirm, setShowCategoryDeleteConfirm] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
@@ -32,7 +34,6 @@ const ManageProducts: React.FC = () => {
   const [categoryHasProducts, setCategoryHasProducts] = useState(false); 
   const [showCategoryEditModal, setShowCategoryEditModal] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
-  const [newCategoryName, setNewCategoryName] = useState('');
   
   const navigate = useNavigate();
 
@@ -122,42 +123,18 @@ const handleToggleHotProduct = async (product: Product) => {
     navigate(`/view/${productId}`);
   };
   
-  const handleEditCategory = (category: Category) => {
-    setCategoryToEdit(category);
-    setNewCategoryName(category.name);
-    setShowCategoryEditModal(true);
-  };
-  
-const confirmEditCategory = async () => {
-  if (categoryToEdit && newCategoryName.trim()) {
-    try {
-      const categoryName = newCategoryName.trim();
-
-      await updateCategory(categoryToEdit.id, { categoryName });
-
-      setCategories((prev) =>
-        prev.map((cat) =>
-          cat.id === categoryToEdit.id ? { ...cat, name: categoryName } : cat
-        )
-      );
-
-      setShowCategoryEditModal(false);
-      setCategoryToEdit(null);
-      fetchCategories();
-
-      toast({
-        title: "Success✅",
-        description: `Category renamed to ${categoryName}!`,
-      });
-    } catch (error) {
-      console.error("Error updating category:", error);
-      toast({
-        title: "Error❌",
-        description: "Error updating category. Check console.",
-      });
-    }
-  }
+const handleEditCategory = (category: Category) => {
+  navigate(`/edit-category/${category.id}`);
 };
+
+useEffect(() => {
+  if (categoryToEdit) {
+    setNewCategoryName(categoryToEdit.name);
+    setNewCategoryDescription(categoryToEdit.description || "");
+  }
+}, [categoryToEdit]);
+
+
 
   
   const handleDeleteCategoryClick = async (category: Category) => {
@@ -235,8 +212,10 @@ const confirmEditCategory = async () => {
               {/* 🆕 NEW CATEGORY ACTIONS */}
               <div className="flex space-x-2 ml-2">
                 <button
-                  onClick={(e) => { e.stopPropagation(); handleEditCategory(cat); }}
-                  className={`p-1 rounded-full ${selectedCategory === cat.id ? 'text-blue-500 bg-white hover:bg-gray-100' : 'text-gray-600 hover:text-blue-500'}`}
+ onClick={(e) => {
+    e.stopPropagation();
+    handleEditCategory(cat);
+  }}                  className={`p-1 rounded-full ${selectedCategory === cat.id ? 'text-blue-500 bg-white hover:bg-gray-100' : 'text-gray-600 hover:text-blue-500'}`}
                   title="Edit Category"
                 >
                   <Pencil size={16} />
@@ -249,7 +228,6 @@ const confirmEditCategory = async () => {
                   <Trash size={16} />
                 </button>
               </div>
-              {/* 🔚 END NEW CATEGORY ACTIONS */}
             </li>
           ))}
         </ul>
@@ -392,40 +370,7 @@ const confirmEditCategory = async () => {
         </div>
       )}
 
-      {/* 🆕 CATEGORY Edit Modal */}
-      {showCategoryEditModal && categoryToEdit && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h2 className="text-xl font-bold mb-4">Edit Category: {categoryToEdit.name}</h2>
-            <label htmlFor="newCategoryName" className="block text-sm font-medium text-gray-700 mb-1">
-              New Category Name             </label>
-            <input
-              id="newCategoryName"
-              type="text"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter new name"
-            />
-            
-            <div className="mt-6 flex justify-end space-x-4">
-              <button
-                onClick={() => { setShowCategoryEditModal(false); setCategoryToEdit(null); }}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmEditCategory}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-                disabled={!newCategoryName.trim() || newCategoryName.trim() === categoryToEdit.name}
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

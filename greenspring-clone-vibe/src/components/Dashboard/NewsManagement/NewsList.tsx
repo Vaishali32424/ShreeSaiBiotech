@@ -19,8 +19,8 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
 const fetchNews = async () => {
   setLoading(true);
-  
-  const shouldFetchAll = !selectedCategory || selectedCategory === "" || selectedCategory === "All";
+  const shouldFetchAll =
+    !selectedCategory || selectedCategory === "" || selectedCategory === "All";
 
   try {
     let result;
@@ -32,9 +32,10 @@ const fetchNews = async () => {
       console.log(`Fetching news for category: ${selectedCategory}`);
       result = await getNewsByCategory(selectedCategory);
     }
-    setNewsList(result.data); 
+    setNewsList(Array.isArray(result?.data) ? result.data : []);
   } catch (error) {
     console.error("Error fetching news:", error);
+    setNewsList([]); 
   } finally {
     setLoading(false);
   }
@@ -89,7 +90,7 @@ const getSnippet = (htmlString: string, wordLimit: number = 50) => {
                 <a href='/dashboard' className="text-sm text-gray-500 font-mono">Go to dashboard</a>
 
         <h2 className="text-2xl font-semibold">
-          {NEWS_CATEGORIES.find(c => c.id === selectedCategory)?.name} Articles
+          {NEWS_CATEGORIES.find(c => c.id === selectedCategory)?.name || "ALL"} Articles
         </h2>
         <button
           onClick={handleAddNews}
@@ -100,44 +101,68 @@ const getSnippet = (htmlString: string, wordLimit: number = 50) => {
       </div>
 
       <div className="space-y-4">
-        {newsList.map((news) => (
-          <div key={news.id} className="flex bg-white p-4 rounded-lg shadow-md border border-gray-200">
-            {/* Image Placeholder */}
-            <div className="w-40 h-24 bg-gray-100 rounded-md flex-shrink-0 mr-4 overflow-hidden">
-                <img src={news.image_url || 'placeholder.jpg'} alt={news.title} className="w-full h-full object-cover"/>
-            </div>
+      {newsList.length === 0 ? (
+  <div className="">
+  
+  </div>
+) : (
+  <div className="space-y-4">
+    {newsList.map((news) => (
+      <div
+        key={news.id}
+        className="flex bg-white p-4 rounded-lg shadow-md border border-gray-200"
+      >
+        {/* Image */}
+        <div className="w-40 h-24 bg-gray-100 rounded-md flex-shrink-0 mr-4 overflow-hidden">
+          <img
+            src={news.image_url || "placeholder.jpg"}
+            alt={news.news_title}
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-            <div className="flex-grow">
-              <p className="text-xs text-gray-500 mb-1">
-                {news.date} | Views: **{news.views}**
-              </p>
-              <h3 className="text-lg font-bold text-gray-800 mb-1">{news.news_title}</h3>
-            <p className="text-sm text-gray-600 line-clamp-2">
-  {getSnippet(news.long_description, 50)}
-</p>
-              <button 
-                onClick={() => handleEdit(news.id)}
-                className="mt-2 text-blue-600 text-sm hover:underline"
-              >
-                Read more &gt;
-              </button>
-            </div>
-             <div className="flex-shrink-0  space-x-2 ml-4">
-                <button 
-                    onClick={() => handleEdit(news.id)}
-                    className="px-3 py-1 bg-yellow-500 text-white rounded-md text-sm hover:bg-yellow-600"
-                >
-                    Edit
-                </button>
-                   <button 
-                    onClick={() => handleDeleteClick(news.id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600"
-                >
-                    Delete
-                </button>
-            </div>
-          </div>
-        ))}
+        {/* Content */}
+        <div className="flex-grow">
+          <p className="text-xs text-gray-500 mb-1">
+            {news.date} | Views: {news.initial_view}
+          </p>
+
+          <h3 className="text-lg font-bold text-gray-800 mb-1">
+            {news.news_title}
+          </h3>
+
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {getSnippet(news.long_description, 50)}
+          </p>
+
+          <button
+            onClick={() => handleEdit(news.id)}
+            className="mt-2 text-blue-600 text-sm hover:underline"
+          >
+            Read more &gt;
+          </button>
+        </div>
+
+        {/* Actions */}
+        <div className="flex-shrink-0 space-x-2 ml-4">
+          <button
+            onClick={() => handleEdit(news.id)}
+            className="px-3 py-1 bg-yellow-500 text-white rounded-md text-sm hover:bg-yellow-600"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDeleteClick(news.id)}
+            className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
       </div>
       {newsList.length === 0 && <p className="text-center py-8 text-gray-500">No news articles found in this category.</p>}
          {showDeleteConfirm && (

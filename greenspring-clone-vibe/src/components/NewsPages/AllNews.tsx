@@ -14,9 +14,9 @@ import PhoneNumberSidebar from '../Products/PhoneNumberSidebar'
 const AllNews = () => {
     // ... categories array
    const categories = [
-  { name: "Company News", href: "/news", slug: "" },
+  { name: "Company News", href: "/news/company-news", slug: "company-news" },
   { name: "Industry News", href: "/news/industry-news", slug: "industry-news" },
-  { name: "Exibition Information", href: "/news/exibition-information", slug: "exibition-information" },
+  { name: "Exibition Information", href: "/news/company-exhibition", slug: "company-exhibition" },
 ];
 
         const [loading, setLoading] = useState(false);

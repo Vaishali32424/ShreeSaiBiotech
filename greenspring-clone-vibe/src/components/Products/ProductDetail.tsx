@@ -129,17 +129,14 @@ const [relatedProductsList, setRelatedProductsList] = useState<ProductListItem[]
             duration: 5000,
         });
     };
-    // --- End Modal Handlers ---
 
     
-    // --- Data & Logic Destructuring (Remains the same) ---
     const { 
         name, 
         short_details, 
         content_sections,
         category
     } = productData;
-    // ... (rest of data destructuring and logic remains the same) ...
     const categoryName = category.name || "Unknown";
         const categoryId = category.id || null ;
 
@@ -171,16 +168,13 @@ const currentIndex = relatedProductsList.findIndex(p => String(p.id) === product
     const prevProduct = currentIndex > 0 ? relatedProductsList[currentIndex - 1] : null;
     const nextProduct = currentIndex < relatedProductsList.length - 1 ? relatedProductsList[currentIndex + 1] : null;
 
-    // A helper for navigation link text
     const getLinkText = (product: ProductListItem | null, isNext: boolean) => {
         if (!product) return isNext ? "Next" : "Prev";
         const cleanName = product.name.replace(/<\/?[^>]+(>|$)/g, "").trim();
-        // The image shows 'Marigold Extract' in the next link text.
-        // I will return just the name as per your request's embedded code.
+       
         return cleanName; 
     }
     const getProductImage = (name) => {
-        // ... (Image logic) ...
         if (!name) {
             return "https://via.placeholder.com/400x300.png?text=No+Image";
         }
@@ -206,25 +200,26 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     } else if (src.endsWith(".webp")) {
         img.src = src.replace(".webp", ".avif");
     } 
-    // 🚨 REMOVED THE LINE THAT CAUSED THE LOOP: 
-    // else if (src.endsWith(".avif")) img.src = src.replace(".avif", ".jpg"); 
+
     else { 
-        // If it gets here, it means all attempts failed, including the '.avif' one.
         img.src = placeholder;
     }
 
-    // This line is essential to prevent the function from running infinitely on the placeholder
     img.onerror = null;
 };
-    // --- End Image Handlers ---
+const handleBuyNow = (productName) => {
+  const phoneNumber = "918989496905"; 
+ const message = `Hi, I am interested in buying "${productName}`
+   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(whatsappUrl, "_blank");
+};
 
 
     return (
         <div className="bg-white shadow p-6 rounded-lg">
             
-            {/* --- Back Button & Next/Previous Navigation --- */}
             <div className="flex justify-between items-center mb-4">
-                {/* ... (Navigation code remains the same) ... */}
                 <button
                     onClick={() => navigate(`/products/category/${encodeURIComponent(categoryName)}`)}
                     className="text-sm text-gray-600 font-semibold hover:underline"
@@ -235,7 +230,6 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
             
             </div>
             
-            {/* --- Product Header Section (Image/Specs) --- */}
             <div className="flex flex-col md:flex-row gap-8">
                 <img
                     src={productData.image_url}
@@ -261,12 +255,10 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
                         </p>
                     )}
 
-                    {/* 💡 --- Buy Now / Chat Buttons (Modified to use Modal) --- */}
                     <div className="flex items-center flex-wrap gap-2 mt-2">
-                        <Button onClick={() => handleOpenModal('buy')}>Buy Now</Button>
-                        <Button variant="outline" onClick={() => handleOpenModal('chat')}>Chat With Us</Button>
+                        <Button onClick={() => handleBuyNow(productData.name)}>Buy Now</Button>
+                        <Button variant="outline" onClick={() => handleOpenModal(productData.name)}>Chat With Us</Button>
 
-                        {/* ... (Social Share Links remain the same) ... */}
                         <span className="font-medium text-gray-700 ml-4">Share:</span>
                         <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 cursor-pointer hover:text-blue-700 text-2xl">
                             <i className="fab fa-facebook-square"></i>

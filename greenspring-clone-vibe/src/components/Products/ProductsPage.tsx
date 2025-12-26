@@ -20,6 +20,12 @@ import FactorySection from "../WhyChooseUs/WhyChooseUs/FactorySection";
 import HotProducts from "../LandingPage/HotProducts";
 import Certificates from "../WhyChooseUs/Factory&certificates/Certificates";
 import PhoneNumberSidebar from "./PhoneNumberSidebar";
+import FruitDes from "./FruitStaticPage/FruitDes";
+import FruitAdvantage from "./FruitStaticPage/FruitAdvantage";
+import ProductApplications from "./FruitStaticPage/ProductApplications";
+import FruitCards from "./FruitStaticPage/FruitCards";
+import PackagingShippingAndQC from "./FruitStaticPage/PackagingShippingAndQC";
+import ReviewsAndFAQ from "./FruitStaticPage/ReviewsAndFAQ";
 
 // TypeScript Interfaces for clarity (adjust if your API response is different)
 interface Product {
@@ -31,6 +37,16 @@ interface Category {
     id: number;
     name: string;
 }
+type CategoryMeta = {
+  id: number;
+  name: string;
+  description: string | null;
+};
+
+type CategoryMetaMap = {
+  [categoryName: string]: CategoryMeta;
+};
+
 interface ProductsData {
     [categoryName: string]: Product[];
 }
@@ -46,10 +62,8 @@ const ProductsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
     const [categoryNames, setCategoryNames] = useState<string[]>([]);
-    
-    // 💡 State to track if we are in search mode
-    // Note: Since we check searchQuery inside useEffect, this state isn't strictly necessary 
-    // but helps for clearer rendering logic.
+ const [categoryMeta, setCategoryMeta] = useState<CategoryMetaMap>({});
+const isFruitPowderPath = location.pathname.toLowerCase().includes('fruit');
     const [isSearchMode, setIsSearchMode] = useState(false); 
 
     useEffect(() => {
@@ -85,55 +99,61 @@ const ProductsPage = () => {
                     setLoading(false);
                 }
             } 
-            // ----------------------------------------------------
-            // 💡 CASE 2: NORMAL CATEGORY BROWZING MODE
-            // ----------------------------------------------------
-            else {
-                console.log("Fetching all categorized products.");
-                setIsSearchMode(false);
-                
-                // Existing logic to fetch all categories and their products
-                try {
-                    // 1. Get all categories
-                    const categoriesResult = await getAllCategories<{ data: Category[] }>();
-                    const categoriesList = categoriesResult.data || [];
+          
+           else {
+    console.log("Fetching all categorized products.");
+    setIsSearchMode(false);
 
-                    // 2. Fetch products for all categories concurrently
-                    const productPromises = categoriesList.map(category => 
-                        getProductsByCategory<{ data: Product[] }>(category.id)
-                            .then(res => ({ 
-                                categoryName: category.name, 
-                                products: res.data || [] 
-                            }))
-                            .catch(err => {
-                                console.error(`Failed to fetch products for category ${category.name}:`, err);
-                                return { categoryName: category.name, products: [] }; 
-                            })
-                    );
+    try {
+        const categoriesResult = await getAllCategories<{ data: Category[] }>();
+        const categoriesList = categoriesResult.data || [];
 
-                    const allProducts = await Promise.all(productPromises);
+        // 🔹 Store category meta (id, name, description)
+        const categoryMetaMap: CategoryMetaMap = {};
+        categoriesList.forEach(cat => {
+            categoryMetaMap[cat.name] = {
+                id: cat.id,
+                name: cat.name,
+                description: cat.description
+            };
+        });
 
-                    // 3. Transform data into the required structure: { [categoryName]: Product[] }
-                    const newProductsData: ProductsData = allProducts.reduce((acc, item) => {
-                        if (item.products.length > 0) {
-                            acc[item.categoryName] = item.products;
-                        }
-                        return acc;
-                    }, {} as ProductsData);
+        setCategoryMeta(categoryMetaMap);
 
-                    setProductsData(newProductsData);
-                    setCategoryNames(Object.keys(newProductsData)); 
-                    
-                } catch (err) {
-                    console.error("Error fetching initial product data:", err);
-                    setError("Failed to load products and categories.");
-                } finally {
-                    setLoading(false);
-                }
+        const productPromises = categoriesList.map(category =>
+            getProductsByCategory<{ data: Product[] }>(category.id)
+                .then(res => ({
+                    categoryName: category.name,
+                    products: res.data || []
+                }))
+                .catch(err => {
+                    console.error(`Failed to fetch products for category ${category.name}:`, err);
+                    return { categoryName: category.name, products: [] };
+                })
+        );
+
+        const allProducts = await Promise.all(productPromises);
+
+        const newProductsData: ProductsData = allProducts.reduce((acc, item) => {
+            if (item.products.length > 0) {
+                acc[item.categoryName] = item.products;
             }
+            return acc;
+        }, {} as ProductsData);
+
+        setProductsData(newProductsData);
+        setCategoryNames(Object.keys(newProductsData));
+
+    } catch (err) {
+        console.error("Error fetching initial product data:", err);
+        setError("Failed to load products and categories.");
+    } finally {
+        setLoading(false);
+    }
+}
+
         };
 
-        // 💡 location.search बदलने पर फ़ेच को री-ट्रिगर करें
         fetchProducts();
     }, [location.search]); // Depend on location.search to handle search mode toggling
 
@@ -239,6 +259,7 @@ const ProductsPage = () => {
                                 path="/"
                                 element={
                                     <ProductGrid
+                categoryMeta={categoryMeta}
                                         productsData={productsData}
                                         categories={categoryNames} 
                                         isSearchMode={isSearchMode}
@@ -251,6 +272,8 @@ const ProductsPage = () => {
                                 path="category/:categoryId"
                                 element={
                                     <ProductGrid
+                                                    categoryMeta={categoryMeta}
+
                                         productsData={productsData}
                                         categories={categoryNames}
                                         isSearchMode={isSearchMode} // Pass search mode context
@@ -267,12 +290,27 @@ const ProductsPage = () => {
                     </div>
                 </div>
             </section>
-            <section className="px-20">
-                <p className="text-2xl text-center font-bold py-4  ">Why Choose Us- Shree Sai Biotech®</p>
-  <Cards/>
-  <HotProducts/>
-  <Certificates/>
-        <FactorySection/></section>
+          <section className="px-20">
+    {isFruitPowderPath ? (
+      <><FruitDes /><FruitAdvantage />
+      <ProductApplications/>
+      <FruitCards/>
+      <PackagingShippingAndQC/>
+      <ReviewsAndFAQ/>
+
+      </>
+    ) : (
+      <>
+        <p className="text-2xl text-center font-bold py-4">
+      Why Choose Us- Shree Sai Biotech®
+    </p>
+        <Cards />
+        <HotProducts />
+        <Certificates />
+        <FactorySection />
+      </>
+    )}
+  </section>
                     <Footer />
         </>
     );

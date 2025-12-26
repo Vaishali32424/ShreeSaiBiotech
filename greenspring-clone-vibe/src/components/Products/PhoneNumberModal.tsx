@@ -17,6 +17,8 @@ const PhoneNumberModal: React.FC<PhoneNumberModalProps> = ({
   productName,
 }) => {
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>();
+    const [email, setEmail] = useState<string | undefined>();
+
   const [error, setError] = useState("");
 
 const handleSubmit = async () => {
@@ -26,7 +28,8 @@ const handleSubmit = async () => {
     try {
       const payload = {
         phoneNumber: phoneNumber,
-                product_name: productName,    };
+                product_name: productName, 
+              email  };
 
       const res = await createContactApi(payload);
 
@@ -62,8 +65,6 @@ const handleSubmit = async () => {
   <br />
   Please enter your phone number.
 </p>
-
-
         <div className="mb-4">
           <PhoneInput
             placeholder="Enter phone number"
@@ -75,12 +76,21 @@ const handleSubmit = async () => {
           />
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
-        <div className="flex justify-end gap-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="E-mail*"
+            required
+            value={email}
+            onChange={setEmail}
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
+          />
+        <div className="flex justify-end gap-4 my-2">
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300"
           >
-            Cancel
+            Close
           </button>
           <button
             onClick={handleSubmit}

@@ -16,6 +16,7 @@ const GlobalContactPopup: React.FC = () => {
   const [mobile, setMobile] = useState<string | undefined>();
   const [productName, setProductName] = useState("");
   const [submitting, setSubmitting] = useState(false);
+    const [email, setEmail] = useState<string | undefined>();
 
   useEffect(() => {
     if (location.pathname !== "/") {
@@ -50,6 +51,7 @@ const GlobalContactPopup: React.FC = () => {
         name: name.trim(),
         mobile,
         product_name: productName.trim(),
+        email,
       };
 
       await createContactApi(payload);
@@ -66,7 +68,7 @@ const GlobalContactPopup: React.FC = () => {
     } catch (err) {
       console.error(err);
       toast({
-        title: "Error❌",
+        title: err?.response?.data?.detail || "Error❌",
         description: "Something went wrong. Please try again.",
       });
     } finally {
@@ -118,7 +120,16 @@ const GlobalContactPopup: React.FC = () => {
               placeholder="Enter phone number"
             />
           </div>
+ <input
+            type="email"
+            name="email"
+            placeholder="E-mail*"
+            required
+            value={email}
+                          onChange={(e) => setEmail(e.target.value)}
 
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
+          />
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Product Name (optional)
