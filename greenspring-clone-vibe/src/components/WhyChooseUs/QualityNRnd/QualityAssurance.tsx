@@ -41,9 +41,9 @@ const QualityAssurance = () => {
       <div className="grid md:grid-cols-2 gap-8 items-start mb-10 bg-gray-50  p-4">
         {/* Left Image */}
         <img
-          src="https://www.greenspringshop.com/Content/uploads/2023389378/2023101908541404603d2d94ad4ac4bcdd0d0796fd5e17.png?size=600x0"
+          src="assets/lab-quality.jpeg"
           alt="Lab"
-          className="w-full h-[300px] object-cover rounded"
+          className="w-full h-auto object-cover object-center rounded"
         />
 
         {/* Right List */}

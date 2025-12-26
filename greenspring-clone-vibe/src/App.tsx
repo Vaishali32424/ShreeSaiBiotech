@@ -13,6 +13,7 @@ import QualityNRnD from "./components/WhyChooseUs/QualityNRnd/QualityNRnD";
 import WhatWeCanDo from "./components/WhyChooseUs/WhatCanWeDo/WhatWeCanDo";
 import ContactUs from "./components/ContactUs/ContactUs";
 import Products from "./components/Products/Products";
+import GlobalContactPopup from "./components/GlobalContactPopup";
 import Sweetners from "./components/Sweetners/Sweetners";
 import ProductSearch from "./components/LandingPage/ProductSearch";
 import ProductsDetailsPage from "./components/Products/ProductDetail";
@@ -62,6 +63,8 @@ const App = () => (
 <Route path="/knowledge/*" element={<AllKnowledge />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+              <GlobalContactPopup />
+
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

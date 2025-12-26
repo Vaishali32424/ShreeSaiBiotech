@@ -26,8 +26,7 @@ const handleSubmit = async () => {
     try {
       const payload = {
         phoneNumber: phoneNumber,
-        productName: productName,
-      };
+                product_name: productName,    };
 
       const res = await createContactApi(payload);
 

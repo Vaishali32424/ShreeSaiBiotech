@@ -21,7 +21,7 @@ const AllKnowledge = () => {
             <PageBanner
                 title={"Knowledge & Insights"} // Title updated
                 breadcrumb={"Knowledge"}
-                backgroundImage="/assets/Knowledge.webp" 
+                backgroundImage="/assets/knowledge.jpeg" 
             />
             
             <section className='px-20 '>

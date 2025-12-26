@@ -11,7 +11,7 @@ const QualityNRnD = () => {
   <><Header /><PageBanner
       title={"Quality & R&D"}
       breadcrumb={"About Us / Quality & R&D"}
-      backgroundImage="https://www.greenspringshop.com/uploads/202318070/ImgScroll/ba202302091333040720578.jpg?size=1920x300" />
+        backgroundImage="assets/quality-n-r-d.jpeg"/>
       <section className="px-20 ">
 <QualityAssurance/>
 <Advantage/>

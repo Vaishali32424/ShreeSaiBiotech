@@ -206,7 +206,7 @@ const ProductsPage = () => {
             <PageBanner
                 title={bannerTitle} // Use the dynamic title
                 breadcrumb={"Products"}
-                backgroundImage="https://www.greenspringshop.com/uploads/201818070/ImgScroll/ba201809191706523221844.jpg?size=2000x362"
+        backgroundImage="assets/productss.jpeg"
             />
             
             <section className="px-20">

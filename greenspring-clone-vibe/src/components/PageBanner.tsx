@@ -18,10 +18,15 @@ const PageBanner: React.FC<BannerProps> = ({
   return (
     <div className="w-full mt-[90px]">
       {/* Background Image Strip */}
-      <div
-        className="w-full h-[300px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      />
+   <div
+  className="w-full  h-auto bg-contain bg-no-repeat bg-center"
+/>
+<img
+  src={backgroundImage}
+  className="w-full  object-contain"
+  alt=""
+/>
+
 
       {/* White Strip */}
       <div className="flex justify-between items-center px-20 py-1 bg-white shadow">

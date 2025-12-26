@@ -13,7 +13,7 @@ const FactoryNCertificate = () => {
       <PageBanner
         title={"Factory & Certificates"}
         breadcrumb={"About Us / Factory & Certificates "}
-        backgroundImage="https://www.greenspringshop.com/uploads/202318070/ImgScroll/ba202312051137303316768.jpg?size=1200x215"
+        backgroundImage="assets/factory-n-certificate.jpeg"
       />
     <section className="px-20 ">
        <OurFactory/>
