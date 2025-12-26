@@ -111,3 +111,4 @@ class ContactResponse(BaseModel):
 
 class CategoryUpdate(BaseModel):
     categoryName: str
+    description: Optional[str] = None

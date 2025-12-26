@@ -257,5 +257,21 @@ def update_product_category(
     return {
         "message": "Product category updated successfully",
         "category_id": category.id,
-        "category_name": category.name
+        "category_name": category.name,
+        "description": category.description
+    }
+
+@router.get("/category/get-by/{id}")
+def get_category(category_id: int, db: Session = Depends(get_db)):
+    category = db.query(ProductCategory).filter(
+        ProductCategory.id == category_id
+    ).first()
+
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    return {
+        "category_id": category.id,
+        "category_name": category.name,
+        "description": category.description
     }
