@@ -251,6 +251,7 @@ def update_product_category(
         raise HTTPException(status_code=404, detail="Category not found")
 
     category.name = payload.categoryName
+    category.description = payload.description
     db.commit()
     db.refresh(category)
 
@@ -261,7 +262,7 @@ def update_product_category(
         "description": category.description
     }
 
-@router.get("/category/get-by/{id}")
+@router.get("/category/get-by/{category_id}")
 def get_category(category_id: int, db: Session = Depends(get_db)):
     category = db.query(ProductCategory).filter(
         ProductCategory.id == category_id
