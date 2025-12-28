@@ -64,7 +64,7 @@ def Email_send(email_msg: str):
         server.login('sales.biotechss02@gmail.com', G_Passkey)
         server.sendmail(
             'sales.biotechss02@gmail.com',
-            'sumit.997716@gmail.com',
+            'info@shreesaibiotech.com',
             email_msg
         )
         server.quit()

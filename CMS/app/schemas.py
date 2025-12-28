@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional, Dict, Any
 from enum import Enum as PyEnum
 from datetime import date
@@ -96,17 +96,20 @@ class ContactCreate(BaseModel):
     product_name: Optional[str] = None
     name: Optional[str] = None
     mobile: Optional[str] = None
-    email: Optional[str] = None
+    email: Optional[str]
     company_name: Optional[str] = None
     subject: Optional[str] = None
     description: Optional[str] = None
 
 class ContactResponse(BaseModel):
     id: int
-    name: str
-    email: str
-    mobile: Optional[str] = None
-    description: str
+    product_name: Optional[str]
+    name: Optional[str]
+    email: EmailStr
+    mobile: Optional[str]
+    company_name: Optional[str]
+    subject: Optional[str]
+    description: Optional[str]
     created_at: datetime
 
 class CategoryUpdate(BaseModel):

@@ -74,14 +74,13 @@ class Knowledge(Base):
 
 class Contact(Base):
     __tablename__ = "contact"
-
     id = Column(Integer, primary_key=True, index=True)
-    product_name = Column(String(200))
-    name = Column(String(100))
-    mobile = Column(String(20), unique=True)
-    email = Column(String(100), unique=True, nullable=False)
-    company_name = Column(String(100))
-    subject = Column(String(200))
-    description = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)   # stores first-time created timestamp
+    product_name = Column(String(200), nullable=True)
+    name = Column(String(100), nullable=True)
+    mobile = Column(String(20), unique=True, nullable=True)
+    email = Column(String(100), unique=True, nullable=False)  # REQUIRED
+    company_name = Column(String(100), nullable=True)
+    subject = Column(String(200), nullable=True)
+    description = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)   # stores first-time created timestamp
 
