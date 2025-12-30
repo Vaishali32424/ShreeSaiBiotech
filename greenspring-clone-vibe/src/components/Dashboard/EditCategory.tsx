@@ -13,13 +13,10 @@ const EditCategory = () => {
 
   /* ---------------- FETCH CATEGORY ---------------- */
   useEffect(() => {
-    if (!id) return;
-
     const fetchCategory = async () => {
       try {
         const res = await getCategoryById(id);
 
-        console.log("Category Response:", res.data);
 
         setName(res.data.category_name || "");
         setDescription(res.data.description || "");
@@ -73,7 +70,7 @@ const EditCategory = () => {
       <div className="border rounded-md mb-6">
  
     <RichTextEditor
-      key={description}   // 👈 IMPORTANT
+         
 
   initialContent={description}
                 onChange={(content) => setDescription(content)}

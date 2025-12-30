@@ -226,8 +226,13 @@ const isFruitPowderPath = location.pathname.toLowerCase().includes('fruit');
             <PageBanner
                 title={bannerTitle} // Use the dynamic title
                 breadcrumb={"Products"}
-        backgroundImage="assets/productss.jpeg"
-            />
+                
+                backgroundImage={
+    isFruitPowderPath
+      ? "/assets/fruitpowder.jpeg"
+      : "/assets/productss.jpeg"
+
+  }            />
             
             <section className="px-20">
                 <div className="flex gap-8 py-10">

@@ -26,9 +26,9 @@ const FruitDescription = () => {
 
           {/* IMAGE */}
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp92koYznWhe7JG90_91PnUJLUm4RfLQucEA&s"
+            src="/assets/fruit-des.jpeg"
             alt="Fruit and Vegetable Powders"
-            className="relative z-10 w-full h-[420px] object-cover rounded-2xl shadow-sm"
+            className="relative z-10 w-full h-[480px] object-fit rounded-2xl shadow-sm"
           />
         </div>
 
@@ -39,18 +39,13 @@ const FruitDescription = () => {
           </h2>
 
           <p className="text-gray-600 leading-[1.9] text-base">
-            Our fruit and vegetable powder is derived from 100% fresh, non-GMO
-            fruits and vegetables, processed through advanced low-temperature
-            vacuum drying technology. This gentle method retains over 98% of the
-            original nutrients—including vitamins, minerals, dietary fiber, and
-            natural pigments—while eliminating moisture to ensure long-term
-            stability. We offer a diverse range of options, from single-ingredient
-            powders (e.g., spinach powder, strawberry powder, carrot powder) to
-            custom blended fruit and vegetable powders, all free from additives,
-            preservatives, or artificial colors. Suitable for food, beverage,
-            health supplement, and cosmetic industries, our fruit and vegetable
-            powder delivers authentic flavor, vibrant color, and concentrated
-            nutrition in a convenient, easy-to-store form.
+           Shree Sai Biotech Indore. was established in 1988,we have more than 37+ years of experience,specializing in the extraction,concentration,purification of plant active substances and the development of 100% natural standardized  extracts,Herbal Powder .
+<br/>
+
+Shree Sai Biotech We are an integrated manufacturer and supplier specializing in the exploration, development and production of standardized plant extracts and natural organic powders.
+
+<br/>
+With our state-of-the-art manufacturing facilities, extensive R&D capabilities,and exceptional quality, Shree Sai Biotech  is committed to being a trusted partner for your phytochemical needs.
           </p>
         </div>
 

@@ -5,40 +5,40 @@ const applications = [
     id: "01",
     title: "Food & Beverage",
     image:
-      "https://www.greenspringshop.com/uploads/18070/list/202511121402282e9bd.jpg?size=1600x0",
+      "/assets/fruitsss.jpeg",
     points: [
-      "Baking: Add spinach powder to bread dough for a nutrient boost; mix strawberry powder into cake batter for natural sweetness and color.",
-      "Smoothies & Juices: Blend banana powder with milk for a creamy base; mix beetroot powder into juices for vibrant color and iron.",
-      "Snacks: Coat nuts with carrot powder for a savory crunch; incorporate kale powder into chips for a “superfood” label.",
+      "Shree Sai Biotech Our Quality Control Lab is equipped with cutting-edge technology, including HPLC, GC-By UV , Etc,headspace, and spectrophotometry, to guarantee the highest quality standards for our products.",
+      "Our expert technicians conduct thorough testing for identity, potency, purity, and microbiological safety, ensuring that each product meets rigorous safety and effectiveness criteria. ",
+      "Our advanced R&D center seamlessly integrates state-of-the-art technology and scientific expertise to drive the development of innovative healthcare solutions.",
     ],
   },
   {
     id: "02",
     title: "Health Supplements",
     image:
-      "https://www.greenspringshop.com/uploads/18070/list/2025111214024458b7d.jpg?size=1600x0",
+      "/assets/fruits4.jpeg",
     points: [
-      "Capsules & Tablets: Concentrated broccoli powder (rich in sulforaphane) for immune support; pumpkin seed powder (high in zinc) for wellness products",
-"Meal Replacements: Custom fruit and vegetable powder blends (e.g., apple + spinach + spirulina) for protein shakes or meal replacement bars.",
+      "Shree Sai Biotech has been a trusted provider of standardized herbal extracts in India. Their state-of-the-art manufacturing facility and network of raw material suppliers ensure quality and consistency.",
+"Shree Sai Biotech caters to diverse clientele, from major pharmaceutical companies to traditional Ayurvedic practitioners, providing a one-stop shop for all your herbal extract Herbal Powder needs.",
     ],
   },
    {
     id: "03",
     title: "Baby Food",
     image:
-      "https://www.greenspringshop.com/uploads/18070/list/20251112140311101a9.jpg?size=1600x0",
+      "/assets/fruits3.jpeg",
     points: [
-      "Capsules & Tablets: Concentrated broccoli powder (rich in sulforaphane) for immune support; pumpkin seed powder (high in zinc) for wellness products",
-"Meal Replacements: Custom fruit and vegetable powder blends (e.g., apple + spinach + spirulina) for protein shakes or meal replacement bars.",
+      "Empowering Health with Sustainable Innovation",
+      "The company is dedicated to new product development, specializing in liposomal formulations with botanicals, nutraceuticals, vitamins, and minerals.",
     ],
   },
     {
     id: "04",
     title: "Cosmetics",
     image:
-      "https://www.greenspringshop.com/uploads/18070/list/20251112140339ac4ff.jpg?size=1600x0",
+      "/assets/fruits2.jpeg",
     points: [
-      "Skincare: Tomato powder (lycopene) for anti-aging serums; cucumber powder for soothing masks.",
+      "Shree Sai Biotech is a reputed manufacturer and exporter of herbal cosmetic products and skin care products. Our range includes Rosehip  ,aloe vera gel,Cucumber gel, Papaya Gel, Orange Gel, Neem Gel, Undereye Gel,Anti Aging Gel, Aloe Turmeric Gel.Ginseng Gel.Sunflower ,Nirgundi,Kalonji ,Avocado ,Almond ,Babchi ,Olive ,Pain Relief Gel ,Etc.",
     ],
   },
      {

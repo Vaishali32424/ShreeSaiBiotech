@@ -16,6 +16,13 @@ const ProductAdvantages = () => {
         "No additives, sugars, or fillers—made solely from fresh fruits and vegetables.",
       number: "01",
     },
+     {
+      icon: <FaBuilding />,
+      title: "Certified Quality",
+      text:
+        "Compliant with |FDA | EU organic| and ISO 22000 standards; tested for pesticides, heavy metals, and microbiology.",
+      number: "04",
+    },
     {
       icon: <FaInfinity />,
       title: "Maximized Nutrient Retention",
@@ -27,16 +34,10 @@ const ProductAdvantages = () => {
       icon: <FaGlobe />,
       title: "Extensive Variety",
       text:
-        "50+ single powders (e.g., kale, mango, beetroot) and customizable blends to meet unique needs.",
+        "200+ single powders (e.g., kale, mango, beetroot) and customizable blends to meet unique needs etc.",
       number: "03",
     },
-    {
-      icon: <FaBuilding />,
-      title: "Certified Quality",
-      text:
-        "Compliant with FDA, EU organic, and ISO 22000 standards; tested for pesticides, heavy metals, and microbiology.",
-      number: "04",
-    },
+   
     {
       icon: <FaStar />,
       title: "Versatile & Convenient",

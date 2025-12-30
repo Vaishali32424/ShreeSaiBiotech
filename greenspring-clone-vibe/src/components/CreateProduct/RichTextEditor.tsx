@@ -509,6 +509,17 @@ const RichTextEditor = ({ initialContent, onChange }) => {
     left: 0,
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+const isContentSet = useRef(false);
+
+useEffect(() => {
+  if (!editor) return;
+
+  // ✅ Sirf FIRST TIME content set hoga
+  if (!isContentSet.current && initialContent) {
+    editor.commands.setContent(initialContent, false); // false = cursor safe
+    isContentSet.current = true;
+  }
+}, [editor, initialContent]);
 
   // show/hide floating link tooltip when selection changes
   useEffect(() => {
