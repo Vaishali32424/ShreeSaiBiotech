@@ -31,6 +31,7 @@ const EditCategory = () => {
     fetchCategory();
   }, [id]);
 
+
   /* ---------------- UPDATE CATEGORY ---------------- */
   const handleSave = async () => {
     try {
@@ -68,13 +69,17 @@ const EditCategory = () => {
         placeholder="Enter category name"
       />
 
-      {/* CATEGORY DESCRIPTION */}
       <label className="block mb-1 font-medium">Category Description</label>
       <div className="border rounded-md mb-6">
-        <RichTextEditor
-          initialContent={description}
-          onChange={(content) => setDescription(content)}
-        />
+ 
+    <RichTextEditor
+      key={description}   // 👈 IMPORTANT
+
+  initialContent={description}
+                onChange={(content) => setDescription(content)}
+               />
+
+
       </div>
 
       {/* ACTION BUTTONS */}
