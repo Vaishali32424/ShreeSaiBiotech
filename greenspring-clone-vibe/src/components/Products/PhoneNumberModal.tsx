@@ -16,18 +16,18 @@ const PhoneNumberModal: React.FC<PhoneNumberModalProps> = ({
   onSubmit,
   productName,
 }) => {
-  const [phoneNumber, setPhoneNumber] = useState<string | undefined>();
-    const [email, setEmail] = useState<string | undefined>();
+  const [mobile, setmobile] = useState<string | undefined>();
+    const [email, setEmail] = useState("");
 
   const [error, setError] = useState("");
 
 const handleSubmit = async () => {
-  if (phoneNumber && isValidPhoneNumber(phoneNumber)) {
+  if (mobile && isValidPhoneNumber(mobile)) {
     setError("");
 
     try {
       const payload = {
-        phoneNumber: phoneNumber,
+        mobile: mobile,
                 product_name: productName, 
               email  };
 
@@ -35,8 +35,8 @@ const handleSubmit = async () => {
 
       console.log("API response:", res);
 
-      onSubmit(phoneNumber);
-      setPhoneNumber(undefined);
+      onSubmit(mobile);
+      setmobile(undefined);
 
     } catch (error) {
       console.error("API Error:", error);
@@ -68,8 +68,8 @@ const handleSubmit = async () => {
         <div className="mb-4">
           <PhoneInput
             placeholder="Enter phone number"
-            value={phoneNumber}
-            onChange={setPhoneNumber}
+            value={mobile}
+            onChange={setmobile}
             international
             defaultCountry="IN"
             className="w-full p-2 border border-gray-300 rounded-md"
@@ -82,7 +82,7 @@ const handleSubmit = async () => {
             placeholder="E-mail*"
             required
             value={email}
-            onChange={setEmail}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-600 outline-none"
           />
         <div className="flex justify-end gap-4 my-2">
