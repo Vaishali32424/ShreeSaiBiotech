@@ -20,22 +20,22 @@ const ProductAdvantages = () => {
       icon: <FaBuilding />,
       title: "Certified Quality",
       text:
-        "Compliant with |FDA | EU organic| and ISO 22000 standards; tested for pesticides, heavy metals, and microbiology.",
-      number: "04",
+        "Compliant with | FDA,  | FSSAI  |, and ISO 22000 standards; tested for pesticides, heavy metals, and microbiology.",
+      number: "02",
     },
     {
       icon: <FaInfinity />,
       title: "Maximized Nutrient Retention",
       text:
         "Low-temperature drying preserves vitamins (A, C, E), antioxidants, and fiber better than high-heat methods.",
-      number: "02",
+      number: "03",
     },
     {
       icon: <FaGlobe />,
       title: "Extensive Variety",
       text:
-        "200+ single powders (e.g., kale, mango, beetroot) and customizable blends to meet unique needs etc.",
-      number: "03",
+        "200+ single powders (e.g., kale, mango, beetroot) and customizable blends to meet unique.Etc.",
+      number: "04",
     },
    
     {

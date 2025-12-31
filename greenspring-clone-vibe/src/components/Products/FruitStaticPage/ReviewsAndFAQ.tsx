@@ -58,20 +58,20 @@ const ReviewsAndFAQ = () => {
           {/* Review Card */}
           {[
             {
-              text: "The organic spinach powder has a bright color and no off-taste – perfect for our baby food line. Shipment to Germany arrived on time with all docs.",
-              name: "Anna",
+              text: "Herbal Powder  Amla Powder  has a bright color and no perfect for our line. Shipment to USSA  arrived on time with all docs.",
+              name: "Ravindra Kaushik",
               role: "Baby Food Manufacturer (Germany)",
               avatar: "👩🏻",
             },
             {
-              text: "We've tried 5 suppliers, but this carrot powder retains the most beta-carotene. Our smoothie sales are up 20%.",
-              name: "Mike",
+              text: "We’ve tried  suppliers, but this Safed Musli powder retains the most Ashwagandha.Amla.Mushroom Powder. Our smoothie sales are up 70%.",
+              name: "Sandy Lee",
               role: "Beverage Brand (USA)",
               avatar: "👨🏻",
             },
             {
-              text: "Custom blend of mango + pineapple powder was exactly what we needed. The R&D team adjusted the sweetness in 3 days.",
-              name: "",
+              text: "Food Products: Citric acid (Nimbu Sat).  (Sweet Orange) powder was exactly what we needed. The R&D team adjusted the sweetness in 8 days.",
+              name: "Rishabh K. Pandey",
               role: "Snack Producer",
               avatar: "🧑🏻",
             },
@@ -99,9 +99,9 @@ const ReviewsAndFAQ = () => {
                 </div>
                 <div>
                   {review.name && (
-                    <p className="font-semibold text-sm">{review.name}</p>
+                    <p className="font-semibold text-md">{review.name}</p>
                   )}
-                  <p className="text-xs text-green-700">{review.role}</p>
+                  <p className="text-md text-green-700">{review.role}</p>
                 </div>
               </div>
             </div>
@@ -110,7 +110,7 @@ const ReviewsAndFAQ = () => {
       </div>
 
       {/* ================= FAQ ================= */}
-    <section className="max-w-7xl mx-auto px-6 py-12">
+    <section className="max-w-7xl mx-auto px-6 py-5">
       <h2 className="font-semibold text-lg mb-4">
         FAQ (Frequently Asked Questions)
       </h2>
@@ -151,11 +151,8 @@ const ReviewsAndFAQ = () => {
       </div>
     </section>
       {/* ================= FOOT NOTE ================= */}
-      <p className="text-xs text-gray-600 mt-10 max-w-4xl">
-        Find nature fruit powder manufacturers and suppliers in China here.
-        We're offering 100% natural products for kosher and halal. Please rest
-        assured to wholesale high quality fruit powder at the best price from
-        our factory. For free sample, contact us.
+      <p className="text-xs text-gray-600  max-w-4xl">
+     Find nature fruit powder & Plant , manufacturers and suppliers in indai here. We're offering 100% natural products for kosher and halal. Please rest assured to wholesale high quality fruit powder at the best price from our factory. For free sample, contact us.
       </p>
     </section>
   );

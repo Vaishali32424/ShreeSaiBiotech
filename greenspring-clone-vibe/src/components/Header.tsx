@@ -232,15 +232,15 @@ useEffect(() => {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center space-x-4 text-sm mx-1">
-            <a href="/" className="text-primary font-medium hover:text-primary-dark transition-colors text-sm">{t("home")}</a>
+          <nav className="hidden lg:flex items-center space-x-4 text-md mx-1">
+            <a href="/" className="text-primary font-medium hover:text-primary-dark transition-colors text-md">{t("home")}</a>
             <NavigationDropdown title={t("about_us")} items={companyDropdownItems} route="/why-choose-us" />
             <NavigationDropdown title={t("products")}  navigateById={true} items={productsDropdownItems} route={"/products"} />
-            <a href="/sweeteners" className="text-foreground text-sm hover:text-primary transition-colors">{t("Sweetner")}</a>
+            <a href="/sweeteners" className="text-foreground text-md hover:text-primary transition-colors">{t("Sweetner")}</a>
                         <NavigationDropdown title={t("news")}  navigateById={true} items={newsDropdownItems} route={"/news"} />
 
-            <a href="/knowledge" className="text-foreground text-sm hover:text-primary transition-colors">{t("knowledge")}</a>
-            <a href="/contact-us" className="text-foreground text-sm hover:text-primary transition-colors">{t("contact_us")}</a>
+            <a href="/knowledge" className="text-foreground text-md hover:text-primary transition-colors">{t("knowledge")}</a>
+            <a href="/contact-us" className="text-foreground text-md hover:text-primary transition-colors">{t("contact_us")}</a>
           </nav>
 
           <div className="hidden lg:block">

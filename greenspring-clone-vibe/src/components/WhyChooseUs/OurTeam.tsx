@@ -8,44 +8,44 @@ const OurTeam = () => {
        {
       name: "Ankita",
       role: "Director",
-      img: "assets/Teams/sales-director.jpeg",
+      img: "/assets/no-user.webp",
     },
      {
       name: "Anil",
       role: "Director",
-      img: "assets/Teams/sales-director.jpeg",
+      img: "/assets/no-user.webp",
     },
     {
       name: "Mr. Navin",
       role: "CEO",
-      img: "assets/Teams/Navin.jpeg",
+      img: "/assets/no-user.webp",
     },
    
     {
       name: "Rajesh",
       role: "General Manager",
-      img: "assets/Teams/general-manager.jpeg",
+      img: "/assets/no-user.webp",
     },
    
      {
       name: "Preet",
       role: "Quality Control",
-      img: "assets/Teams/quality-control.jpeg",
+      img: "/assets/no-user.webp",
     },
      {
       name: "Rajesh",
       role: "Sales  Executive",
-      img: "assets/Teams/sales-executive.jpeg",
+      img: "/assets/no-user.webp",
     },
       {
       name: "Reena",
       role: "Sales  Executive",
-      img: "assets/Teams/sales-executive.jpeg",
+      img: "/assets/no-user.webp",
     },
      {
       name: "Rani",
       role: "Sales  Executive",
-      img: "assets/Teams/sales-executive.jpeg",
+      img: "/assets/no-user.webp",
     },
   
   
@@ -80,7 +80,7 @@ const OurTeam = () => {
               <img
                 src={member.img}
                 alt={member.name}
-                className="w-[250px] h-[250px] object-fit"
+                className="w-[240px] h-[250px] object-cover mx-auto mt-4 "
               />
 
               {/* Curve Shape */}

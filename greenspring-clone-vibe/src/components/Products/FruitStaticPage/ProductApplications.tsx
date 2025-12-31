@@ -43,11 +43,11 @@ const applications = [
   },
      {
     id: "05",
-    title: "Catering & HoReCa",
+    title: "Online Sellers/ Marketplace B2B ",
     image:
-      "https://www.greenspringshop.com/uploads/18070/list/2025111214035868035.jpg?size=1600x0",
+      "/assets/fruits5.jpeg",
     points: [
-      "Restaurants: Use matcha powder (green tea, a type of vegetable-derived powder) in desserts; dust dishes with turmeric powder for color and flavor.",
+      "Our wide range of Ayurvedic Powder, Single Herbal Supplements, and Personal Care products are the best-selling  products for Herbal All Ayurvedic Products Etc.",
     ],
   },
 ];

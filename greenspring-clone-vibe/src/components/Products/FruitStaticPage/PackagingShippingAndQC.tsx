@@ -49,7 +49,7 @@ const PackagingShippingAndQC = () => {
                 25kg/drum, 50kg/drum (with PE liner)
               </td>
               <td className="border-r border-green-700 px-3 py-2">
-                24 months
+                36 months
               </td>
               <td className="px-3 py-2">
                 Bulk industrial orders
@@ -61,10 +61,9 @@ const PackagingShippingAndQC = () => {
                 Custom Packaging
               </td>
               <td className="border-r border-green-700 px-3 py-2">
-                OEM/ODM (e.g., 100g sachets)
-              </td>
+100 GM-1.KGS-5.KGS-10.KGS              </td>
               <td className="border-r border-green-700 px-3 py-2">
-                18–24 months
+                24 months
               </td>
               <td className="px-3 py-2">Retail-ready products</td>
             </tr>
@@ -108,8 +107,7 @@ const PackagingShippingAndQC = () => {
                 Sea Freight
               </td>
               <td className="border-r border-green-700 px-3 py-2">
-                15–30 days (Europe/North America), 25–40 days
-                (Oceania/Africa)
+               Kandla Port , Nhava Sheva Port
               </td>
               <td className="border-r border-green-700 px-3 py-2">
                 Large bulk orders
@@ -117,12 +115,23 @@ const PackagingShippingAndQC = () => {
               <td className="px-3 py-2">Lower</td>
             </tr>
 
-            <tr>
+            <tr className="border-b border-green-700">
               <td className="border-r border-green-700 px-3 py-2">
                 Express (DHL/FedEx)
               </td>
               <td className="border-r border-green-700 px-3 py-2">
                 2–5 days
+              </td>
+              <td className="border-r border-green-700 px-3 py-2">
+                Samples, small orders (&lt;50kg)
+              </td>
+              <td className="px-3 py-2">Highest</td>
+            </tr>
+                 <tr>
+              <td className="border-r border-green-700 px-3 py-2">
+Express Domestic Inddai-DTDC-DHL-ALL              </td>
+              <td className="border-r border-green-700 px-3 py-2">
+                2–3 days
               </td>
               <td className="border-r border-green-700 px-3 py-2">
                 Samples, small orders (&lt;50kg)
@@ -135,42 +144,28 @@ const PackagingShippingAndQC = () => {
 
       {/* ================= Production Process ================= */}
       <h2 className="font-semibold text-lg mb-4">
-        Production Process Flowchart
+        Production Process Flowchart with Matrail
       </h2>
+      <p>Collection Centers - Procurement on Pre-set QualityParameters.</p>
 
       <ul className="list-disc pl-6 space-y-2 text-sm mb-12">
         <li>
-          <strong>Raw Material Selection:</strong> Hand-picked fruits/vegetables
-          from certified farms (tested for ripeness and contaminants).
+          <strong>Raw Material Quality Control :</strong> The raw material is checked thoroughly for physical parameters for fungus, 
+          soil and dust is segregated and sorted material is taken to shed for its drying with sufficient airflow.
         </li>
         <li>
-          <strong>Cleaning:</strong> Ultrasonic washing to remove pesticides,
-          dirt, and bacteria (3-stage filtration).
+          <strong>Herbal Extraction on Pilot Plant for Validation:</strong> The validated raw material is taken to a pilot plant for the study of its contents and quality of contents in the herbs before taking a commercial batch for extraction.
         </li>
         <li>
-          <strong>Pre-Treatment:</strong> Peeling, slicing (uniform 3mm
-          thickness) to ensure even drying.
+          <strong>Finished Product Quality Control Analysis:</strong> We have a modern and scientific Quality Control laboratory having the latest equipment like HPLC, GC, and UV Spectrometer, etc. for estimation of active ingredients.
         </li>
         <li>
-          <strong>Low-Temperature Drying:</strong> Freeze-drying (-40°C) or
-          vacuum drying (40–50°C) to remove 95%+ moisture.
+          <strong>Sterilization:</strong> UV + high-pressure processing (HPP) to eliminate pathogens (microbial count 100 CFU/g).
         </li>
         <li>
-          <strong>Grinding & Sieving:</strong> Pulverized to 80–200 mesh
-          (adjustable), sieved to remove large particles.
+          <strong>Quality Inspection:</strong>  Lab tests for nutrients, moisture, and contaminants (passed before packaging).
         </li>
-        <li>
-          <strong>Sterilization:</strong> UV + high-pressure processing (HPP) to
-          eliminate pathogens (microbial count &lt;100 CFU/g).
-        </li>
-        <li>
-          <strong>Quality Inspection:</strong> Lab tests for nutrients,
-          moisture, and contaminants (passed before packaging).
-        </li>
-        <li>
-          <strong>Packaging:</strong> Aseptic filling into airtight containers,
-          nitrogen-flushed to prevent oxidation.
-        </li>
+       
       </ul>
 
       {/* ================= Quality Control ================= */}
@@ -178,22 +173,16 @@ const PackagingShippingAndQC = () => {
 
       <ul className="list-disc pl-6 space-y-2 text-sm">
         <li>
-          <strong>Raw Material Checks:</strong> 100% of fruits/vegetables tested
-          for pesticides (via LC-MS) and heavy metals (ICP-MS) before processing.
+          Shree Sai Biotech  Biotech sources and procures raw herbs through buy back arrangement with farmers and trusted sources.
         </li>
         <li>
-          <strong>In-Process Testing:</strong> Moisture content (target 3–5%),
-          particle size, and color measured at 3 stages (drying, grinding,
-          sterilization).
+        Identification of the correct raw material source and active principles, control of heavy metals, pesticides, aflatoxins and microbial count.
         </li>
         <li>
-          <strong>Final Inspection:</strong> Third-party labs (SGS, Intertek)
-          verify compliance with FDA 21 CFR, EU 1881/2006, and customer
-          customization standards.
+        Our passionate team of researchers and innovators are transforming how holistic health is achieved, using robust bioavailable active ingredients to create dietary and food supplements and complementary health medicine.
         </li>
         <li>
-          <strong>Traceability:</strong> Each batch has a QR code linking to farm
-          origin, processing date, and test reports.
+       Raw material quality is essential. We have a multi-layered quality management system in place to ensure that  raw materials collected or contract grown for manufacturing comply with GACP (Good Agricultural and Collection Practices). We follow a rigorous testing regime for all raw materials and finished products.
         </li>
       </ul>
     </section>

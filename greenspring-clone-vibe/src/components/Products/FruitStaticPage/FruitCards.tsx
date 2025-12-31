@@ -15,72 +15,51 @@ const FruitCards: React.FC = () => {
         {/* Card 1 */}
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <img
-          src="https://www.greenspringshop.com/uploads/18070/list/20251112141214f502b.jpg?size=1600x0"
+          src="/assets/abcd.jpeg"
             alt="Biotechnology"
             className="w-full h-48 object-cover rounded-md mb-4"
           />
-          <h3 className="font-bold text-black mb-2">Case 1: Small-Batch Bakery in Canada</h3>
-          <ul className=" text-sm text-gray-800">
+          {/* <h3 className="font-bold text-black mb-2">Case 1: Small-Batch Bakery in Canada</h3> */}
+          <ul className=" text-md text-gray-800">
             <li>
               <p>
-Challenge: A family-owned bakery needed 50kg/month of custom "berry blend powder" (strawberry + raspberry) but struggled with high MOQs from suppliers.              </p>
-            </li>
-            <li className="mt-2">
-              <p>
-Solution: We offered flexible production (min 20kg/order) with consistent quality; adjusted the blend ratio to match their sweetness requirements.              </p>
-            </li>
-              <li className="mt-2">
-              <p>
-Result: The bakery launched a "Superfruit Muffin" line, boosting sales by 35% in 6 months; now orders 200kg/month.
-</p>            </li>
+Herbal or say herb powders made at ssb Ayurveda vitals are multipurpose in nature as these powders can be used for multiple purposes as food, flavour, skin care, supplement etc. For example herb powders like khus, peppermint, lavender, chamomile, rose, marigold etc. can be used in food as well as skin care.       </p>     </li>
+  
           </ul>
         </div>
 
         {/* Card 2 */}
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <img
-            src="https://www.greenspringshop.com/uploads/18070/list/2025111214143325a76.jpg?size=800x0" // Replace with actual image URL
+          src="/assets/pills.jpeg"
             alt="Nanocarrier technology"
             className="w-full h-48 object-cover rounded-md mb-4"
           />
-          <h3 className="font-bold text-black mb-2">Case 2: Nutraceutical Brand in Australia</h3>
-          <ul className=" text-sm text-gray-800">
+          <ul className=" text-md text-gray-800">
             <li>
               <p>
-Challenge: Required organic kale powder with 5% moisture (to avoid clumping in capsules) and EU organic certification for export.        
-</p>    </li>
+All our products are 99.99% pure and 100% organic in nature. We are from among India’s leading companies operating in certified organic products industry.</p>    </li>
             <li className="mt-2">
               <p>
-Solution: Used our freeze-drying technology to achieve 3% moisture; provided full certification docs (EU organic, microbiology reports).     </p>
+Ours is still bit different from other companies in respect that not all companies have direct contracts with the farmers involved in organic farming. This is quite important because it gives us assurance of our products being 100% organic and in turn we can assure our esteemed customers for the nature of products we offer. Our company has come a long way to establish itself as one of the leading supplier of the Indian organic spices and various agro products to national/international market.  </p>
             </li>
-              <li className="mt-2">
-              <p>
-Result: The brand’s "Green Detox Capsules" passed EU import inspections; now accounts for 15% of their revenue.</p>            </li>
+
           </ul>
         </div>
 
         {/* Card 3 */}
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <img
-          src="https://www.greenspringshop.com/uploads/18070/list/202511121413061233a.jpg?size=1600x0"
+          src="/assets/bottles.jpeg"
             alt="Compounding technology"
             className="w-full h-48 object-cover rounded-md mb-4"
           />
-          <h3 className="font-bold text-black mb-2">Case 3: Beverage Manufacturer in Japan</h3>
-          <ul className="text-sm text-gray-800">
+          <ul className="text-md text-gray-800">
             <li>
               <p>
-Challenge: Needed a stable, non-oxidizing matcha powder for bottled iced tea (to prevent color fading).
-              </p>
+Shree Sai Biotech are foremost Importer, Trader, Exporter and Manufacturer of a variety of Extract Powder, Natural Extracts, Natural Nutraceuticals, Packed Horse Chestnut and many more. Offered variety is accessible in numerous forms according to the exact wants and requirements of our respected customers. Provided products are extensively recognized owing to its attributes.              </p>
             </li>
-            <li className="mt-2">
-              <p>
-Solution: Modified our drying process to reduce oxidation; added a natural anti-caking agent (rice hull powder, FDA-approved).              </p>
-            </li>
-             <li className="mt-2">
-              <p>
-Result: The iced tea stayed vibrant for 12 months; became a top-selling product in Japanese convenience stores.            </p>
-            </li>
+          
           </ul>
         </div>
       </div>
