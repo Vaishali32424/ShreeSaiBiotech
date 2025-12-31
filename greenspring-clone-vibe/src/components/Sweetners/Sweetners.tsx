@@ -20,7 +20,7 @@ const Products = () => {
       <PageBanner
         title={"Sweetner"}
         breadcrumb={"Sweetner"}
-        backgroundImage="assets/farming.jpg"
+        backgroundImage="assets/farminggg.jpeg"
       />
       <section className='px-20'>
 <CompanyAdvantage />
