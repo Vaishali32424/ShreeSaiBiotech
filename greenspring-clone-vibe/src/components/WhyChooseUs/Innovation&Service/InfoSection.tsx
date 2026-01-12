@@ -11,7 +11,7 @@ const sectionData = [
       "Provide customized service of fondant in different shapes and colors",
       "Provide packaging customization and specialty label design services such as various packaging (bags or bottles)"
     ],
-    image: "https://www.greenspringshop.com/Content/uploads/2023389378/2023101109424577a60ed236dd4afcbdfe476b6ddce49b.jpg?size=533x0"
+    image:"assets/abc01.jpeg"
   
   },
   {
@@ -22,7 +22,7 @@ const sectionData = [
       "Specifications: 50g, 100g, 200g, 500g, 1000g…",
       "Provide packaging customization and specialty label design services such as various packaging (bags or bottles)"
     ],
-    image: "https://www.greenspringshop.com/Content/uploads/2023389378/20231011111834b9c5269962a243d79ba15ae0b430167b.png?size=600x0"
+    image:"assets/abc02.jpeg"
    
   },
     {
@@ -34,7 +34,7 @@ const sectionData = [
       "Provide customized service of fondant in different shapes and colors",
       "Provide packaging customization and specialty label design services such as various packaging (bags or bottles)"
     ],
-    image: "https://www.greenspringshop.com/Content/uploads/2023389378/2023101109424577a60ed236dd4afcbdfe476b6ddce49b.jpg?size=533x0"
+    image:"assets/abc03.jpeg"
   
   },
     {
@@ -45,7 +45,7 @@ const sectionData = [
       "Specifications: 50g, 100g, 200g, 500g, 1000g…",
       "Provide packaging customization and specialty label design services such as various packaging (bags or bottles)"
     ],
-    image: "https://www.greenspringshop.com/Content/uploads/2023389378/20231011111834b9c5269962a243d79ba15ae0b430167b.png?size=600x0"
+    image:"assets/abc04.jpeg"
    
   },
 ];

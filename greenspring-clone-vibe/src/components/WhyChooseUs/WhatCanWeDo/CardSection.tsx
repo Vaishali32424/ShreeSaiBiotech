@@ -4,19 +4,19 @@ import React from "react";
 const cardData = [
   {
     title: "People",
-    img: "https://www.greenspringshop.com/Content/uploads/2023389378/20230208154122ada3c1a68fbb40dca0b819614e3d0153.jpg",
+    img: "/assets/xyz06.jpeg",
   },
   {
     title: "Pets",
-    img: "https://www.greenspringshop.com/Content/uploads/2023389378/202302081551380de6c9368d7a49afa2f11b6d0d0f0f3f.jpg",
+    img: "/assets/xyz07.jpeg",
   },
   {
     title: "Agriculture",
-    img: "https://www.greenspringshop.com/Content/uploads/2023389378/20230208155207f4335fff1c06451cb898672f78c6f61c.jpg",
+    img: "/assets/xyz08.jpeg",
   },
   {
     title: "Animal Feed",
-    img: "https://www.greenspringshop.com/Content/uploads/2023389378/202302081552288c819190ae4b4f47b1ad8ef5eaf670e2.jpg",
+    img: "/assets/xyz09.jpeg",
   },
 ];
 

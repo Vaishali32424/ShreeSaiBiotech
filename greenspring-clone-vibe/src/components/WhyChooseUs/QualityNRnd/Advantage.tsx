@@ -9,12 +9,13 @@ const advantages = [
   },
   {
     image:
-    "https://www.greenspringshop.com/Content/uploads/2023389378/20231018170441f8cf08d12b4b4ba6ba0decaa57515140.jpg?size=350x0",
+      "assets/lab03.jpeg",
     type: "image",
   },
   {
     image:
-    "https://www.greenspringshop.com/Content/uploads/2023389378/202310181705068517ef5472274530a325fbb0b384571c.jpg?size=x0",
+          "assets/lab04.jpeg",
+
     type: "image",
   },
   {
@@ -25,7 +26,8 @@ const advantages = [
   },
   {
     image:
-    "https://www.greenspringshop.com/Content/uploads/2023389378/2023101817045204ec92113236405fabdb6467bfcfdca1.jpg?size=350x0",
+          "assets/lab05.jpeg",
+
     type: "image",
   },
   {
