@@ -66,7 +66,9 @@ const [isSubmitting, setIsSubmitting] = useState(false);
             console.error("API Submission FAILED:", err);
             toast({
                 title: "Error❌",
-                description: err.description || "Failed to send description. Please try again.",
+                description:  err?.response?.data?.detail ||
+        err?.detail ||
+        "Failed to send description. Please try again."
             });
         } finally {
             setIsSubmitting(false);

@@ -28,6 +28,7 @@ import KnowledgeDashboard from "./components/Dashboard/KnowledgePages/KnowledgeD
 import AllNews from "./components/NewsPages/AllNews";
 import AllKnowledge from "./components/knowledgePages/AllKnowledge";
 import EditCategory from "./components/Dashboard/EditCategory";
+import { LoginPage, ProtectedRoute } from "./components/Auth/ProtectedRoute";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -54,17 +55,20 @@ const App = () => (
         {/* <Route path="/products/:id" element={<ProductsDetailsPage />} /> */}
             <Route path="/products/*" element={<ProductsPage />} />
             <Route path="/view-product" element={<PayloadPreview />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-<Route path="/add-product" element={<ProductForm />} />
-<Route path="/view/:productId" element={<ProductDisplay />} />
-          <Route path="/edit-product/:productId" element={<ProductForm />} />
-<Route path="/dashboard/news/*" element={<NewsDashboard />} />
-<Route path="/dashboard/knowledge/*" element={<KnowledgeDashboard />} />
+
 <Route path="/news/*" element={<AllNews />} />
 <Route path="/edit-category/:id" element={<EditCategory />} />
 <Route path="/knowledge/*" element={<AllKnowledge />} />
-          <Route path="*" element={<NotFound />} />
+<Route path="/login" element={<LoginPage />} />
+<Route path="*" element={<NotFound />} />
+<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+<Route path="/add-product" element={<ProtectedRoute><ProductForm /></ProtectedRoute>} />
+<Route path="/view/:productId" element={<ProtectedRoute><ProductDisplay /></ProtectedRoute>} />
+<Route path="/edit-product/:productId" element={<ProtectedRoute><ProductForm /></ProtectedRoute>} />
+<Route path="/dashboard/news/*" element={<ProtectedRoute><NewsDashboard /></ProtectedRoute>} />
+<Route path="/dashboard/knowledge/*" element={<ProtectedRoute><KnowledgeDashboard /></ProtectedRoute>} />
         </Routes>
+
               <GlobalContactPopup />
 
       </BrowserRouter>
